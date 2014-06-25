@@ -174,6 +174,15 @@ var renderer = (function () {
     }), renderer.runner.origin);
   };
 
+  renderer.hashchange = function (hash) {
+    console.log('updating hash with ' + hash);
+    // window.location.hash = hash;
+  };
+
+  $(window).on('hashchange', function () {
+    renderer.postMessage('updateHash', window.location.hash);
+  });
+
   /**
    * When the iframe resizes, update the size text
    */

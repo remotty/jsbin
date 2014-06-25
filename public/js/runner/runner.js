@@ -4,6 +4,7 @@
  * ========================================================================== */
 
 var runner = (function () {
+  /*global sandbox, getIframeWindow, proxyConsole, processor, loopProtect*/
   'use strict';
   var runner = {};
 
@@ -38,7 +39,7 @@ var runner = (function () {
     }
     runner.parent.source = event.source;
     try {
-      runner[data.type](data.data);
+      runner[data.type](data.data, event);
     } catch (e) {
       runner.error(e.message);
     }
@@ -60,7 +61,7 @@ var runner = (function () {
   /**
    * Render a new preview iframe using the posted source
    */
-  runner.render = function (data) {
+  runner.render = function (data, event) {
     var iframe = sandbox.create(data.options);
     sandbox.use(iframe, function () {
       var childDoc = iframe.contentDocument,
@@ -116,6 +117,21 @@ var runner = (function () {
       // Setup the new window
       sandbox.wrap(childWindow, data.options);
     });
+  };
+
+  /**
+   * Update the runner's window.location.hash
+   */
+  runner.updateHash = function (frag) {
+    var iframe = sandbox.active;
+
+    if (!iframe) {
+      // return as there's no iframe to update the hash of
+      return;
+    }
+
+    var childWindow = getIframeWindow(iframe);
+    childWindow.location.hash = frag;
   };
 
   /**

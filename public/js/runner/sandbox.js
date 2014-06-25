@@ -4,7 +4,8 @@
  * ========================================================================== */
 
 var sandbox = (function () {
-
+  /*global prependChild, getIframeWindow, addEvent, runner, proxyConsole*/
+  'use strict';
   var sandbox = {};
 
   /**
@@ -13,6 +14,8 @@ var sandbox = (function () {
   sandbox.target = null;
   sandbox.old = null;
   sandbox.active = null;
+  sandbox.location = {};
+  sandbox.parentLocation = null;
   sandbox.guid = +new Date(); // id used to keep track of which iframe is active
 
   /**
@@ -27,22 +30,74 @@ var sandbox = (function () {
     return iframe;
   };
 
+  function url(href) {
+    var a = document.createElement('a');
+    a.href = href;
+    return a;
+  }
+
+  /**
+   * poll the sandbox's location, and if it changes, push it up to the jsbin editor
+   */
+  function watchLocation() {
+    if (sandbox.active) {
+      var childWindow = getIframeWindow(sandbox.active);
+      var childLocation = childWindow.location;
+
+      if (sandbox.location.href !== 'about:blank' && sandbox.location.href !== childLocation.toString()) {
+        if (childLocation.hash !== sandbox.location.hash) {
+          // console.log('hashchange', childLocation.hash);
+          console.log(childLocation.toString(), '!==', sandbox.location.hash);
+          runner.postMessage('hashchange', childLocation.hash);
+        } else {
+          // console.log('pushState', childLocation.pathname);
+          runner.postMessage('pushState', childLocation.pathname);
+        }
+        sandbox.location = url(childLocation);
+      } else if (childLocation.toString() !== sandbox.location.href) {
+        sandbox.location = url(childLocation);
+      }
+    }
+    setTimeout(watchLocation, 100);
+  }
+
+  watchLocation();
+
   /**
    * Add a new iframe to the page and wait until it has loaded to call the
    * requester back. Also wait until the new iframe has loaded before removing
    * the old one.
    */
   sandbox.use = function (iframe, done) {
-    if (!sandbox.target) throw new Error("Sandbox has no target element.");
+    if (!sandbox.target) {
+      throw new Error('Sandbox has no target element.');
+    }
+
+    sandbox.location = {};
     sandbox.old = sandbox.active;
-    var state = sandbox.saveState(sandbox.old);
     sandbox.active = iframe;
+
     prependChild(sandbox.target, iframe);
+    if (iframe) {
+      var childWindow = getIframeWindow(iframe);
+      if (childWindow) {
+        childWindow.history.pushState(null, null, top.location.toString());
+        sandbox.location = url(childWindow.location.toString());
+      } else {
+        sandbox.location = {};
+      }
+    } else {
+      sandbox.location = {};
+    }
+
+
     // setTimeout allows the iframe to be rendered before other code runs,
     // allowing us access to the calculated properties like innerWidth.
     setTimeout(function () {
       // call the code that renders the iframe source
-      if (done) done();
+      if (done) {
+        done();
+      }
 
       // remove *all* the iframes, baring the active one
       var iframes = sandbox.target.getElementsByTagName('iframe'),
@@ -64,9 +119,13 @@ var sandbox = (function () {
    * Restore the state of a prvious iframe, like scroll position.
    */
   sandbox.restoreState = function (iframe, state) {
-    if (!iframe) return {};
+    if (!iframe) {
+      return {};
+    }
     var win = getIframeWindow(iframe);
-    if (!win) return {};
+    if (!win) {
+      return {};
+    }
     if (state.scroll) {
       win.scrollTo(state.scroll.x, state.scroll.y);
     }
@@ -76,9 +135,13 @@ var sandbox = (function () {
    * Save the state of an iframe, like scroll position.
    */
   sandbox.saveState = function (iframe) {
-    if (!iframe) return {};
+    if (!iframe) {
+      return {};
+    }
     var win = getIframeWindow(iframe);
-    if (!win) return {};
+    if (!win) {
+      return {};
+    }
     return {
       scroll: {
         x: win.scrollX,
@@ -92,7 +155,9 @@ var sandbox = (function () {
    * window during live rendering.
    */
   sandbox.wrap = function (childWindow, options) {
-    if (!childWindow) return;
+    if (!childWindow) {
+      return;
+    }
     options = options || {};
 
     // Notify the parent of resize events (and send one straight away)
@@ -122,8 +187,10 @@ var sandbox = (function () {
    * Evaluate a command against the active iframe, then use the proxy console
    * to fire information up to the parent
    */
-  sandbox.eval = function (cmd) {
-    if (!sandbox.active) throw new Error("sandbox.eval: has no active iframe.");
+  sandbox.eval = function (cmd) { // jshint ignore:line
+    if (!sandbox.active) {
+      throw new Error('sandbox.eval: has no active iframe.');
+    }
 
     var re = /(^.|\b)console\.(\S+)/g;
 
@@ -138,7 +205,7 @@ var sandbox = (function () {
     var output = null,
         type = 'log';
     try {
-      output = childWindow.eval(cmd);
+      output = childWindow.eval(cmd); // jshint ignore:line
     } catch (e) {
       output = e.message;
       type = 'error';
@@ -151,7 +218,9 @@ var sandbox = (function () {
    * Inject a script via a URL into the page
    */
   sandbox.injectScript = function (url, cb) {
-    if (!sandbox.active) throw new Error("sandbox.injectScript: has no active iframe.");
+    if (!sandbox.active) {
+      throw new Error('sandbox.injectScript: has no active iframe.');
+    }
     var childWindow = sandbox.active.contentWindow,
         childDocument = childWindow.document;
     var script = childDocument.createElement('script');
@@ -169,13 +238,15 @@ var sandbox = (function () {
    * Inject full DOM into the page
    */
   sandbox.injectDOM = function (html, cb) {
-    if (!sandbox.active) throw new Error("sandbox.injectDOM: has no active iframe.");
+    if (!sandbox.active) {
+      throw new Error('sandbox.injectDOM: has no active iframe.');
+    }
     var childWindow = sandbox.active.contentWindow,
         childDocument = childWindow.document;
     try {
       childDocument.body.innerHTML = html;
     } catch (e) {
-      cb("Failed to load DOM.");
+      cb('Failed to load DOM.');
     }
     cb();
   };
