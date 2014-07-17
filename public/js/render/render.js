@@ -31,6 +31,7 @@ var getRenderedCode = function () {
   function render(language) {
     return new RSVP.Promise(function (resolve, reject) {
       editors[language].render().then(function (data) {
+        resolve(data);
         if (jsbin.state.connections > 0 && language === 'css' && editors[language].processor.id !== 'css') {
           $.ajax({
             method: 'post',
@@ -39,7 +40,6 @@ var getRenderedCode = function () {
             language: editors[language].processor.id
           });
         }
-        return data;
       }, function (error) {
         console.warn(editors[language].processor.id + ' processor compilation failed');
         if (!error) {
