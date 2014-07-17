@@ -54,10 +54,14 @@ var deferCallable = function (newFn, trigger) {
 function sendReload() {
   if (saveChecksum) {
     $.ajax({
-      url: jsbin.getURL() + '/reload',
+      url: jsbin.getURL() + '/spike',
       data: {
         code: jsbin.state.code,
         revision: jsbin.state.revision,
+        payload: {
+          event: 'css:processed',
+          data: ''
+        },
         checksum: saveChecksum
       },
       type: 'post'

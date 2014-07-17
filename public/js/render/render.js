@@ -31,15 +31,15 @@ var getRenderedCode = function () {
   function render(language) {
     return new RSVP.Promise(function (resolve, reject) {
       editors[language].render().then(function (data) {
-        resolve(data);
-        if (jsbin.state.connections > 0 && language === 'css' && editors[language].processor.id !== 'css') {
+        if (jsbin.state.connections > 0) { //} && language === 'css' && editors[language].processor.id !== 'css') {
           $.ajax({
             method: 'post',
             url: jsbin.getURL({ withRevision: true }) + '/spike',
-            data: data,
+            data: { data: data },
             language: editors[language].processor.id
           });
         }
+        resolve(data);
       }, function (error) {
         console.warn(editors[language].processor.id + ' processor compilation failed');
         if (!error) {
