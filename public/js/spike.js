@@ -143,7 +143,7 @@ function restore() {
 }
 
 // Save (scroll) data about the current state of the page, and reload it.
-function reload(event) {
+function reload() {
   store.set({
     y: window.scrollY,
     x: window.scrollX
@@ -155,10 +155,14 @@ function reload(event) {
  * Manage the render stream. Wait for processed versions of the author's code,
  * and either reload of inject the new code (CSS).
  */
-function renderStream() {
+function liveReload() {
   es.addEventListener('css:processed', function (event) {
     // Inject the CSS
     var style = document.getElementById('jsbin-css');
+    if (!style) {
+      return reload();
+    }
+
     if (style.styleSheet) {
       style.styleSheet.cssText = event.data;
     } else {
@@ -233,7 +237,7 @@ function startStream() {
   if (codecasting) {
     codecastStream();
   } else {
-    renderStream();
+    liveReload();
   }
   if (window.jQuery) {
     var $document = $(document);

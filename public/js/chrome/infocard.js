@@ -118,6 +118,8 @@
     function updateStats(event, _data) {
       var data = _data ? JSON.parse(_data) : JSON.parse(event.data);
 
+      jsbin.state.connections = data.connections;
+
       if (data.connections > 0 && viewers === 0) {
         $template.addClass('viewers');
       }
