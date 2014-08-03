@@ -572,7 +572,48 @@ Include alerts, prompts &amp; confirm boxes">Run with JS</button>
 <![endif]-->
 <script src="{{static}}/js/vendor/jquery-1.11.0.min.js"></script>
 {{#if is_production}}
+  {{#if embed}}
+<script>
+(function () {
+  var t = null;
+  var script = document.createElement('script');
+  script.src = '{{static}}/js/prod/jsbin-{{version}}.min.js';
+  var ready = false;
+
+  var args = [];
+  window.start = function () {
+    args = [].slice.call(arguments);
+  };
+
+  script.onreadystatechange = script.onload = function () {
+    var state = script.readyState;
+
+    if (!ready && (!state || /loaded|complete/.test(state))) {
+      ready = true;
+      start.apply(window, args);
+    }
+  };
+
+  if (window.innerWidth) {
+    document.body.appendChild(script);
+  } else {
+    t = setInterval(function () {
+      if (window.innerWidth) {
+        clearInterval(t);
+        document.body.appendChild(script);
+      }
+    }, 200);
+  }
+})();
+</script>
+<!-- <script src="{{static}}/js/prod/jsbin-{{version}}.min.js"></script> -->
+  {{else}}
+    {{#if concat}}
+<script src="{{static}}/js/prod/jsbin-{{version}}.js"></script>
+    {{else}}
 <script src="{{static}}/js/prod/jsbin-{{version}}.min.js"></script>
+    {{/if}}
+  {{/if}}
 <script>
   start({{{json_template}}}, {{{jsbin}}}, this, document);
 </script>
@@ -581,12 +622,8 @@ Include alerts, prompts &amp; confirm boxes">Run with JS</button>
 window.template = {{{json_template}}};
 window.jsbin = {{{jsbin}}};
 </script>
-  {{#if concat}}
-<script src="{{static}}/js/prod/jsbin-{{version}}.js"></script>
-  {{else}}
-    {{#scripts}}<script src="{{../static}}{{.}}"></script>{{/scripts}}
-  {{/if}}
-    {{#addons}}<script src="{{../static}}{{.}}"></script>{{/addons}}
+{{#scripts}}<script src="{{../static}}{{.}}"></script>{{/scripts}}
+{{#addons}}<script src="{{../static}}{{.}}"></script>{{/addons}}
 {{/if}}
 {{#if live}}
 <script src="{{static}}/js/vendor/eventsource.js"></script>
