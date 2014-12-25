@@ -60,6 +60,10 @@ if (!customKeys.disabled) {
       Panels.right_panel().focus();
     }
 
+    if ((event.metaKey || event.ctrlKey) && event.which === 73) {
+      Navigation.add_description();
+    }
+
     if (event.metaKey && event.which === 79) { // open
       $('a.homebtn').trigger('click', 'keyboard');
       event.preventDefault();

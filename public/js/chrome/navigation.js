@@ -417,7 +417,7 @@ $('#control').find('a[data-shortcut]').each(function () {
   $this.append('<span class="keyshortcut">' + key + '</span>');
 });
 
-(function () {
+var Navigation = (function () {
 
 var re = {
   head: /<head(.*)\n/i,
@@ -427,7 +427,7 @@ var re = {
 
 var metatag = '<meta name="description" content="[add your bin description]" />\n';
 
-$('#addmeta').click(function () {
+var add_description = function(){
   // if not - insert
   // <meta name="description" content="" />
   // if meta description is in the HTML, highlight it
@@ -473,6 +473,10 @@ $('#addmeta').click(function () {
   cm.focus();
 
   return false;
+}
+  
+$('#addmeta').click(function () {
+  add_description();
 });
 
 $('a.publish-to-vanity').on('click', function (event) {
@@ -589,4 +593,10 @@ $('#skipToEditor').click(function () {
   }
 });
 
+return {
+  add_description: function() {
+    add_description();
+  }
+};
+  
 }());
