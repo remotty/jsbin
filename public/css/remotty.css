@@ -1,0 +1,45 @@
+#insert-library .bloodhound input{
+  margin: 10px 0;
+  padding: 5px 5px;
+  border: 2px solid #B7DFFD;
+}
+
+#insert-library .bloodhound input:focus{
+  margin: 10px 0;
+  padding: 5px 5px;
+  border: 2px solid #1F9AF9;
+}
+
+.tt-dropdown-menu{
+  width: 240px;
+  padding: 5px 5px;
+  background-color: white;
+  border: 2px solid #B7DFFD;
+}
+
+.tt-suggestions{
+  font-size: 1.2em;
+}
+
+.tt-highlight{
+}
+
+.tt-suggestion{
+  margin: 5px 0;
+  border-left: 4px solid green;
+  padding-left: 15px
+}
+
+#insert-library strong{
+  font-size: 1.1em;
+  color: #555;
+}
+
+#insert-library hr{
+  margin: 10px 0;
+}
+
+#insert-library button{
+  margin: 10px 0;
+  font-size: 1.2em;
+}
