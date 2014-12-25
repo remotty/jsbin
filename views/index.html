@@ -96,19 +96,23 @@ if(top != self) {
         </div>
 
         <div class="menu">
-          <a href="#insert-library"  class="button button-dropdown group">Insert Library</a>
+          <a href="#insert-library" class="button button-dropdown group">Insert Library</a>
           <div class="dropdown insert-library" id="insert-library">
 
             <div class="dropdowncontent">
               <strong>Libraries: </strong>
-              <div id="bloodhound">
+              <div class="bloodhound">
                 <input id="libraries" class="typeahead" type="text" placeholder="Libraries">
               </div>
               <hr />
               <strong>cdnjs.com:</strong>
-              <div id="bloodhound">
-                <input id="cdnjs" class="typeahead" type="text" placeholder="Libraries">
+              <div class="bloodhound">
+                <input id="cdnjs" class="typeahead" type="text" placeholder="from cdnjs">
               </div>
+              <hr />
+              <strong>Presets:</strong>
+              <br/>
+              <button id="input-jasmine">Jasmine</button>
             </div>
           </div>
         </div>

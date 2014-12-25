@@ -605,6 +605,7 @@ return {
 var libraries_bloodhound = new Bloodhound({
   datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
   queryTokenizer: Bloodhound.tokenizers.whitespace,
+  limit: 15,
   local: $.map(libraries, function(library) {
     return {
       value: library.label,
@@ -616,8 +617,8 @@ var libraries_bloodhound = new Bloodhound({
 
 libraries_bloodhound.initialize();
 
-$('#libraries').typeahead({
-  hint: true,
+$('#libraries').val("").typeahead({
+  hint: false,
   highlight: true,
   minLength: 1
 },{
@@ -630,14 +631,16 @@ $('#libraries').typeahead({
   if (library.snippet) {
     insertSnippet(library.snippet);
   }
+  closedropdown();
 }); 
 
 // cdnjs libraries
 var cdnjs_bloodhound = new Bloodhound({
   datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
   queryTokenizer: Bloodhound.tokenizers.whitespace,
+  limit: 15,
   remote: {
-    url: 'http://api.cdnjs.com/libraries?search=%QUERY',
+    url: 'http://api.cdnjs.com/libraries?search=%QUERY&fields=assets',
     filter: function (data) {
       return $.map(data.results, function(library){
         return {
@@ -651,8 +654,8 @@ var cdnjs_bloodhound = new Bloodhound({
 
 cdnjs_bloodhound.initialize();
 
-$('#cdnjs').typeahead({
-  hint: true,
+$('#cdnjs').val("").typeahead({
+  hint: false,
   highlight: true,
   minLength: 1
 },{
@@ -662,6 +665,24 @@ $('#cdnjs').typeahead({
 }).on('typeahead:selected', function (obj, library) {
   $(obj.target).val("");
   insertResources(library.url);
+  closedropdown();
 }); 
 
+// Input Jasmine Button
+$('#input-jasmine').bind('click', function(e){
+  var cdnjs_url = 'https://cdnjs.cloudflare.com/ajax/libs';
+  var javascripts = [
+    cdnjs_url + '/jasmine/2.0.0/boot.js',
+    cdnjs_url + '/jasmine/2.0.0/jasmine-html.js',
+    cdnjs_url + '/jasmine/2.0.0/jasmine.js'
+  ];
 
+  $.each(javascripts, function(ext, js){
+    insertResources(js);
+  ;})
+    
+  var css_url = cdnjs_url + '/jasmine/2.0.0/jasmine.css';
+  var css_tag = '<link href="' + css_url +'" rel="stylesheet">';
+
+  insertSnippet(css_tag);
+})
