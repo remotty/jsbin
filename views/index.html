@@ -6,6 +6,7 @@
   <link rel="alternate" type="application/json+oembed" href="{{root}}/oembed?url={{root}}{{request.url}}">
   <link rel="icon" href="{{static}}/images/favicon.png">
   <link rel="stylesheet" href="{{static}}/css/style.css{{cacheBust}}">
+  <link rel="stylesheet" href="{{static}}/css/remotty.css{{cacheBust}}">
   <link rel="stylesheet" href="{{static}}/css/flat-ui.css{{cacheBust}}">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   {{#if custom_css}}<link rel="stylesheet" href="{{static}}/{{custom_css}}{{cacheBust}}">{{/if}}
@@ -92,11 +93,37 @@ if(top != self) {
               <a hidden data-desc="How to embed a bin" target="_blank" title="How to embed a bin" data-label="how-to-embed" class="button group" href="http://jsbin.com/help/how-can-i-embed-jsbin">How to embed</a>
             </div>
           </div>
-        </div><div class="menu">
-          <span class="button group">Add library
-          <select id="library"></select>
-          </span>
-        </div><div id="sharemenu" class="menu {{#unless code_id}}hidden{{/unless}}">
+        </div>
+
+        <div class="menu">
+          <a href="#insert-library" class="button button-dropdown group">Insert Library</a>
+          <div class="dropdown insert-library" id="insert-library">
+
+            <div class="dropdowncontent">
+              <strong>Libraries: </strong>
+              <div class="bloodhound">
+                <input id="libraries" class="typeahead" type="text" placeholder="Libraries">
+              </div>
+              <hr />
+              <strong>cdnjs.com:</strong>
+              <div class="bloodhound">
+                <input id="cdnjs" class="typeahead" type="text" placeholder="from cdnjs">
+              </div>
+              <hr />
+              <strong>Presets:</strong>
+              <br/>
+              <button id="input-jasmine">Jasmine</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="menu"> -->
+        <!--   <span class="button group">Add library -->
+        <!--   <select id="library"></select> -->
+        <!--   </span> -->
+        <!-- </div> -->
+
+        <div id="sharemenu" class="menu {{#unless code_id}}hidden{{/unless}}">
           <a href="#share"  class="button button-dropdown group">Share</a>
           <div class="dropdown{{#feature request "revisionless"}} share-split{{/feature}}" id="share">
             <div class="dropdowncontent">

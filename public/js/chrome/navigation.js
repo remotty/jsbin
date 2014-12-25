@@ -600,3 +600,89 @@ return {
 };
   
 }());
+
+// deault libraries
+var libraries_bloodhound = new Bloodhound({
+  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+  queryTokenizer: Bloodhound.tokenizers.whitespace,
+  limit: 15,
+  local: $.map(libraries, function(library) {
+    return {
+      value: library.label,
+      url: library.url,
+      snippet: library.snippet
+    };
+  })
+});
+
+libraries_bloodhound.initialize();
+
+$('#libraries').val("").typeahead({
+  hint: false,
+  highlight: true,
+  minLength: 1
+},{
+  name: 'Libraries',
+  displayKey: 'value',
+  source: libraries_bloodhound.ttAdapter()
+}).on('typeahead:selected', function (obj, library) {
+  $(obj.target).val("");
+  insertResources(library.url);
+  if (library.snippet) {
+    insertSnippet(library.snippet);
+  }
+  closedropdown();
+}); 
+
+// cdnjs libraries
+var cdnjs_bloodhound = new Bloodhound({
+  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+  queryTokenizer: Bloodhound.tokenizers.whitespace,
+  limit: 15,
+  remote: {
+    url: 'http://api.cdnjs.com/libraries?search=%QUERY&fields=assets',
+    filter: function (data) {
+      return $.map(data.results, function(library){
+        return {
+          value: library.name,
+          url: library.latest
+        }
+      });
+    }
+  }
+});
+
+cdnjs_bloodhound.initialize();
+
+$('#cdnjs').val("").typeahead({
+  hint: false,
+  highlight: true,
+  minLength: 1
+},{
+  name: 'cdnjs',
+  displayKey: 'value',
+  source: cdnjs_bloodhound.ttAdapter()
+}).on('typeahead:selected', function (obj, library) {
+  $(obj.target).val("");
+  insertResources(library.url);
+  closedropdown();
+}); 
+
+// Input Jasmine Button
+$('#input-jasmine').bind('click', function(e){
+  var cdnjs_url = 'https://cdnjs.cloudflare.com/ajax/libs';
+  var javascripts = [
+    cdnjs_url + '/jasmine/2.0.0/boot.js',
+    cdnjs_url + '/jasmine/2.0.0/jasmine-html.js',
+    cdnjs_url + '/jasmine/2.0.0/jasmine.js'
+  ];
+
+  $.each(javascripts, function(ext, js){
+    insertResources(js);
+  ;})
+    
+  var css_url = cdnjs_url + '/jasmine/2.0.0/jasmine.css';
+  var css_tag = '<link href="' + css_url +'" rel="stylesheet">';
+
+  insertSnippet(css_tag);
+})
