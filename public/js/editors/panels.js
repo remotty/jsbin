@@ -1,4 +1,4 @@
-Panels = function(){};
+var Panels = function(){};
 
 Panels.panels = function(){
   return _.map(jsbin.panels.panels, function(key, value){
