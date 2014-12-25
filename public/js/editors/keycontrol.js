@@ -42,7 +42,8 @@ if (ua.indexOf(' Mac ') !== -1) {
 if (!customKeys.disabled) {
   $document.keydown(function (event) {
     var includeAltKey = customKeys.useAlt ? event.altKey : !event.altKey,
-        closekey = customKeys.closePanel ? customKeys.closePanel : 48;
+        closekey = customKeys.closePanel ? customKeys.closePanel : 57,
+        zoomkey = customKeys.closePanel ? customKeys.closePanel : 48;
 
     if (event.ctrlKey && $.browser.platform !== 'mac') { event.metaKey = true; }
 
@@ -65,7 +66,16 @@ if (!customKeys.disabled) {
     }
 
     if (event.metaKey && event.which === 79) { // open
-      $('a.homebtn').trigger('click', 'keyboard');
+      var visible_panels = Panels.visible_panels_name();
+      
+      if(visible_panels.length > 0){
+        $.cookie('list-panels', visible_panels.join(','));
+        $('a.homebtn').trigger('click', 'keyboard');
+      }else{
+        $.each($.cookie('list-panels').split(","), function(i, data){
+          jsbin.panels.panels[data].toggle();
+        });
+      }
       event.preventDefault();
     } else if (event.metaKey && event.shiftKey && event.which === 8) { // cmd+shift+backspace
       $('a.deletebin:first').trigger('click', 'keyboard');
@@ -87,8 +97,49 @@ if (!customKeys.disabled) {
         $('#sharemenu a').trigger('mousedown');
         event.preventDefault();
       }
-    } else if (event.which === closekey && event.metaKey && includeAltKey && jsbin.panels.focused) {
+    } else if (event.which === closekey &&
+               event.metaKey &&
+               includeAltKey &&
+               jsbin.panels.focused) {
+
+      // Close key (^9)
       jsbin.panels.hide(jsbin.panels.focused.id);
+      event.preventDefault();
+      
+    } else if (event.which === zoomkey &&
+               event.metaKey &&
+               includeAltKey &&
+               jsbin.panels.focused) {
+
+      // Zoom key (^0)
+      var panels = Panels.visible_panels_name();
+      var current_panel = jsbin.panels.focused;
+
+      if(panels.length === 2){
+        // Zoom out
+        $.each($.cookie('zoom-panels').split(","), function(i, data){
+          jsbin.panels.panels[data].show();
+          current_panel.hide();
+        });
+      }else{
+        // Zoom in
+        $.cookie('zoom-panels', panels.join(','));
+
+        var target_panels = _.reject(panels, function(panel){
+          return panel === "live"
+        });
+
+        $.each(target_panels, function(i, data){
+          jsbin.panels.panels[data].hide();
+        });
+
+        jsbin.panels.panels.live.show();
+        current_panel.hide();
+      }
+
+      current_panel.show();
+      event.preventDefault();
+      
     } else if (event.which === 220 && (event.metaKey || event.ctrlKey)) {
       jsbin.settings.hideheader = !jsbin.settings.hideheader;
       $body[jsbin.settings.hideheader ? 'addClass' : 'removeClass']('hideheader');
