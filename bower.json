@@ -1,7 +1,8 @@
 {
   "name": "jsbin",
   "dependencies": {
-    "typehead.js": "*"
+    "typehead.js": "*",
+    "jquery-cookie": "*"
   },
   "devDependencies": {
   }
