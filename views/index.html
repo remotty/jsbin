@@ -92,11 +92,33 @@ if(top != self) {
               <a hidden data-desc="How to embed a bin" target="_blank" title="How to embed a bin" data-label="how-to-embed" class="button group" href="http://jsbin.com/help/how-can-i-embed-jsbin">How to embed</a>
             </div>
           </div>
-        </div><div class="menu">
-          <span class="button group">Add library
-          <select id="library"></select>
-          </span>
-        </div><div id="sharemenu" class="menu {{#unless code_id}}hidden{{/unless}}">
+        </div>
+
+        <div class="menu">
+          <a href="#insert-library"  class="button button-dropdown group">Insert Library</a>
+          <div class="dropdown insert-library" id="insert-library">
+
+            <div class="dropdowncontent">
+              <strong>Libraries: </strong>
+              <div id="bloodhound">
+                <input id="libraries" class="typeahead" type="text" placeholder="Libraries">
+              </div>
+              <hr />
+              <strong>cdnjs.com:</strong>
+              <div id="bloodhound">
+                <input id="cdnjs" class="typeahead" type="text" placeholder="Libraries">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="menu"> -->
+        <!--   <span class="button group">Add library -->
+        <!--   <select id="library"></select> -->
+        <!--   </span> -->
+        <!-- </div> -->
+
+        <div id="sharemenu" class="menu {{#unless code_id}}hidden{{/unless}}">
           <a href="#share"  class="button button-dropdown group">Share</a>
           <div class="dropdown{{#feature request "revisionless"}} share-split{{/feature}}" id="share">
             <div class="dropdowncontent">

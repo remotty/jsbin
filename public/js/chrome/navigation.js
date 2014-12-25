@@ -600,3 +600,68 @@ return {
 };
   
 }());
+
+// deault libraries
+var libraries_bloodhound = new Bloodhound({
+  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+  queryTokenizer: Bloodhound.tokenizers.whitespace,
+  local: $.map(libraries, function(library) {
+    return {
+      value: library.label,
+      url: library.url,
+      snippet: library.snippet
+    };
+  })
+});
+
+libraries_bloodhound.initialize();
+
+$('#libraries').typeahead({
+  hint: true,
+  highlight: true,
+  minLength: 1
+},{
+  name: 'Libraries',
+  displayKey: 'value',
+  source: libraries_bloodhound.ttAdapter()
+}).on('typeahead:selected', function (obj, library) {
+  $(obj.target).val("");
+  insertResources(library.url);
+  if (library.snippet) {
+    insertSnippet(library.snippet);
+  }
+}); 
+
+// cdnjs libraries
+var cdnjs_bloodhound = new Bloodhound({
+  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+  queryTokenizer: Bloodhound.tokenizers.whitespace,
+  remote: {
+    url: 'http://api.cdnjs.com/libraries?search=%QUERY',
+    filter: function (data) {
+      return $.map(data.results, function(library){
+        return {
+          value: library.name,
+          url: library.latest
+        }
+      });
+    }
+  }
+});
+
+cdnjs_bloodhound.initialize();
+
+$('#cdnjs').typeahead({
+  hint: true,
+  highlight: true,
+  minLength: 1
+},{
+  name: 'cdnjs',
+  displayKey: 'value',
+  source: cdnjs_bloodhound.ttAdapter()
+}).on('typeahead:selected', function (obj, library) {
+  $(obj.target).val("");
+  insertResources(library.url);
+}); 
+
+
