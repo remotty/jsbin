@@ -1,0 +1,8 @@
+{
+  "name": "jsbin",
+  "dependencies": {
+    "typehead.js": "*"
+  },
+  "devDependencies": {
+  }
+}
