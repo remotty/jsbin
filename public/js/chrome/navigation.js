@@ -319,6 +319,7 @@ var $visibilityButtons = $('#control a.visibilityToggle').click(function(event) 
   event.preventDefault();
 
   var visibility = $(this).data('vis');
+  var infocard = $('#infocard');
 
   $.ajax({
     url: jsbin.getURL({ withRevision: true }) + '/' + visibility,
@@ -335,8 +336,16 @@ var $visibilityButtons = $('#control a.visibilityToggle').click(function(event) 
 
       if (visibility === 'public') {
         $privateButton.css('display', 'block');
+
+        infocard.addClass('public');
+        infocard.removeClass('private');
+        infocard.find('.visibility').text('public');
       } else {
         $publicButton.css('display', 'block');
+
+        infocard.addClass('private');
+        infocard.removeClass('public');
+        infocard.find('.visibility').text('private');
       }
 
     }
