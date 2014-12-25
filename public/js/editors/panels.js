@@ -15,6 +15,12 @@ Panels.visible_panels = function(){
   });
 };
 
+Panels.visible_panels_name = function(){
+  return _.map(Panels.visible_panels(), function(object){
+    return object.name;
+  });
+};
+
 Panels.current_visible_index = function(){
   return _.findIndex(Panels.visible_panels(), function(object){
     return object.name === jsbin.panels.focused.el.id;

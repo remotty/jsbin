@@ -3,6 +3,7 @@
     "/js/chrome/hashbang-jump.js",
     "/js/vendor/rsvp.js",
     "/js/vendor/jquery-migrate.js",
+    "/js/components/jquery-cookie/jquery.cookie.js",
     "/js/vendor/pretty-date.js",
     "/js/vendor/polyfills.js",
     "/js/vendor/codemirror4/lib/codemirror.js",
