@@ -17,3 +17,5 @@ tmp/*
 .#*
 *.log
 build/config.gypi
+.ideas
+/test/lib/sample
