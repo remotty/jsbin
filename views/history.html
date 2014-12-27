@@ -5,44 +5,63 @@
       <input type="checkbox" name="toggle_archive" id="toggleArchive" class="toggle_archive"> <label for="toggleArchive">Archive view</label>
     </div>
   </div>
-  <table>
-    {{#bins}}
-    <tbody>
-      {{#.}}
-      <tr class="{{#if archive}}archived{{/if}} {{#unless is_first}}snapshot snapshot{{@index}}{{/unless}}" data-url="{{url}}" data-edit-url="{{edit_url}}">
-        <td class="url">
-          {{#if is_private}}
-          Private
-          {{else}}
-          Public
-          {{/if}}
-        </td>
-        <td class="url">
-          <a href="{{edit_url}}">
-            {{#if is_first}}
-            <span class="first">{{code}}</span>
+
+  <div class="table">
+    <table id="history-table">
+      <thead>
+        <tr>
+          <th class="visibility">Vis.</th>
+          <th class="url">Name</th>
+          <th class="revision">Ver.</th>
+          <th class="last_updated">Time</th>
+          <th class="action">Archive</th>
+          <th class="title">Desc.</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#bins}}
+        {{#.}}
+        <tr class="{{#if archive}}archived{{/if}}" data-url="{{url}}" data-edit-url="{{edit_url}}">
+          <td class="visibility">
+            {{#if is_private}}
+            Private
             {{else}}
-            <span class="snapshot">{{revision}}</span>
+            Public
             {{/if}}
-          </a>
-        </td>
-        <td class="last_updated">
-          <a pubdate="{{last_updated}}" href="{{edit_url}}">{{pretty_last_updated}}</a>
-        </td>
-        <td class="action">
-          <!-- <a href="{{url}}/edit" class="edit"><span>Edit</span></a> -->
-          <a href="{{url}}/archive" class="archive"><span>Archive</span></a>
-          <a href="{{url}}/unarchive" class="unarchive"><span>Un-archive</span></a>
-        </td>
-        <td class="title">
-          <a href="{{edit_url}}">{{summary}}</a>
-        </td>
-      </tr>
-      {{/.}}
-      <tr class="spacer"><td colspan="4"></td></tr>
-    </tbody>
-    {{/bins}}
-  </table>
+          </td>
+
+          <td class="url">
+            <a href="{{edit_url}}">
+              <span class="first">{{code}}</span>
+            </a>
+          </td>
+
+          <td class="revision">
+            <a href="{{edit_url}}">
+              <span class="snapshot">{{revision}}</span>
+            </a>
+          </td>
+
+          <td class="last_updated">
+            <a pubdate="{{last_updated}}" href="{{edit_url}}">{{pretty_last_updated}}</a>
+          </td>
+
+          <td class="action">
+            <a href="{{url}}/edit" class="edit"><span>Edit</span></a>
+            <a href="{{url}}/archive" class="archive"><span>Archive</span></a>
+            <a href="{{url}}/unarchive" class="unarchive"><span>Un-archive</span></a>
+          </td>
+
+          <td class="title">
+            <a href="{{edit_url}}">{{summary}}</a>
+          </td>
+        </tr>
+        {{/.}}
+        {{/bins}}
+      </tbody>
+    </table>
+  </div>
+
   <div class="preview">
     <h2>Preview</h2>
     <p id="viewing"></p>

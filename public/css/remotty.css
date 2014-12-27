@@ -43,3 +43,48 @@
   margin: 10px 0;
   font-size: 1.2em;
 }
+
+#history .header{
+}
+
+#history table{
+  width: 90%;
+  margin: 20px auto;
+}
+
+#history-table th{
+  text-align: center !important;
+  font-weight: bold;
+}
+
+#history-table td{
+  padding: 4px 6px;
+  text-align: left;
+}
+
+#history-table .visibility{
+  text-align: center;
+  width: 50px;
+}
+
+#history-table .url{
+  text-align: center;
+}
+
+#history-table .revision{
+  text-align: center !important;
+  width: 30px;
+}
+
+#history-table .last_updated{
+  text-align: right;
+}
+
+#history-table .action{
+}
+
+#history-table .title{
+  width: 100px;
+}
+
+
