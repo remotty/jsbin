@@ -82,12 +82,14 @@ if (!customKeys.disabled) {
       event.preventDefault();
     } else if (!jsbin.embed && event.metaKey && event.which === 83) { // save
       if (event.shiftKey === false) {
-        if (saveChecksum) {
-          saveChecksum = false;
-        } else {
-          // trigger an initial save
-          $('a.save:first').click();
-        }
+        // if (saveChecksum) {
+        //   saveChecksum = false;
+        // } else {
+        //   // trigger an initial save
+        //   $('a.save:first').click();
+        // }
+
+        $('a.save:first').click();
         event.preventDefault();
       } else if (event.shiftKey === true) { // shift+s = open share menu
         var $sharemenu = $('#sharemenu');

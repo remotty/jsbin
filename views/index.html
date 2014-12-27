@@ -8,6 +8,8 @@
   <link rel="stylesheet" href="{{static}}/css/style.css{{cacheBust}}">
   <link rel="stylesheet" href="{{static}}/css/remotty.css{{cacheBust}}">
   <link rel="stylesheet" href="{{static}}/css/flat-ui.css{{cacheBust}}">
+  <link rel="stylesheet" href="{{static}}/js/components/vex/css/vex.css{{cacheBust}}">
+  <link rel="stylesheet" href="{{static}}/js/components/vex/css/vex-theme-os.css{{cacheBust}}">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   {{#if custom_css}}<link rel="stylesheet" href="{{static}}/{{custom_css}}{{cacheBust}}">{{/if}}
   {{#equal editorLayout "0"}}{{else}}<link rel="stylesheet" href="{{static}}/css/editor-layout.css{{cacheBust}}">{{/equal}}
@@ -57,7 +59,7 @@ if(top != self) {
           <a href="{{root}}{{code_id_path}}/edit#{{#feature request "fileMenuTest"}}file{{else}}bins{{/feature}}" target="_blank" class="brand button button-dropdown group button-dropdown-arrow"><img src="{{static}}/images/favicon.svg"> {{#feature request "fileMenuTest"}}File{{else}}Bins{{/feature}}</a>
           <div class="dropdown" id="{{#feature request "fileMenuTest"}}file{{else}}bins{{/feature}}">
             <div class="dropdownmenu">
-              <a id="createnew" data-desc="Create a brand new bin" class="button group" title="Create fresh bin" href="{{root}}" data-label="new">New</a>
+              <a id="createnew" data-desc="Create a brand new bin" class="button group" title="Create fresh bin" href="#" data-label="new">New</a>
               {{#feature request "private"}}
               <a id="public" data-desc="Set this bin to public" class="visibilityToggle button group"   title="Set this bin to public" href="{{root}}" data-label="public" data-vis="public">Make bin public</a>
               <a id="private" data-desc="Set this bin to private" class="visibilityToggle button group" title="Set this bin to private" href="{{root}}" data-label="private" data-vis="private">Make bin private</a>

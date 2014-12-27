@@ -1548,7 +1548,7 @@ input[type=email] {
 }
 
 input[type=button] {
-  font-size: 16px !important;
+  font-size: 16px;
   cursor: pointer !important;
 }
 
@@ -4622,9 +4622,12 @@ html * {
 }
 
 .card.author .meta .author {
-  display: inline-block;
+  display: block;
 }
 
+.card.author .meta .author {
+  font-weight: bold;
+}
 
 .card span {
   opacity: 1;

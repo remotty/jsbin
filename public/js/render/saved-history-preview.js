@@ -21,9 +21,9 @@
   });
 
   var loadList = function () {
-    if (loaded) {
-      return;
-    }
+    // if (loaded) {
+    //   return;
+    // }
 
     if ($('html').hasClass('public-listing')) {
       hookUserHistory();

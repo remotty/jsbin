@@ -279,30 +279,34 @@ function updateCode(panelId, callback) {
     compressKeys('content', data);
   }
 
-  $.ajax({
-    url: jsbin.getURL({ withRevision: true }) + '/save',
-    data: data,
-    type: 'post',
-    dataType: 'json',
-    headers: {'Accept': 'application/json'},
-    success: function (data) {
-      $document.trigger('saveComplete', { panelId: panelId });
-      if (data.error) {
-        saveCode('save', true, function () {
-          // savedAlready = data.checksum;
-        });
-      } else {
-        jsbin.state.latest = true;
+  var update = function(){
+    $.ajax({
+      url: jsbin.getURL({ withRevision: true }) + '/save',
+      data: data,
+      type: 'post',
+      dataType: 'json',
+      headers: {'Accept': 'application/json'},
+      success: function (data) {
+        $document.trigger('saveComplete', { panelId: panelId });
+        if (data.error) {
+          saveCode('save', true, function () {
+            // savedAlready = data.checksum;
+          });
+        } else {
+          jsbin.state.latest = true;
+        }
+      },
+      error: function (jqXHR) {
+        onSaveError(jqXHR, panelId);
+      },
+      complete: function () {
+        saving.inprogress(false);
+        if (callback) { callback(); }
       }
-    },
-    error: function (jqXHR) {
-      onSaveError(jqXHR, panelId);
-    },
-    complete: function () {
-      saving.inprogress(false);
-      if (callback) { callback(); }
-    }
-  });
+    });
+  };
+
+  update();
 }
 
 $('a.clone').click(clone);
@@ -378,54 +382,84 @@ function saveCode(method, ajax, ajaxCallback) {
     return obj;
   }, {});
 
+  data.url = $.cookie('new-bin-name');
+  
   if (jsbin.settings.useCompression) {
     compressKeys('html,css,javascript', data);
   }
+  
+  var save = function(){
+    if (ajax) {
+      $.ajax({
+        url: $form.attr('action'),
+        data: data,
+        dataType: 'json',
+        type: 'post',
+        headers: {'Accept': 'application/json'},
+        success: function (data) {
+          if (ajaxCallback) {
+            ajaxCallback(data);
+          }
 
-  if (ajax) {
-    $.ajax({
-      url: $form.attr('action'),
-      data: data,
-      dataType: 'json',
-      type: 'post',
-      headers: {'Accept': 'application/json'},
-      success: function (data) {
-        if (ajaxCallback) {
-          ajaxCallback(data);
+          store.sessionStorage.setItem('checksum', data.checksum);
+          saveChecksum = data.checksum;
+
+          jsbin.state.checksum = saveChecksum;
+          jsbin.state.code = data.code;
+          jsbin.state.revision = data.revision;
+          jsbin.state.latest = true; // this is never not true...end of conversation!
+          jsbin.state.metadata = { name: jsbin.user.name };
+          $form.attr('action', jsbin.getURL({ withRevision: true }) + '/save');
+
+          if (window.history && window.history.pushState) {
+            // updateURL(edit);
+            var hash = panels.getHighlightLines();
+            if (hash) {hash = '#' + hash;}
+            // If split is truthy (> 0) then we are using the revisonless feature
+            // this is temporary until we release the feature!
+            window.history.pushState(null, '', jsbin.getURL({withRevision: !split}) + '/edit' + hash);
+            store.sessionStorage.setItem('url', jsbin.getURL({withRevision: !split}));
+          } else {
+            window.location.hash = data.edit;
+          }
+
+          $document.trigger('saved');
+        },
+        error: function (jqXHR) {
+          onSaveError(jqXHR, null);
+        },
+        complete: function () {
+          saving.inprogress(false);
         }
+      });
+    } else {
+      $form.submit();
+    }
+  };
 
-        store.sessionStorage.setItem('checksum', data.checksum);
-        saveChecksum = data.checksum;
-
-        jsbin.state.checksum = saveChecksum;
-        jsbin.state.code = data.code;
-        jsbin.state.revision = data.revision;
-        jsbin.state.latest = true; // this is never not true...end of conversation!
-        jsbin.state.metadata = { name: jsbin.user.name };
-        $form.attr('action', jsbin.getURL({ withRevision: true }) + '/save');
-
-        if (window.history && window.history.pushState) {
-          // updateURL(edit);
-          var hash = panels.getHighlightLines();
-          if (hash) {hash = '#' + hash;}
-          // If split is truthy (> 0) then we are using the revisonless feature
-          // this is temporary until we release the feature!
-          window.history.pushState(null, '', jsbin.getURL({withRevision: !split}) + '/edit' + hash);
-          store.sessionStorage.setItem('url', jsbin.getURL({withRevision: !split}));
-        } else {
-          window.location.hash = data.edit;
-        }
-
-        $document.trigger('saved');
-      },
-      error: function (jqXHR) {
-        onSaveError(jqXHR, null);
-      },
-      complete: function () {
-        saving.inprogress(false);
+  if($.cookie('new-bin-name') || jsbin.state.revision !== undefined){
+    save();
+    $.removeCookie('new-bin-name');
+  }else{
+    $document.trigger('tip', {
+      type: 'notication',
+      content: 'The name of bin is not set. <input type="button" id="set-name" value="Set name"></div>',
+      callback: function(){
+        
+        console.log($('#set-name'));
+        $('#set-name').click(function(event){
+          vex.dialog.prompt({
+            message: 'What is name of new bin?',
+            placeholder: 'Name of bin',
+            className: 'vex-theme-os',
+            callback: function(value) {
+              $.cookie('new-bin-name', value);
+              $('a.dismiss').trigger('click');
+            }
+          });  
+        });
+        
       }
     });
-  } else {
-    $form.submit();
   }
-}
+};
