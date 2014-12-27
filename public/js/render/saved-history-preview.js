@@ -45,6 +45,13 @@
           $body.append(html);
           hookUserHistory();
           loaded = true;
+
+          (function(){
+            $("#history-table").tablesorter({
+              theme : 'blue'
+            });
+          })();
+
         }
       });
     }
@@ -223,5 +230,6 @@
     }
 
   });
+
 
 }());
