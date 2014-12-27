@@ -445,7 +445,6 @@ function saveCode(method, ajax, ajaxCallback) {
       type: 'notication',
       content: 'The name of bin is not set. <input type="button" id="set-name" value="Set name"></div>',
       callback: function(){
-        
         console.log($('#set-name'));
         $('#set-name').click(function(event){
           vex.dialog.prompt({
