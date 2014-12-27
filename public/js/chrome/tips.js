@@ -18,6 +18,9 @@
     $tipContent.html(data.content);
     $tip.removeClass().addClass(data.type || 'info');
     $html.addClass('showtip');
+
+    data.callback();
+        
     if (!data.autohide) return;
     tipTimeout = setTimeout(function () {
       removeTip();
@@ -35,19 +38,25 @@
    *      autohide: 8000
    *    });
    */
-  $document.on('tip', function (event, data) {
+  $document.on('tip', function (event, data, fn) {
     var tipData = data;
     if (typeof data === 'string') {
       tipData = {};
       tipData.content = data;
       tipData.type = 'info';
     }
+    
     // If the content and the type haven't changed, just set it again.
     if ($tipContent.html() === tipData.content &&
-        $tip.hasClass(tipData.type)) return setTip(data);
+        $tip.hasClass(tipData.type)) {
+      return setTip(data);
+    }
+    
     removeTip(function () {
       setTip(tipData);
     });
+    
+
   });
 
   $('#tip').on('click', 'a.dismiss', function () {
