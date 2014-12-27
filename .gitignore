@@ -19,3 +19,4 @@ tmp/*
 build/config.gypi
 .ideas
 /test/lib/sample
+.idea
