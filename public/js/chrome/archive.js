@@ -48,5 +48,4 @@ function updateArchiveMenu() {
 }
 
 updateArchiveMenu();
-
 var unarchive = archive.bind(null, false);
