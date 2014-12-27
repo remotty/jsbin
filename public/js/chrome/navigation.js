@@ -281,6 +281,20 @@ $('.code.panel > .label > span.name').dblclick(function () {
   });
 });
 
+$('a#createnew').click(function(event){
+  vex.dialog.prompt({
+    message: 'What is name of new bin?',
+    placeholder: 'Name of bin',
+    className: 'vex-theme-os',
+    callback: function(value) {
+      $.cookie('new-bin-name', value);
+      setTimeout(function () {
+        window.location = jsbin.root;
+      }, 1000);
+    }
+  });  
+});
+
 $('#createnew').click(function (event) {
   event.preventDefault();
   var i, key;
