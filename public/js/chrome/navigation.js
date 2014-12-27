@@ -288,9 +288,12 @@ $('a#createnew').click(function(event){
     className: 'vex-theme-os',
     callback: function(value) {
       $.cookie('new-bin-name', value);
-      setTimeout(function () {
-        window.location = jsbin.root;
-      }, 1000);
+
+      if($.cookie('new-bin-name') !== undefined){
+        setTimeout(function () {
+          window.location = jsbin.root;
+        }, 1000);
+      }
     }
   });  
 });
