@@ -50,6 +50,23 @@
             $("#history-table").tablesorter({
               theme : 'blue'
             });
+
+            // $('#history-table').filterTable({
+            //   placeholder: "Search history",
+            //   highlightClass: "filter-table-highlight",
+            // });
+
+            var userList = new List('history-table-wrapper', {
+              valueNames: [
+                'visibility',
+                'star',
+                'url',
+                'revision',
+                'last_updated',
+                'title'
+              ]
+            });
+            
           })();
 
         }
@@ -98,16 +115,17 @@
         $bins = $history,
         $tbodys = $('tbody', $history),
         $trs = $('tr', $history),
-        $toggle = $('.toggle_archive', $history),
+        $toggle_archive = $('.toggle_archive', $history),
+        $toggle_latest = $('.toggle_latest', $history),
         current = null,
         hoverTimer = null;
 
     // Archive & un-archive click handlers
-    $bins.delegate('.archive, .unarchive', 'click', function () {
+    $bins.delegate('.archive, .unarchive', 'click', function (event) {
       var $this = $(this),
           $row = $this.parents('tr');
       // Instantly update this row and the page layout
-      $row.toggleClass('archived');
+      // $row.toggleClass('archived');
 
       analytics[this.pathname.indexOf('unarchive') === -1 ? 'archive' : 'unarchive'](jsbin.root + $row.data('url'));
 
@@ -122,17 +140,22 @@
           $row.toggleClass('archived');
           updateLayout($tbodys, $history.hasClass('archive_mode'));
         },
-        success: function () {}
+        success: function () {
+          $this.parents('td.star').children('.unarchive').toggleClass('unvisible');
+          $this.parents('td.star').children('.archive').toggleClass('unvisible');
+        }
       });
       return false;
     });
 
     // Handle toggling of archive view
-    $toggle.change(function () {
-      $history.toggleClass('archive_mode');
-      var archive = $history.hasClass('archive_mode');
-      analytics.archiveView(archive);
-      updateLayout($tbodys, archive);
+    $toggle_archive.change(function () {
+      $('.normal', $history).toggleClass('unvisible_archive');
+    });
+
+    // Handle toggling of archive view
+    $toggle_latest.change(function () {
+      $('.snapshot', $history).toggleClass('unvisible_latest');
     });
 
     var selected = null;
