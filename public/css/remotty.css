@@ -73,18 +73,40 @@
 
 #history-table .revision{
   text-align: center !important;
-  width: 30px;
+  width: 50px;
 }
 
 #history-table .last_updated{
   text-align: right;
 }
 
-#history-table .action{
+#history-table .star{
+  width: 45px;
+  text-align: center;
 }
 
 #history-table .title{
   width: 100px;
 }
 
+.filter-table-highlight{
+  font-weight: bold !important;
+  color: red !important;
+}
 
+.filter-input{
+  text-align: right;
+  margin: 4px 50px;
+}
+
+.unvisible{
+  display: none;
+}
+
+.unvisible_archive{
+  display: none;
+}
+
+.unvisible_latest{
+  display: none;
+}
