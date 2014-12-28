@@ -295,7 +295,7 @@ $('a#createnew').click(function(event){
         }, 1000);
       }
     }
-  });  
+  });
 });
 
 $('#createnew').click(function (event) {
@@ -573,8 +573,44 @@ $('a.deletebin').on('click', function (e) {
         }
       }
     });
-
   }
+});
+
+$('a.renamebin').on('click', function (e) {
+  e.preventDefault();
+
+  vex.dialog.prompt({
+    message: 'What is new name of this bin?',
+    placeholder: 'Name of bin',
+    className: 'vex-theme-os',
+    callback: function(value) {
+
+      $.ajax({
+        type: 'post',
+        url: jsbin.getURL({ withRevision: true }) + '/rename',
+        data: {
+          checksum: jsbin.state.checksum,
+          new_name: value
+        },
+        success: function () {
+          setTimeout(function () {
+            var url = (jsbin.getURL({ withRevision: true }) + "/edit").replace(jsbin.state.code, value);
+            
+            window.location = url;
+          }, 1000);          
+        },
+        error: function (xhr) {
+          if (xhr.status === 403) {
+            $document.trigger('tip', {
+              content: 'Rename is failed',
+              autohide: 5000
+            });
+          }
+        }
+      });
+      
+    }
+  });  
 });
 
 $('a.archivebin').on('click', function (e) {

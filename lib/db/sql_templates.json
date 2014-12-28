@@ -54,6 +54,8 @@
   "saveAsset": "INSERT INTO assets (`username`, `asset_url`, `size`, `mime`) VALUES (?,?,?,?)",
   "removeBin": "DELETE FROM sandbox WHERE `url`=?",
   "removeOwner": "DELETE FROM owners WHERE `url`=?",
+  "renameBin": "UPDATE `sandbox` SET `url`=? WHERE `url`=?",
+  "renameOwner": "UPDATE `owners` SET `url`=? WHERE `url`=?",
   "sandboxColumns": [
     "created",
     "last_viewed",
