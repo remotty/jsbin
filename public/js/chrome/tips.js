@@ -19,7 +19,9 @@
     $tip.removeClass().addClass(data.type || 'info');
     $html.addClass('showtip');
 
-    data.callback();
+    if(data.callback){
+      data.callback();
+    }
         
     if (!data.autohide) return;
     tipTimeout = setTimeout(function () {
