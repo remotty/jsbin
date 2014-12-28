@@ -437,7 +437,7 @@ function saveCode(method, ajax, ajaxCallback) {
     }
   };
 
-  if($.cookie('new-bin-name') || jsbin.state.revision !== undefined){
+  if($.cookie('new-bin-name') || jsbin.state.revision !== null){
     save();
     $.removeCookie('new-bin-name');
   }else{
@@ -445,8 +445,6 @@ function saveCode(method, ajax, ajaxCallback) {
       type: 'notication',
       content: 'The name of bin is not set. <input type="button" id="set-name" value="Set name"></div>',
       callback: function(){
-        
-        console.log($('#set-name'));
         $('#set-name').click(function(event){
           vex.dialog.prompt({
             message: 'What is name of new bin?',
