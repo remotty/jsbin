@@ -3877,12 +3877,10 @@ left: 50%;
 
 /* By default, don't show archived rows */
 #history tr.archived {
-  display: none;
 }
 
 /* In archive mode, don't show rows by default */
 #history.archive_mode tr {
-  display: none;
 }
 
 /* Show archived rows when in archive mode */
@@ -3892,7 +3890,6 @@ left: 50%;
 
 /* By default, hide the unarchive button */
 #history .unarchive {
-  display: none;
 }
 
 /* Show the unarchive button and hide the archive button in archive_mode */
@@ -3901,7 +3898,6 @@ left: 50%;
 }
 
 #history.archive_mode .archive {
-  display: none;
 }
 
 /* The archive buttons */

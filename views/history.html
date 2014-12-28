@@ -2,47 +2,86 @@
   <div class="header">
     <h2>Open previously saved <em>bins</em>{{by_user}} or <a href="#" data-toggle="history">continue with current one</a>:</h2>
     <div class="menu">
-      <input type="checkbox" name="toggle_archive" id="toggleArchive" class="toggle_archive"> <label for="toggleArchive">Archive view</label>
+      <input type="checkbox" name="toggle_archive" id="toggleArchive" class="toggle_archive"> <label for="toggleArchive">Stared</label>
+      <input type="checkbox" name="toggle_latest" id="toggleLatest" class="toggle_latest" checked> <label for="toggleArchive">Latest</label>
     </div>
   </div>
-  <table>
-    {{#bins}}
-    <tbody>
-      {{#.}}
-      <tr class="{{#if archive}}archived{{/if}} {{#unless is_first}}snapshot snapshot{{@index}}{{/unless}}" data-url="{{url}}" data-edit-url="{{edit_url}}">
-        <td class="url">
-          {{#if is_private}}
-          Private
-          {{else}}
-          Public
-          {{/if}}
-        </td>
-        <td class="url">
-          <a href="{{edit_url}}">
-            {{#if is_first}}
-            <span class="first">{{code}}</span>
+
+  <div id="history-table-wrapper" class="table">
+    <div class="filter-input">
+    <input class="search" placeholder="Search" />
+    </div>
+
+    <table id="history-table">
+      <thead>
+        <tr>
+          <th class="visibility">Vis.</th>
+          <th class="star">Star</th>
+          <th class="url">Name</th>
+          <th class="revision">Ver.</th>
+          <th class="last_updated">Time</th>
+          <th class="title">Desc.</th>
+        </tr>
+      </thead>
+      <tbody class="list">
+        {{#bins}}
+        {{#.}}
+        <tr class="{{#if is_first}}latest{{else}}snapshot unvisible_latest{{/if}} {{#if archive}}stared{{else}}normal{{/if}}" data-url="{{url}}" data-edit-url="{{edit_url}}">
+          <td class="visibility">
+            {{#if is_private}}
+            Private
             {{else}}
-            <span class="snapshot">{{revision}}</span>
+            Public
             {{/if}}
-          </a>
-        </td>
-        <td class="last_updated">
-          <a pubdate="{{last_updated}}" href="{{edit_url}}">{{pretty_last_updated}}</a>
-        </td>
-        <td class="action">
-          <!-- <a href="{{url}}/edit" class="edit"><span>Edit</span></a> -->
-          <a href="{{url}}/archive" class="archive"><span>Archive</span></a>
-          <a href="{{url}}/unarchive" class="unarchive"><span>Un-archive</span></a>
-        </td>
-        <td class="title">
-          <a href="{{edit_url}}">{{summary}}</a>
-        </td>
-      </tr>
-      {{/.}}
-      <tr class="spacer"><td colspan="4"></td></tr>
-    </tbody>
-    {{/bins}}
-  </table>
+          </td>
+
+          <td class="star">
+            {{#if archive}}
+            <a href="{{url}}/unarchive" class="unarchive">
+              Stared
+            </a>
+            <a href="{{url}}/archive" class="archive unvisible">
+              Normal
+            </a>
+            {{else}}
+            <a href="{{url}}/unarchive" class="unarchive unvisible">
+              Stared
+            </a>
+            <a href="{{url}}/archive" class="archive">
+              Normal
+            </a>
+            {{/if}}
+          </td>
+          
+
+          <td class="url">
+            <a>
+            {{code}}
+            </a>
+          </td>
+
+          <td class="revision">
+            {{#if is_first}}
+            Latest
+            {{else}}
+            {{revision}}
+            {{/if}}
+          </td>
+
+          <td class="last_updated">
+            <a pubdate="{{last_updated}}" href="{{edit_url}}">{{pretty_last_updated}}</a>
+          </td>
+
+          <td class="title">
+              {{summary}}
+          </td>
+        </tr>
+        {{/.}}
+        {{/bins}}
+      </tbody>
+    </table>
+  </div>
+
   <div class="preview">
     <h2>Preview</h2>
     <p id="viewing"></p>
