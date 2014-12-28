@@ -295,7 +295,7 @@ $('a#createnew').click(function(event){
         }, 1000);
       }
     }
-  });  
+  });
 });
 
 $('#createnew').click(function (event) {
@@ -519,13 +519,13 @@ $('a.publish-to-vanity').on('click', function (event) {
   })
 });
 
-$document.on('click', 'a.deleteallbins', function () {
-  if (jsbin.user && jsbin.state.metadata.name === jsbin.user.name) {
-    if (confirm('Delete all snapshots of this bin including this one?')) {
-    analytics.deleteAll();
+$('a.deleteallbins').on('click', function (e) {
+  e.preventDefault();
+  if (confirm('Delete all snapshots of this bin including this one?')) {
     $.ajax({
       type: 'post',
-      url: jsbin.getURL() + '/delete-all',
+      url: jsbin.getURL({ withRevision: true }) + '/delete-all',
+      data: { checksum: jsbin.state.checksum },
       success: function () {
         jsbin.state.deleted = true;
         $document.trigger('tip', {
@@ -542,8 +542,6 @@ $document.on('click', 'a.deleteallbins', function () {
         }
       }
     });
-
-  }
   } else {
     $document.trigger('tip', {
       type: 'error',
@@ -555,7 +553,6 @@ $document.on('click', 'a.deleteallbins', function () {
 $('a.deletebin').on('click', function (e) {
   e.preventDefault();
   if (confirm('Delete this bin?')) {
-    analytics['delete']();
     $.ajax({
       type: 'post',
       url: jsbin.getURL({ withRevision: true }) + '/delete',
@@ -576,8 +573,44 @@ $('a.deletebin').on('click', function (e) {
         }
       }
     });
-
   }
+});
+
+$('a.renamebin').on('click', function (e) {
+  e.preventDefault();
+
+  vex.dialog.prompt({
+    message: 'What is new name of this bin?',
+    placeholder: 'Name of bin',
+    className: 'vex-theme-os',
+    callback: function(value) {
+
+      $.ajax({
+        type: 'post',
+        url: jsbin.getURL({ withRevision: true }) + '/rename',
+        data: {
+          checksum: jsbin.state.checksum,
+          new_name: value
+        },
+        success: function () {
+          setTimeout(function () {
+            var url = (jsbin.getURL({ withRevision: true }) + "/edit").replace(jsbin.state.code, value);
+            
+            window.location = url;
+          }, 1000);          
+        },
+        error: function (xhr) {
+          if (xhr.status === 403) {
+            $document.trigger('tip', {
+              content: 'Rename is failed',
+              autohide: 5000
+            });
+          }
+        }
+      });
+      
+    }
+  });  
 });
 
 $('a.archivebin').on('click', function (e) {
