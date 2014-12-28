@@ -3,7 +3,9 @@
   "dependencies": {
     "typehead.js": "*",
     "jquery-cookie": "*",
-    "vex": "*"
+    "vex": "*",
+    "jquery.tablesorter": "~2.18.4",
+    "list.js": "*"
   },
   "devDependencies": {
   }
