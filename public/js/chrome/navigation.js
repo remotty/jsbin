@@ -519,13 +519,13 @@ $('a.publish-to-vanity').on('click', function (event) {
   })
 });
 
-$document.on('click', 'a.deleteallbins', function () {
-  if (jsbin.user && jsbin.state.metadata.name === jsbin.user.name) {
-    if (confirm('Delete all snapshots of this bin including this one?')) {
-    analytics.deleteAll();
+$('a.deleteallbins').on('click', function (e) {
+  e.preventDefault();
+  if (confirm('Delete all snapshots of this bin including this one?')) {
     $.ajax({
       type: 'post',
-      url: jsbin.getURL() + '/delete-all',
+      url: jsbin.getURL({ withRevision: true }) + '/delete-all',
+      data: { checksum: jsbin.state.checksum },
       success: function () {
         jsbin.state.deleted = true;
         $document.trigger('tip', {
@@ -542,8 +542,6 @@ $document.on('click', 'a.deleteallbins', function () {
         }
       }
     });
-
-  }
   } else {
     $document.trigger('tip', {
       type: 'error',
@@ -555,7 +553,6 @@ $document.on('click', 'a.deleteallbins', function () {
 $('a.deletebin').on('click', function (e) {
   e.preventDefault();
   if (confirm('Delete this bin?')) {
-    analytics['delete']();
     $.ajax({
       type: 'post',
       url: jsbin.getURL({ withRevision: true }) + '/delete',
