@@ -1,0 +1,20 @@
+<div class="code stretch css panel">
+  <div class="label menu"><span class="name"><strong><a class="fake-dropdown button-dropdown" href="#cssprocessors">CSS</a></strong></span>
+    <div class="dropdown" id="cssprocessors">
+      <div class="dropdownmenu processorSelector" data-type="css">
+        <a href="#css">CSS</a>
+        <a href="#less">Less</a>
+        <a href="#myth">Myth</a>
+        {{#feature request "processors"}}
+        <a href="#sass" data-label="Sass">Sass <span class="small">with Compass</span></a>
+        <a href="#scss" data-label="SCSS">SCSS <span class="small">with Compass</span></a>
+        {{/feature}}
+        <a href="#stylus">Stylus</a>
+        <a href="#convert">Convert to CSS</a>
+      </div>
+    </div>
+  </div>
+  <div class="editbox">
+    <textarea aria-label="CSS Code Panel" spellcheck="false" autocapitalize="none" autocorrect="off" id="css"></textarea>
+  </div>
+</div>

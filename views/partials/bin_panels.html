@@ -1,0 +1,32 @@
+<div id="bin" class="stretch" style="opacity: 0; filter:alpha(opacity=0);">
+  <div id="source" class="binview stretch">
+  </div>
+
+  <div id="panelswaiting">
+    <!-- html panel -->
+    {{>html_panel}}
+
+    <!-- javascript panel -->
+    {{>javascript_panel}}    
+
+    <!-- javascript panel -->
+    {{>jasmine_panel}}    
+
+    <!-- css panel -->
+    {{>css_panel}}
+
+    <!-- console panel -->
+    {{>console_panel}}
+    
+    <!-- output panel -->
+    {{>live_panel}}
+
+  </div>
+  <!-- /panelswaiting -->
+  {{#unless embed}}
+  <form id="saveform" method="post" action="{{code_id_path}}/save">
+    <input type="hidden" name="method">
+    <input type="hidden" name="_csrf" value="{{token}}">
+  </form>
+  {{/unless}}
+</div>
