@@ -51,7 +51,7 @@ CodeMirror.commands.snippets = function (cm) {
   }
 };
 
-var Panel = function (name, settings) {
+var Panel = function (target, name, settings) {
   'use strict';
   var panel = this,
       showPanelButton = true,
@@ -62,18 +62,20 @@ var Panel = function (name, settings) {
       $panelwrapper = $('<div class="stretch panelwrapper"></div>');
 
   panel.settings = settings = settings || {};
-  panel.id = panel.name = name;
-  $panel = $('.panel.' + name);
-  $panel.data('name', name);
+  panel.id = panel.name = target;
+  $panel = $('.panel.' + target);
+  $panel.data('name', target);
   panel.$el = $panel.detach();
   panel.$el.appendTo($panelwrapper);
   $panelwrapper.appendTo($source);
   panel.$panel = panel.$el;
   panel.$el = panel.$el.parent().hide();
-  panel.el = document.getElementById(name);
+  panel.el = document.getElementById(target);
   panel.order = ++Panel.order;
 
-  panel.label = (settings.label || name);
+  console.log(settings);
+  
+  panel.label = (settings.label || target);
 
   panel.$el.data('panel', panel);
 
