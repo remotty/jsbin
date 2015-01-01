@@ -101,7 +101,7 @@ function codeChangeLive(event, data) {
  * Messages to and from the runner.
  * ========================================================================== */
 
-var renderer = (function () {
+var rendererCreator = function (target) {
 
   var renderer = {};
 
@@ -220,7 +220,7 @@ var renderer = (function () {
    * When the iframe resizes, update the size text
    */
   renderer.resize = (function () {
-    var size = $live.find('.size');
+    var size = target.find('.size');
 
     var hide = throttle(function () {
       size.fadeOut(200);
@@ -293,7 +293,7 @@ var renderer = (function () {
 
   return renderer;
 
-}());
+};
 
 /** ============================================================================
  * Live rendering.
@@ -313,20 +313,19 @@ var renderer = (function () {
  * Create the runner iframe, and if postMe wait until the iframe is loaded to
  * start postMessaging the runner.
  */
-var renderLivePreview = (function () {
-
+var renderLivePreviewCreator = function (target, renderer) {
   // Runner iframe
   var iframe;
 
   // Basic mode
   // This adds the runner iframe to the page. It's only run once.
-  if (!$live.find('iframe').length) {
+  if (!target.find('iframe').length) {
     iframe = document.createElement('iframe');
     iframe.setAttribute('class', 'stretch');
     iframe.setAttribute('sandbox', 'allow-forms allow-pointer-lock allow-popups allow-same-origin allow-scripts');
     iframe.setAttribute('frameBorder', '0');
     iframe.setAttribute('name', '<proxy>');
-    $live.prepend(iframe);
+    target.prepend(iframe);
     iframe.src = jsbin.runner;
     try {
       iframe.contentWindow.name = '/' + jsbin.state.code + '/' + jsbin.state.revision;
@@ -410,9 +409,18 @@ var renderLivePreview = (function () {
       done();
     };
   });
+};
 
-}());
+var renderer = rendererCreator($('#live'));
+var rendererTest = rendererCreator($('#live-test'));
 
+var renderLiveViewPreview = renderLivePreviewCreator($('#live'), renderer);
+var renderLiveTestPreview = renderLivePreviewCreator($('#live-test'), rendererTest);
+
+var renderLivePreview = function(args){
+  renderLiveViewPreview(args);
+  renderLiveTestPreview(args);
+}
 
 // this needs to be after renderLivePreview is set (as it's defined using
 // var instead of a first class function).

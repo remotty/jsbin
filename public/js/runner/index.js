@@ -23,7 +23,7 @@ window.onload = function () {
    */
 
   // Set the sandbox target
-  sandbox.target = document.getElementById('sandbox-wrapper');
+  sandbox.target = document.getElementsByClassName('sandbox-wrapper')[0];
   // Hook into postMessage
   addEvent(window, 'message', runner.handleMessage);
 

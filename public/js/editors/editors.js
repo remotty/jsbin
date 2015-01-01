@@ -501,17 +501,20 @@ var panelInit = {
       }
     };
 
-    return new Panel('html', { editor: true, label: 'HTML', init: init });
+    return new Panel('html', 'html', { editor: true, label: 'HTML', init: init });
   },
   css: function () {
-    return new Panel('css', { editor: true, label: 'CSS' });
+    return new Panel('css', 'css', { editor: true, label: 'CSS' });
   },
   javascript: function () {
-    return new Panel('javascript', { editor: true, label: 'JavaScript' });
+    return new Panel('javascript', 'javascript', { editor: true, label: 'JavaScript' });
+  },
+  jasmine: function () {
+    return new Panel('jasmine', 'javascript', { editor: true, label: 'Jasmine' });
   },
   console: function () {
     // hide and show callbacks registered in console.js
-    return new Panel('console', { label: 'Console' });
+    return new Panel('console', 'console', { label: 'Console' });
   },
   live: function () {
     function show() {
@@ -530,7 +533,26 @@ var panelInit = {
       }
     }
 
-    return new Panel('live', { label: 'Output', show: show, hide: hide });
+    return new Panel('live', 'live', { label: 'Output', show: show, hide: hide });
+  },
+  live_test: function () {
+    function show() {
+      // var panel = this;
+      if (panels.ready) {
+        renderLivePreview();
+      }
+    }
+
+    function hide() {
+      // detroy the iframe if we hide the panel
+      // note: $live is defined in live.js
+      // Commented out so that the live iframe is never destroyed
+      if (panels.panels.console.visible === false) {
+        // $live.find('iframe').remove();
+      }
+    }
+
+    return new Panel('live-test', 'live', { label: 'OutputTest', show: show, hide: hide });
   }
 };
 
@@ -538,14 +560,18 @@ var editors = panels.panels = {};
 
 // show all panels (change the order to control the panel order)
 editors.html = panelInit.html();
+// editors.data = panelInit.data();
 editors.css = panelInit.css();
 editors.javascript = panelInit.javascript();
+editors.jasmine = panelInit.jasmine();
 editors.console = panelInit.console();
 upgradeConsolePanel(editors.console);
 editors.live = panelInit.live();
+editors.live_test = panelInit.live_test();
+// editors.jasmine_live = panelInit.jasmine_live();
 
 // jsconsole.init(); // sets up render functions etc.
-editors.live.settings.render = function (showAlerts) {
+editors.live_test.settings.render = function (showAlerts) {
   if (panels.ready) {
     renderLivePreview(showAlerts);
   }
