@@ -534,7 +534,26 @@ var panelInit = {
     }
 
     return new Panel('live', 'live', { label: 'Output', show: show, hide: hide });
-  }
+  },
+  live_test: function () {
+    function show() {
+      // var panel = this;
+      if (panels.ready) {
+        renderLivePreview();
+        renderLiveTestPreview();
+      }
+    }
+
+    function hide() {
+      // detroy the iframe if we hide the panel
+      // note: $live is defined in live.js
+      // Commented out so that the live iframe is never destroyed
+      if (panels.panels.console.visible === false) {
+        // $live.find('iframe').remove();
+      }
+    }
+
+    return new Panel('live-test', 'live', { label: 'OutputTest', show: show, hide: hide });
 };
 
 var editors = panels.panels = {};
@@ -548,6 +567,7 @@ editors.jasmine = panelInit.jasmine();
 editors.console = panelInit.console();
 upgradeConsolePanel(editors.console);
 editors.live = panelInit.live();
+editors.live_test = panelInit.live_test();
 // editors.jasmine_live = panelInit.jasmine_live();
 
 // jsconsole.init(); // sets up render functions etc.

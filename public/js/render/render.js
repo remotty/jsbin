@@ -63,6 +63,7 @@ var getRenderedCode = function () {
   var promises = {
     html: render('html'),
     javascript: render('javascript'),
+    jasmine: render('jasmine'),
     css: render('css')
   };
 
