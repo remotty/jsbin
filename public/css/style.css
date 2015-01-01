@@ -2054,6 +2054,7 @@ span.menu {
 
 #preview iframe,
 #live iframe,
+#live-test iframe,
 #console {
   height: 100%;
   width: 100%;
@@ -2064,7 +2065,8 @@ span.menu {
   padding-top: 35px;
 }
 
-.ie7 #live iframe {
+.ie7 #live iframe,
+.ie7 #live-test iframe, {
   position: absolute;
   top: 35px;
   left: 0;
@@ -2072,6 +2074,7 @@ span.menu {
   bottom: 0;
   padding-top: 0;
 }
+
 .ie7 .editbox {
   left: 0;
 }
@@ -2537,7 +2540,8 @@ body.streaming #bin {
 
 
 /* attempt to get a live render preview in */
-#live {
+#live,
+#live-test {
   /*display: none;*/
   /*top: 60%;*/
   /*border-top: 1px solid #ccc;*/
@@ -2545,23 +2549,28 @@ body.streaming #bin {
   z-index: 9999;
 }
 
-.live #live {
+.live #live,
+.live-test #live-test {
   display: block;
 }
 
-.preview #live {
+.preview #live,
+.preview #live-test {
   display: none;
 }
 
-.live #source {
+.live #source,
+.live-test #source {
   bottom: 40%;
 }
 
-#live {
+#live,
+#live-test {
   border-top: 0;
 }
 
-.live #source {
+.live #source,
+.live-test #source {
   bottom: 0;
   right: 0;
 }
@@ -4320,11 +4329,13 @@ pre .highlight:last-of-type {
   display: none;
 }
 
-.embed #live .label .name {
+.embed #live .label .name,
+.embed #live-test .labes, .name {
   display: none;
 }
 
-.embed #live .options {
+.embed #live .options,
+.embed #live-test .options {
   overflow: hidden;
   background: #fff;
   background: rgba(255, 255, 255, 0.3);
@@ -4338,11 +4349,13 @@ pre .highlight:last-of-type {
           transition: opacity ease-in 50ms;
 }
 
-.embed #live:hover .options {
+.embed #live:hover .options,
+.embed #live-test:hover .options {
   opacity: 1;
 }
 
-.embed #live .label {
+.embed #live .label,
+.embed #live-test .label {
   position: static;
 }
 
@@ -4354,7 +4367,8 @@ pre .highlight:last-of-type {
   display: none;
 }
 
-.embed #live iframe {
+.embed #live iframe,
+.embed #live-test iframe {
   padding-top: 0;
 }
 

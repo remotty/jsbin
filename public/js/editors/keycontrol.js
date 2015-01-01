@@ -189,6 +189,11 @@ function keycontrol(event) {
   if (event.type === 'keydown') {
     if (codePanel) {
       if (event.metaKey && event.which === 13) {
+        // renderTest
+        if( editors.live_test.visible ){
+          renderLiveTestPreview();
+        }
+        
         if (editors.console.visible && !editors.live.visible) {
           hasRun = true;
           // editors.console.render();

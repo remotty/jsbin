@@ -70,7 +70,7 @@ var getRenderedCode = function () {
   return RSVP.hash(promises);
 };
 
-var getPreparedCode = (function () { // jshint ignore:line
+var getPreparedCodeCreator = function (is_test) { // jshint ignore:line
   'use strict';
 
   var escapeMap = {
@@ -91,6 +91,13 @@ var getPreparedCode = (function () { // jshint ignore:line
       scriptopen: /<script/gi
     };
 
+  var jasmine_assets = '\
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.0.0/jasmine.js"></script>\
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.0.0/jasmine-html.js"></script>\
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.0.0/boot.js"></script>\
+<link href="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.0.0/jasmine.css" rel="stylesheet">\
+      '
+  
   return function (nojs) {
     // reset all the regexp positions for reuse
     re.docReady.lastIndex = 0;
@@ -107,6 +114,7 @@ var getPreparedCode = (function () { // jshint ignore:line
       var parts = [],
           html = code.html,
           js = !nojs ? code.javascript : '',
+          jasmine = code.jasmine,
           css = code.css,
           close = '',
           hasHTML = !!html.trim().length,
@@ -114,12 +122,16 @@ var getPreparedCode = (function () { // jshint ignore:line
           hasJS = !!js.trim().length,
           replaceWith = 'window.runnerWindow.proxyConsole.';
 
+      if (is_test) {
+        html = html.replace('</head>', jasmine_assets + '</head>');
+      }
+
       // this is used to capture errors with processors, sometimes their errors
       // aren't useful (Script error. (line 0) #1354) so we try/catch and then
       // throw the real error. This also works exactly as expected with non-
       // processed JavaScript
       if (hasHTML) {
-        js = 'try {' + js + '\n} catch (error) { throw error; }';
+        js = 'try {' + js + '\n\n' + jasmine + '\n } catch (error) { throw error; }';
       }
 
       // Rewrite loops to detect infiniteness.
@@ -129,7 +141,6 @@ var getPreparedCode = (function () { // jshint ignore:line
 
       // escape any script tags in the JS code, because that'll break the mushing together
       js = js.replace(re.script, '<\\/script');
-
 
       // redirect console logged to our custom log while debugging
       if (re.console.test(js)) {
@@ -248,4 +259,8 @@ var getPreparedCode = (function () { // jshint ignore:line
     });
   };
 
-}());
+};
+
+var getPreparedTest = getPreparedCodeCreator(true);
+var getPreparedCode = getPreparedCodeCreator(false);
+
