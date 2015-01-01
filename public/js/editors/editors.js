@@ -540,7 +540,6 @@ var panelInit = {
       // var panel = this;
       if (panels.ready) {
         renderLivePreview();
-        renderLiveTestPreview();
       }
     }
 
@@ -554,6 +553,7 @@ var panelInit = {
     }
 
     return new Panel('live-test', 'live', { label: 'OutputTest', show: show, hide: hide });
+  }
 };
 
 var editors = panels.panels = {};
@@ -571,7 +571,7 @@ editors.live_test = panelInit.live_test();
 // editors.jasmine_live = panelInit.jasmine_live();
 
 // jsconsole.init(); // sets up render functions etc.
-editors.live.settings.render = function (showAlerts) {
+editors.live_test.settings.render = function (showAlerts) {
   if (panels.ready) {
     renderLivePreview(showAlerts);
   }
