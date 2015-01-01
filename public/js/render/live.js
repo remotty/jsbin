@@ -313,10 +313,12 @@ var rendererCreator = function (target) {
  * Create the runner iframe, and if postMe wait until the iframe is loaded to
  * start postMessaging the runner.
  */
-var renderLivePreviewCreator = function (target, renderer) {
+var renderLivePreviewCreator = function (target, renderer, is_test) {
   // Runner iframe
   var iframe;
 
+  var htmlGenerator = (is_test ? getPreparedTest : getPreparedCode);
+    
   // Basic mode
   // This adds the runner iframe to the page. It's only run once.
   if (!target.find('iframe').length) {
@@ -344,7 +346,8 @@ var renderLivePreviewCreator = function (target, renderer) {
 
     // Inform other pages event streaming render to reload
     if (requested) { sendReload(); }
-    getPreparedCode().then(function (source) {
+
+    htmlGenerator().then(function (source) {
       var includeJsInRealtime = jsbin.settings.includejs;
 
       // Tell the iframe to reload
@@ -414,12 +417,14 @@ var renderLivePreviewCreator = function (target, renderer) {
 var renderer = rendererCreator($('#live'));
 var rendererTest = rendererCreator($('#live-test'));
 
-var renderLiveViewPreview = renderLivePreviewCreator($('#live'), renderer);
-var renderLiveTestPreview = renderLivePreviewCreator($('#live-test'), rendererTest);
+var renderLiveViewPreview = renderLivePreviewCreator($('#live'), renderer, false);
+var renderLiveTestPreview = renderLivePreviewCreator($('#live-test'), rendererTest, true);
 
 var renderLivePreview = function(args){
   renderLiveViewPreview(args);
-  renderLiveTestPreview(args);
+  
+  // Test output panel use lazy evaluation
+  // renderLiveTestPreview(args);
 }
 
 // this needs to be after renderLivePreview is set (as it's defined using
