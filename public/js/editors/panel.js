@@ -73,8 +73,6 @@ var Panel = function (target, name, settings) {
   panel.el = document.getElementById(target);
   panel.order = ++Panel.order;
 
-  console.log(settings);
-  
   panel.label = (settings.label || target);
 
   panel.$el.data('panel', panel);

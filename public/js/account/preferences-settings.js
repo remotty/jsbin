@@ -51,7 +51,7 @@
   var saveTimer = null;
   $.extend(currentSettings, getCurrentSettings());
   var panels = ['html', 'css', 'javascript', 'jasmine', 'console',
-                'live', 'live-test'];
+                'live', 'livetest'];
   var $panels = {};
   var $includejs = $('#includejs').prop('checked', currentSettings.includejs);
   var $focusedPanel = $('#focused-panel').val(currentSettings.focusedPanel);

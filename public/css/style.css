@@ -2054,7 +2054,7 @@ span.menu {
 
 #preview iframe,
 #live iframe,
-#live-test iframe,
+#livetest iframe,
 #console {
   height: 100%;
   width: 100%;
@@ -2066,7 +2066,7 @@ span.menu {
 }
 
 .ie7 #live iframe,
-.ie7 #live-test iframe, {
+.ie7 #livetest iframe, {
   position: absolute;
   top: 35px;
   left: 0;
@@ -2541,7 +2541,7 @@ body.streaming #bin {
 
 /* attempt to get a live render preview in */
 #live,
-#live-test {
+#livetest {
   /*display: none;*/
   /*top: 60%;*/
   /*border-top: 1px solid #ccc;*/
@@ -2550,27 +2550,27 @@ body.streaming #bin {
 }
 
 .live #live,
-.live-test #live-test {
+.livetest #livetest {
   display: block;
 }
 
 .preview #live,
-.preview #live-test {
+.preview #livetest {
   display: none;
 }
 
 .live #source,
-.live-test #source {
+.livetest #source {
   bottom: 40%;
 }
 
 #live,
-#live-test {
+#livetest {
   border-top: 0;
 }
 
 .live #source,
-.live-test #source {
+.livetest #source {
   bottom: 0;
   right: 0;
 }
@@ -4330,12 +4330,12 @@ pre .highlight:last-of-type {
 }
 
 .embed #live .label .name,
-.embed #live-test .labes, .name {
+.embed #livetest .labes, .name {
   display: none;
 }
 
 .embed #live .options,
-.embed #live-test .options {
+.embed #livetest .options {
   overflow: hidden;
   background: #fff;
   background: rgba(255, 255, 255, 0.3);
@@ -4350,12 +4350,12 @@ pre .highlight:last-of-type {
 }
 
 .embed #live:hover .options,
-.embed #live-test:hover .options {
+.embed #livetest:hover .options {
   opacity: 1;
 }
 
 .embed #live .label,
-.embed #live-test .label {
+.embed #livetest .label {
   position: static;
 }
 
@@ -4368,7 +4368,7 @@ pre .highlight:last-of-type {
 }
 
 .embed #live iframe,
-.embed #live-test iframe {
+.embed #livetest iframe {
   padding-top: 0;
 }
 

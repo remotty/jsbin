@@ -86,7 +86,7 @@ function getQuery(qs) {
 }
 
 function stringAsPanelsToOpen(query) {
-  var validPanels = ['live', 'javascript', 'jasmine', 'html', 'css', 'console'];
+  var validPanels = ['live', 'livetest','javascript', 'jasmine', 'html', 'css', 'console'];
 
   return query.split(',').reduce(function (toopen, key) {
     if (key === 'js') {
@@ -96,6 +96,10 @@ function stringAsPanelsToOpen(query) {
     if (key === 'output') {
       key = 'live';
     }
+
+    if (key === 'output_test') {
+      key = 'livetest';
+    }    
 
     if (validPanels.indexOf(key) !== -1) {
       toopen.push(key);
@@ -336,7 +340,8 @@ panels.focus = function (panel) {
 panels.updateQuery = throttle(function updateQuery() {
   var alt = {
     javascript: 'js',
-    live: 'output'
+    live: 'output',
+    livetest: 'output_test'
   };
 
   var visible = panels.getVisible();
@@ -535,7 +540,7 @@ var panelInit = {
 
     return new Panel('live', 'live', { label: 'Output', show: show, hide: hide });
   },
-  live_test: function () {
+  livetest: function () {
     function show() {
       // var panel = this;
       if (panels.ready) {
@@ -552,7 +557,7 @@ var panelInit = {
       }
     }
 
-    return new Panel('live-test', 'live', { label: 'OutputTest', show: show, hide: hide });
+    return new Panel('livetest', 'live', { label: 'OutputTest', show: show, hide: hide });
   }
 };
 
@@ -567,11 +572,11 @@ editors.jasmine = panelInit.jasmine();
 editors.console = panelInit.console();
 upgradeConsolePanel(editors.console);
 editors.live = panelInit.live();
-editors.live_test = panelInit.live_test();
+editors.livetest = panelInit.livetest();
 // editors.jasmine_live = panelInit.jasmine_live();
 
 // jsconsole.init(); // sets up render functions etc.
-editors.live_test.settings.render = function (showAlerts) {
+editors.livetest.settings.render = function (showAlerts) {
   if (panels.ready) {
     renderLivePreview(showAlerts);
   }

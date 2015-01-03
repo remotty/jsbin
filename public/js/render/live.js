@@ -415,10 +415,10 @@ var renderLivePreviewCreator = function (target, renderer, is_test) {
 };
 
 var renderer = rendererCreator($('#live'));
-var rendererTest = rendererCreator($('#live-test'));
+var rendererTest = rendererCreator($('#livetest'));
 
 var renderLiveViewPreview = renderLivePreviewCreator($('#live'), renderer, false);
-var renderLiveTestPreview = renderLivePreviewCreator($('#live-test'), rendererTest, true);
+var renderLiveTestPreview = renderLivePreviewCreator($('#livetest'), rendererTest, true);
 
 var renderLivePreview = function(args){
   renderLiveViewPreview(args);
