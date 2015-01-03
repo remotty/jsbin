@@ -86,7 +86,7 @@ function getQuery(qs) {
 }
 
 function stringAsPanelsToOpen(query) {
-  var validPanels = ['live', 'javascript', 'html', 'css', 'console'];
+  var validPanels = ['live', 'javascript', 'jasmine', 'html', 'css', 'console'];
 
   return query.split(',').reduce(function (toopen, key) {
     if (key === 'js') {

@@ -69,6 +69,21 @@
                       options);
   });
 
+  CodeMirror.registerHelper('hint', 'jasmine', function(editor, options) {
+    // JSBIN EDIT (note: dedupe is in jsbin.js)
+    var keywords = dedupe(javascriptKeywords.concat(editor.getCode().replace(/\W/g, ' ').replace(/\s+/g, ' ').trim().split(' '))).sort(function (a, b) {
+      return a.toLowerCase() < b.toLowerCase() ? -1 : 1;
+    });
+
+    var cur = editor.getCursor();
+    var token = editor.getTokenAt(cur);
+    keywords.splice(keywords.indexOf(token.string), 1);
+
+    return scriptHint(editor, keywords,
+                      function (e, cur) {return e.getTokenAt(cur);},
+                      options);
+  });
+
   function getCoffeeScriptToken(editor, cur) {
   // This getToken, it is for coffeescript, imitates the behavior of
   // getTokenAt method in javascript.js, that is, returning "property"

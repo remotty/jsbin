@@ -15,7 +15,7 @@ var saving = {
 
     saving._inprogress = inprogress;
     if (inprogress === false) {
-      var panels = ['html','css','javascript'];
+      var panels = ['html','css','javascript', 'jasmine'];
 
       var save = function () {
         var todo = panels.pop();
