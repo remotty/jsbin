@@ -101,7 +101,7 @@ function codeChangeLive(event, data) {
  * Messages to and from the runner.
  * ========================================================================== */
 
-var rendererCreator = function (target) {
+var rendererCreator = function (target, is_test) {
 
   var renderer = {};
 
@@ -158,7 +158,11 @@ var rendererCreator = function (target) {
       return renderer.error('No matching event handler:', data.type);
     }
     try {
+      if (is_test && data.type === 'console') {
+      }
+      else {
       renderer[data.type](data.data);
+      }
     } catch (e) {
       renderer.error(e.message);
     }
@@ -171,9 +175,10 @@ var rendererCreator = function (target) {
     if (!renderer.runner.window) {
       return renderer.error('postMessage: No connection to runner window.');
     }
+
     renderer.runner.window.postMessage(JSON.stringify({
       type: type,
-      data: data
+      data: data,
     }), renderer.runner.origin);
   };
 
@@ -313,7 +318,7 @@ var rendererCreator = function (target) {
  * Create the runner iframe, and if postMe wait until the iframe is loaded to
  * start postMessaging the runner.
  */
-var renderLivePreviewCreator = function (target, renderer, is_test) {
+var renderLivePreviewCreator = function (target, renderer, is_test, has_event) {
   // Runner iframe
   var iframe;
 
@@ -328,7 +333,9 @@ var renderLivePreviewCreator = function (target, renderer, is_test) {
     iframe.setAttribute('frameBorder', '0');
     iframe.setAttribute('name', '<proxy>');
     target.prepend(iframe);
+    
     iframe.src = jsbin.runner;
+    
     try {
       iframe.contentWindow.name = '/' + jsbin.state.code + '/' + jsbin.state.revision;
     } catch (e) {
@@ -377,33 +384,34 @@ var renderLivePreviewCreator = function (target, renderer, is_test) {
   /**
    * Events
    */
+  
+  if (has_event) {
+    $document.on('codeChange.live', function (event, arg) {
+      if (arg.origin === 'setValue' || arg.origin === undefined) {
+        return;
+      }
+      store.sessionStorage.removeItem('runnerPending');
+    });
 
-  $document.on('codeChange.live', function (event, arg) {
-    if (arg.origin === 'setValue' || arg.origin === undefined) {
-      return;
-    }
-    store.sessionStorage.removeItem('runnerPending');
-  });
+    // Listen for console input and post it to the iframe
+    $document.on('console:run', function (event, cmd) {
+      renderer.postMessage('console:run', cmd);
+    });
 
-  // Listen for console input and post it to the iframe
-  $document.on('console:run', function (event, cmd) {
-    renderer.postMessage('console:run', cmd);
-  });
+    $document.on('console:load:script', function (event, url) {
+      renderer.postMessage('console:load:script', url);
+    });
 
-  $document.on('console:load:script', function (event, url) {
-    renderer.postMessage('console:load:script', url);
-  });
-
-  $document.on('console:load:dom', function (event, html) {
-    renderer.postMessage('console:load:dom', html);
-  });
+    $document.on('console:load:dom', function (event, html) {
+      renderer.postMessage('console:load:dom', html);
+    });
+  }
 
   // When the iframe loads, swap round the callbacks and immediately invoke
   // if renderLivePreview was called already.
   return deferCallable(throttle(renderLivePreview, 200), function (done) {
     iframe.onload = function () {
       if (window.postMessage) {
-        // Setup postMessage listening to the runner
         $window.on('message', function (event) {
           renderer.handleMessage(event.originalEvent);
         });
@@ -414,11 +422,11 @@ var renderLivePreviewCreator = function (target, renderer, is_test) {
   });
 };
 
-var renderer = rendererCreator($('#live'));
-var rendererTest = rendererCreator($('#livetest'));
+var renderer = rendererCreator($('#live'), false);
+var rendererTest = rendererCreator($('#livetest'), true);
 
-var renderLiveViewPreview = renderLivePreviewCreator($('#live'), renderer, false);
-var renderLiveTestPreview = renderLivePreviewCreator($('#livetest'), rendererTest, true);
+var renderLiveViewPreview = renderLivePreviewCreator($('#live'), renderer, false, true);
+var renderLiveTestPreview = renderLivePreviewCreator($('#livetest'), rendererTest, true, false);
 
 var renderLivePreview = function(args){
   renderLiveViewPreview(args);
