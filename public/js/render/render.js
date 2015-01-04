@@ -130,8 +130,10 @@ var getPreparedCodeCreator = function (is_test) { // jshint ignore:line
       // aren't useful (Script error. (line 0) #1354) so we try/catch and then
       // throw the real error. This also works exactly as expected with non-
       // processed JavaScript
-      if (hasHTML) {
+      if (hasHTML && is_test) {
         js = 'try {' + js + '\n\n' + jasmine + '\n } catch (error) { throw error; }';
+      } else if(hasHTML && !is_test){
+        js = 'try {' + js + '\n } catch (error) { throw error; }';    
       }
 
       // Rewrite loops to detect infiniteness.
