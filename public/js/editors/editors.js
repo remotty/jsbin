@@ -134,7 +134,7 @@ panels.restore = function () {
       width = $window.width(),
       deferredCodeInsert = '',
       focused = !!store.sessionStorage.getItem('panel'),
-      validPanels = 'live javascript html css console'.split(' '),
+      validPanels = 'live livetest javascript jasmine html css console'.split(' '),
       cachedHash = '';
 
   if (history.replaceState && (location.pathname.indexOf('/edit') !== -1) || ((location.origin + location.pathname) === jsbin.getURL() + '/')) {
