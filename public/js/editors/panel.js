@@ -73,8 +73,6 @@ var Panel = function (target, name, settings) {
   panel.el = document.getElementById(target);
   panel.order = ++Panel.order;
 
-  console.log(settings);
-  
   panel.label = (settings.label || target);
 
   panel.$el.data('panel', panel);
@@ -110,7 +108,7 @@ var Panel = function (target, name, settings) {
     // only the js panel for now, I'd like this to work in
     // the HTML panel too, but only when you were in JS scope
     if (name === 'javascript') {
-      cmSettings.extraKeys.Tab = 'autocomplete';
+      // cmSettings.extraKeys.Tab = 'autocomplete';
     } else {
       cmSettings.extraKeys.Tab = 'snippets';
     }
@@ -150,7 +148,7 @@ var Panel = function (target, name, settings) {
     });
 
     // Restore keymaps taken by emmet but that we need for other functionalities
-    if (name === 'javascript') {
+    if (name === 'javascript' || name == 'jasmine') {
       var cmd = $.browser.platform === 'mac' ? 'Cmd' : 'Ctrl';
       var map = {};
       map[cmd + '-D'] = 'deleteLine';

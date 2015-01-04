@@ -112,6 +112,7 @@
 
   CodeMirror.startTern = function() {
     loadTern(jsbin.panels.panels.javascript.editor);
+    loadTern(jsbin.panels.panels.jasmine.editor);
     searchTernDefinition(jsbin.panels.panels.html.getCode());
 
     $('#library').bind('change', function () {

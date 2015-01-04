@@ -336,7 +336,7 @@
 
   window.hintingDone = function(cm, defhintOptions) {
     var mode = cm.getOption('mode');
-    if (mode === 'javascript') {
+    if (mode === 'javascript' || mode === 'jasmine') {
       mode = 'js';
     }
     if (mode === 'htmlmixed') {

@@ -30,7 +30,8 @@
       } else {
         beautifyCSS();
       }
-    } else if (jsbin.state.processors[focusedPanel.id] === 'javascript') {
+    } else if (jsbin.state.processors[focusedPanel.id] === 'javascript' ||
+               jsbin.state.processors[focusedPanel.id] === 'jasmine') {
       if (!window.js_beautify) {
         lazyLoadAndRun(beautifyUrls.js, beautifyJS);
       } else {

@@ -115,7 +115,7 @@ function exposeSettings() {
   function mockPanels() {
     var results = {};
     var panels = jsbin.panels.panels;
-    ['css', 'javascript', 'html'].forEach(function (type) {
+    ['css', 'javascript', 'jasmine', 'html'].forEach(function (type) {
       results[type] = {
         setCode: panels[type].setCode.bind(panels[type]),
         getCode: panels[type].getCode.bind(panels[type]),
