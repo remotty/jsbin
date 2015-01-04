@@ -22,10 +22,11 @@
 
 <div class="sandbox-wrapper"></div>
 {{#if settings.is_production}}
-  <script src="{{static}}/js/prod/runner-{{settings.version}}.min.js"></script>
   {{{analytics}}}
+  <script src="{{static}}/js/prod/runner-{{settings.version}}.min.js"></script>
 {{else}}
-  {{#scripts}}<script src="{{../static}}{{.}}"></script>
+  {{#scripts}}
+  <script src="{{../static}}{{.}}"></script>
   {{/scripts}}
 {{/if}}
 

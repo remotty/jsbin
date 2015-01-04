@@ -81,10 +81,9 @@ var runner = (function () {
         delete proxyConsole[method];
       });
 
-
       // Process the source according to the options passed in
       var source = processor.render(data.source, data.options);
-
+      
       // Start writing the page. This will clear any existing document.
       childDoc.open();
 

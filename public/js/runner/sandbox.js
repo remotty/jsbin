@@ -143,7 +143,6 @@ var sandbox = (function () {
       output = e.message;
       type = 'error';
     }
-
     return proxyConsole[type](output);
   };
 
