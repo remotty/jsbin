@@ -8,5 +8,24 @@
     "list.js": "*"
   },
   "devDependencies": {
+    "d3": "*",
+    "lodash": "*",
+    "lazy.js": "*",
+    "bacon": "*",
+    "functional.js": "*",
+    "moment": "*",
+    "mathjs": "*",
+    "vega": "*",
+    "backbone": "*",
+    "threejs": "*",
+    "chartjs": "*",
+    "ember": "*",
+    "jasmine": "*",
+    "polymer": "*",
+    "raphael": "*",
+    "nvd3": "*",
+    "polymaps": "*",
+    "p5js": "*"
   }
 }
+

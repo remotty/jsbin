@@ -18,6 +18,7 @@
     if (typeof defs === 'undefined') {
       defs = [];
     }
+
     ternServer = new CodeMirror.TernServer({
       defs: defs,
       useWorker: false,
@@ -74,7 +75,7 @@
   };
 
   var searchTernDefinition = function(htmlCode) {
-    for (var i = 0; i < ternDefinitions.length; i++) {
+    for (var i = 0; i < ternDefinitions.length-1; i++) {
       if (ternDefinitions[i].match.test(htmlCode)) {
         if (ternDefinitions[i].type === 'def') {
           loadTernDefinition(ternDefinitions[i].name, ternDefinitions[i].file);
