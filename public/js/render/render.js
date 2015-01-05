@@ -64,6 +64,7 @@ var getRenderedCode = function () {
     html: render('html'),
     javascript: render('javascript'),
     jasmine: render('jasmine'),
+    dataframe: render('dataframe'),
     css: render('css')
   };
 
@@ -81,7 +82,6 @@ var getPreparedCodeCreator = function (is_test) { // jshint ignore:line
       docReady: /\$\(document\)\.ready/,
       shortDocReady: /\$\(function/,
       console: /(^.|\b)console\.(\S+)/g,
-
       script: /<\/script/ig,
       code: /%code%/,
       csscode: /%css%/,
@@ -97,7 +97,7 @@ var getPreparedCodeCreator = function (is_test) { // jshint ignore:line
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.0.0/boot.js"></script>\
 <link href="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.0.0/jasmine.css" rel="stylesheet">\
       '
-  
+
   return function (nojs) {
     // reset all the regexp positions for reuse
     re.docReady.lastIndex = 0;
@@ -115,6 +115,7 @@ var getPreparedCodeCreator = function (is_test) { // jshint ignore:line
           html = code.html,
           js = !nojs ? code.javascript : '',
           jasmine = code.jasmine,
+          dataframe = code.dataframe,
           css = code.css,
           close = '',
           hasHTML = !!html.trim().length,
@@ -122,6 +123,12 @@ var getPreparedCodeCreator = function (is_test) { // jshint ignore:line
           hasJS = !!js.trim().length,
           replaceWith = 'window.runnerWindow.proxyConsole.';
 
+      try{
+        dataframe = JSON.stringify(JSON.parse(dataframe))
+      }catch(error){
+        dataframe = ""
+      }
+      
       if (is_test) {
         html = html.replace('</head>', jasmine_assets + '</head>');
       }
@@ -133,9 +140,9 @@ var getPreparedCodeCreator = function (is_test) { // jshint ignore:line
       if (hasHTML && is_test) {
         js = 'try {' + js + '\n\n' + jasmine + '\n } catch (error) { throw error; }';
       } else if(hasHTML && !is_test){
-        js = 'try {' + js + '\n } catch (error) { throw error; }';    
+        js = 'try { \nwindow.data = JSON.parse(\'' + dataframe +  '\');\n' + js + '\n } catch (error) { throw error; }';
       }
-
+      
       // Rewrite loops to detect infiniteness.
       // This is done by rewriting the for/while/do loops to perform a check at
       // the start of each iteration.
