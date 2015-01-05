@@ -660,7 +660,7 @@ var processors = jsbin.processors = (function () {
           label = $(this).text(),
           labelData = $(this).data('label');
       if (target !== 'convert') {
-        $panelButton.html(labelData || label);
+        // $panelButton.html(labelData || label);
         $label.text(label);
         if (target === panelId) {
           jsbin.processors.reset(panelId);
@@ -670,7 +670,7 @@ var processors = jsbin.processors = (function () {
         }
       } else {
         $label.text(originalLabel);
-        $panelButton.html(originalLabel);
+        // $panelButton.html(originalLabel);
         panel.render().then(function (source) {
           jsbin.processors.reset(panelId);
           panel.setCode(source);
@@ -681,7 +681,7 @@ var processors = jsbin.processors = (function () {
         var $panelButton = $panelButtons.find('a[href$="' + panelId + '"]');
         var $this = $(this);
         $label.text($this.text());
-        $panelButton.html($this.data('label') || $this.text());
+        // $panelButton.html($this.data('label') || $this.text());
       }
     });
   });
