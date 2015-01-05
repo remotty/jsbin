@@ -17,7 +17,8 @@ var editorModes = {
   sass: 'text/x-sass',
   scss: 'text/x-scss',
   processing: 'text/x-csrc',
-  jade: 'text/x-jade'
+  jade: 'text/x-jade',
+  csv: 'text'
 };
 
 var badChars = new RegExp('[\u200B\u0080-\u00a0]', 'g');
@@ -101,6 +102,10 @@ var Panel = function (target, name, settings) {
       highlightLine: true
     };
 
+    if (name === 'dataframe') {
+      cmsettings.mode = {name: "javascript", json: true}
+    }
+    
     $.extend(cmSettings, jsbin.settings.editor || {});
 
     cmSettings.extraKeys = {};

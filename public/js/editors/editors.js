@@ -485,6 +485,9 @@ var ignoreDuringLive = /^\s*(while|do|for)[\s*|$]/;
 
 
 var panelInit = {
+  dataframe: function () {
+    return new Panel('dataframe', 'javascript', { editor: true, label: 'Data' });
+  },
   html: function () {
     var init = function () {
       // set cursor position on first blank line
@@ -564,6 +567,7 @@ var panelInit = {
 var editors = panels.panels = {};
 
 // show all panels (change the order to control the panel order)
+editors.dataframe = panelInit.dataframe();
 editors.html = panelInit.html();
 // editors.data = panelInit.data();
 editors.css = panelInit.css();
