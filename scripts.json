@@ -38,7 +38,7 @@
     "/js/chrome/storage.js",
     "/js/initialize/init.js",
     "/js/helper/global_helper.js",
-    "/js/jsbin.js",
+    "/js/initialize/jsbin_initializer.js",
     "/js/editors/mobile_code_mirror.js",
     "/js/chrome/splitter.js",
     "/js/chrome/analytics.js",
