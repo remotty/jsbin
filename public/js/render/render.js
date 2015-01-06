@@ -115,7 +115,7 @@ var getPreparedCodeCreator = function (is_test) { // jshint ignore:line
           html = code.html,
           js = !nojs ? code.javascript : '',
           jasmine = code.jasmine,
-          dataframe = code.dataframe,
+          dataframe = (code.dataframe !== "" ? code.dataframe : "{}"),
           css = code.css,
           close = '',
           hasHTML = !!html.trim().length,
@@ -142,7 +142,7 @@ var getPreparedCodeCreator = function (is_test) { // jshint ignore:line
       } else if(hasHTML && !is_test){
         js = 'try { \nwindow.data = JSON.parse(\'' + dataframe +  '\');\n' + js + '\n } catch (error) { throw error; }';
       }
-      
+
       // Rewrite loops to detect infiniteness.
       // This is done by rewriting the for/while/do loops to perform a check at
       // the start of each iteration.
