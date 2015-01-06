@@ -170,7 +170,8 @@ function keycontrol(event) {
     panel = jsbin.panels.focused;
   }
 
-  var codePanel = { css: 1, javascript: 1, html: 1, jasmine: 1}[panel.id],
+  var codePanel = { css: 1, javascript: 1, html: 1, jasmine: 1,
+                    dataframe: 1}[panel.id],
       hasRun = false;
 
   var includeAltKey = customKeys.useAlt ? event.altKey : !event.altKey;

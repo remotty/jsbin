@@ -86,7 +86,7 @@ function getQuery(qs) {
 }
 
 function stringAsPanelsToOpen(query) {
-  var validPanels = ['live', 'livetest','javascript', 'jasmine', 'html', 'css', 'console'];
+  var validPanels = ['dataframe', 'live', 'livetest','javascript', 'jasmine', 'html', 'css', 'console'];
 
   return query.split(',').reduce(function (toopen, key) {
     if (key === 'js') {
@@ -134,7 +134,7 @@ panels.restore = function () {
       width = $window.width(),
       deferredCodeInsert = '',
       focused = !!store.sessionStorage.getItem('panel'),
-      validPanels = 'live livetest javascript jasmine html css console'.split(' '),
+      validPanels = 'dataframe live livetest javascript jasmine html css console'.split(' '),
       cachedHash = '';
 
   if (history.replaceState && (location.pathname.indexOf('/edit') !== -1) || ((location.origin + location.pathname) === jsbin.getURL() + '/')) {
@@ -567,12 +567,12 @@ var panelInit = {
 var editors = panels.panels = {};
 
 // show all panels (change the order to control the panel order)
-editors.dataframe = panelInit.dataframe();
 editors.html = panelInit.html();
-// editors.data = panelInit.data();
 editors.css = panelInit.css();
 editors.javascript = panelInit.javascript();
 editors.jasmine = panelInit.jasmine();
+editors.dataframe = panelInit.dataframe();
+
 editors.console = panelInit.console();
 upgradeConsolePanel(editors.console);
 editors.live = panelInit.live();
