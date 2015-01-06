@@ -1,6 +1,6 @@
 /*globals objectValue, $, jsbin, $body, $document, saveChecksum, jsconsole*/
 
-keycontrol = (function(){
+Keycontrol = (function(){
   var KEYCODE = {
     'ESC': 27,
     '0': 48,
