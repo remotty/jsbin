@@ -193,8 +193,6 @@ var GlobalHelper = (function(){
     }
   };
 
-
-  
   return {
     $window: $window,
     $body: $body,

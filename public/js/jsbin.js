@@ -1,4 +1,4 @@
-jsbinInitializer = (function(){
+(function(){
   var storedSettings = store.localStorage.getItem('settings');
   if (storedSettings === "undefined") {
     // yes, equals the *string* "undefined", then something went wrong

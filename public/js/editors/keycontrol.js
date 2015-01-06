@@ -348,6 +348,5 @@ Keycontrol = (function(){
   }
 })();
 
-var customKeys = keycontrol.customKeys;
-var panelShortcuts = keycontrol.panelShortcuts;
-
+var customKeys = Keycontrol.customKeys;
+var panelShortcuts = Keycontrol.panelShortcuts;
