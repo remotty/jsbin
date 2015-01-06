@@ -688,6 +688,9 @@ var processors = jsbin.processors = (function () {
 
   processors.set = function (panelId, processorName, callback) {
     var panel;
+    if (processorName.indexOf("_") > -1) {
+      processorName = _.last(processorName.split("_"));
+    }
 
     // panelId can be id or instance of a panel.
     // this is kinda nasty, but it allows me to set panel processors during boot
