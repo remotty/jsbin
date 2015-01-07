@@ -573,6 +573,26 @@ var libraries = [
     'url': '//static.opentok.com/webrtc/v2.2/js/opentok.min.js',
     'label': 'OpenTok 2.2'
   },
+  {
+    'url': '//cdnjs.cloudflare.com/ajax/libs/rxjs/2.3.22/rx.all.js',
+    'label': 'rx.all',
+    'group': 'RxJS'
+  },
+  {
+    'url': '//cdnjs.cloudflare.com/ajax/libs/rxjs/2.3.22/rx.testing.js',
+    'label': 'rx.testing',
+    'group': 'RxJS'
+  },
+  {
+    'url': '//cdnjs.cloudflare.com/ajax/libs/rxjs-dom/2.0.7/rx.dom.js',
+    'label': 'rx.dom',
+    'group': 'RxJS'
+  },
+    {
+    'url': '//cdnjs.cloudflare.com/ajax/libs/rxjs-dom/2.0.7/rx.dom.js',
+    'label': 'rx.dom',
+    'group': 'RxJS'
+  },
 ];
 
 window.libraries = libraries; // expose a command line API
