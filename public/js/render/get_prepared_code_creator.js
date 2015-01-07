@@ -1,76 +1,5 @@
 /*globals $, jsbin, editors, RSVP, loopProtect, documentTitle, CodeMirror, hintingDone*/
 
-var renderCodeWorking = false;
-
-var getRenderedCode = function () {
-  'use strict';
-
-  var formatErrors = function(res) {
-    var errors = [];
-    var line = 0;
-    var ch = 0;
-    for (var i = 0; i < res.length; i++) {
-      line = res[i].line || 0;
-      ch = res[i].ch || 0;
-      errors.push({
-        from: CodeMirror.Pos(line, ch),
-        to: CodeMirror.Pos(line, ch),
-        message: res[i].msg,
-        severity : 'error'
-      });
-    }
-    return errors;
-  };
-
-  if (renderCodeWorking) {
-    // cancel existing jobs, and replace with this job
-  }
-
-  renderCodeWorking = true;
-
-  function render(language) {
-    return new RSVP.Promise(function (resolve, reject) {
-      editors[language].render().then(resolve, function (error) {
-        console.warn(editors[language].processor.id + ' processor compilation failed');
-        if (!error) {
-          error = {};
-        }
-
-        if ($.isArray(error)) { // then this is for our hinter
-          // console.log(data.errors);
-          var cm = jsbin.panels.panels[language].editor;
-
-          // if we have the error reporting function (called updateLinting)
-          if (typeof cm.updateLinting !== 'undefined') {
-            hintingDone(cm);
-            var err = formatErrors(error);
-            cm.updateLinting(err);
-          } else {
-            // otherwise dump to the console
-            console.warn(error);
-          }
-        } else if (error.message) {
-          console.warn(error.message, error.stack);
-        } else {
-          console.warn(error);
-        }
-
-        reject(error);
-      });
-    });
-  }
-
-  var promises = {
-    html: render('html'),
-    javascript: render('javascript'),
-    jasmine: render('jasmine'),
-    dataframe: render('dataframe'),
-    css: render('css')
-  };
-
-  return RSVP.hash(promises);
-};
-
 var getPreparedCodeCreator = function (is_test) { // jshint ignore:line
   'use strict';
 
@@ -91,7 +20,7 @@ var getPreparedCodeCreator = function (is_test) { // jshint ignore:line
       scriptopen: /<script/gi
     };
 
-  var jasmine_assets = '\
+  var JASMINE_ASSETS = '\
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.0.0/jasmine.js"></script>\
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.0.0/jasmine-html.js"></script>\
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.0.0/boot.js"></script>\
@@ -130,7 +59,7 @@ var getPreparedCodeCreator = function (is_test) { // jshint ignore:line
       }
       
       if (is_test) {
-        html = html.replace('</head>', jasmine_assets + '</head>');
+        html = html.replace('</head>', JASMINE_ASSETS + '</head>');
       }
 
       // this is used to capture errors with processors, sometimes their errors
