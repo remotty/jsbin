@@ -60,15 +60,15 @@
 {{/unless}}
 
 <!--[if lte IE 8]>
-<script src="{{static}}/js/vendor/jshint/jshint.old.min.js"></script>
+<script src="{{static}}/vendor/js/libraries/jshint/jshint.old.min.js"></script>
 <script> document.write('<!--'); </script>
 <![endif]-->
 
-<script src="{{static}}/js/vendor/jshint/jshint.min.js"></script>
+<script src="{{static}}/vendor/js/libraries/jshint/jshint.min.js"></script>
 
 -->
 
-<script src="{{static}}/js/vendor/jquery-1.11.0.min.js"></script>
+<script src="{{static}}/vendor/js/libraries/jquery-1.11.0.min.js"></script>
 {{!-- we use the passed in version of isProduction here, not the the app global as we need to be able to switch it - even when in production --}}
 {{#if isProduction}}
 <script src="{{static}}/js/prod/jsbin-{{version}}.min.js"></script>
@@ -88,7 +88,7 @@ window.jsbin = {{{jsbin}}};
   {{#addons}}<script src="{{../static}}{{.}}{{cacheBust}}"></script>{{/addons}}
 {{/if}}
 {{#if live}}
-<script src="{{static}}/js/vendor/eventsource.js{{cacheBust}}"></script>
+<script src="{{static}}/vendor/js/libraries/eventsource.js{{cacheBust}}"></script>
 <script src="{{static}}/js/spike.js{{cacheBust}}"></script>
 {{/if}}
 </body>

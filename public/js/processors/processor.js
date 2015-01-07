@@ -161,9 +161,9 @@ var processors = jsbin.processors = (function () {
       id: 'coffeescript',
       target: 'javascript',
       extensions: ['coffee'],
-      url: jsbin.static + '/js/vendor/coffee-script.js',
+      url: jsbin.static + '/vendor/js/libraries/coffee-script.js',
       init: function coffeescript(ready) {
-        getScript(jsbin.static + '/js/vendor/codemirror4/mode/coffeescript/coffeescript.js', ready);
+        getScript(jsbin.static + '/vendor/js/libraries/codemirror4/mode/coffeescript/coffeescript.js', ready);
       },
       handler: function (source, resolve, reject) {
         var renderedCode = '';
@@ -188,7 +188,7 @@ var processors = jsbin.processors = (function () {
       id: 'jsx',
       target: 'javascript',
       extensions: ['jsx'],
-      url: jsbin.static + '/js/vendor/JSXTransformer.js',
+      url: jsbin.static + '/vendor/js/libraries/JSXTransformer.js',
       init: function jsx(ready) {
         // Don't add React if the code already contains a script whose name
         // starts with 'react', to avoid duplicate copies.
@@ -213,9 +213,9 @@ var processors = jsbin.processors = (function () {
       id: 'livescript',
       target: 'javascript',
       extensions: ['ls'],
-      url: jsbin.static + '/js/vendor/livescript.js',
+      url: jsbin.static + '/vendor/js/libraries/livescript.js',
       init: function livescript(ready) {
-        getScript(jsbin.static + '/js/vendor/codemirror4/mode/livescript/livescript.js', ready);
+        getScript(jsbin.static + '/vendor/js/libraries/codemirror4/mode/livescript/livescript.js', ready);
       },
       handler: function (source, resolve, reject) {
         var renderedCode = '';
@@ -247,7 +247,7 @@ var processors = jsbin.processors = (function () {
       id: 'typescript',
       target: 'javascript',
       extensions: ['ts'],
-      url: jsbin.static + '/js/vendor/typescript.min.js',
+      url: jsbin.static + '/vendor/js/libraries/typescript.min.js',
       init: passthrough,
       handler: function typescript(source, resolve, reject) {
         var noop = function () {};
@@ -300,9 +300,9 @@ var processors = jsbin.processors = (function () {
       id: 'markdown',
       target: 'html',
       extensions: ['md', 'markdown', 'mdown'],
-      url: jsbin.static + '/js/vendor/marked.min.js',
+      url: jsbin.static + '/vendor/js/libraries/marked.min.js',
       init: function markdown(ready) {
-        getScript(jsbin.static + '/js/vendor/codemirror4/mode/markdown/markdown.js', ready);
+        getScript(jsbin.static + '/vendor/js/libraries/codemirror4/mode/markdown/markdown.js', ready);
       },
       handler: function (source, resolve, reject) {
         try {
@@ -317,10 +317,10 @@ var processors = jsbin.processors = (function () {
       id: 'processing',
       target: 'javascript',
       extensions: ['pde'],
-      url: jsbin.static + '/js/vendor/processing.min.js',
+      url: jsbin.static + '/vendor/js/libraries/processing.min.js',
       init: function (ready) {
         $('#library').val( $('#library').find(':contains("Processing")').val() ).trigger('change');
-        getScript(jsbin.static + '/js/vendor/codemirror4/mode/clike/clike.js', ready);
+        getScript(jsbin.static + '/vendor/js/libraries/codemirror4/mode/clike/clike.js', ready);
       },
       handler: function processing(source, resolve, reject) {
         try {
@@ -348,9 +348,9 @@ var processors = jsbin.processors = (function () {
       id: 'jade',
       target: 'html',
       extensions: ['jade'],
-      url: jsbin.static + '/js/vendor/jade.js?1.4.2',
+      url: jsbin.static + '/vendor/js/libraries/jade.js?1.4.2',
       init: function jade(ready) {
-        getScript(jsbin.static + '/js/vendor/codemirror4/mode/jade/jade.js', ready);
+        getScript(jsbin.static + '/vendor/js/libraries/codemirror4/mode/jade/jade.js', ready);
       },
       handler: function jade(source, resolve, reject) {
         try {
@@ -379,7 +379,7 @@ var processors = jsbin.processors = (function () {
       id: 'less',
       target: 'css',
       extensions: ['less'],
-      url: jsbin.static + '/js/vendor/less.min.js',
+      url: jsbin.static + '/vendor/js/libraries/less.min.js',
       init: passthrough,
       handler: function less(source, resolve, reject) {
         window.less.Parser().parse(source, function (error, result) {
@@ -410,11 +410,11 @@ var processors = jsbin.processors = (function () {
       id: 'scss',
       target: 'scss',
       extensions: ['scss'],
-      // url: jsbin.static + '/js/vendor/sass/dist/sass.worker.js',
+      // url: jsbin.static + '/vendor/js/libraries/sass/dist/sass.worker.js',
       init: passthrough,
         /* keeping old code for local version of scss if we ever want it again */
-        // getScript(jsbin.static + '/js/vendor/codemirror3/mode/sass/sass.js', function () {
-        // Sass.initialize(jsbin.static + '/js/vendor/sass/dist/worker.min.js');
+        // getScript(jsbin.static + '/vendor/js/libraries/codemirror3/mode/sass/sass.js', function () {
+        // Sass.initialize(jsbin.static + '/vendor/js/libraries/sass/dist/worker.min.js');
       handler: throttle(debounceAsync(function sass(source, resolve, reject, done) {
         $.ajax({
           type: 'post',
@@ -459,7 +459,7 @@ var processors = jsbin.processors = (function () {
       target: 'sass',
       extensions: ['sass'],
       init: function (ready) {
-        getScript(jsbin.static + '/js/vendor/codemirror4/mode/sass/sass.js', ready);
+        getScript(jsbin.static + '/vendor/js/libraries/codemirror4/mode/sass/sass.js', ready);
       },
       handler: throttle(debounceAsync(function (source, resolve, reject, done) {
         $.ajax({
@@ -496,7 +496,7 @@ var processors = jsbin.processors = (function () {
       id: 'to5',
       target: 'js',
       extensions: ['es6'],
-      url: jsbin.static + '/js/vendor/6to5.min.js',
+      url: jsbin.static + '/vendor/js/libraries/6to5.min.js',
       init: function (ready) {
         ready();
       },
@@ -518,7 +518,7 @@ var processors = jsbin.processors = (function () {
       id: 'myth',
       target: 'css',
       extensions: ['myth'],
-      url: jsbin.static + '/js/vendor/myth.min.js',
+      url: jsbin.static + '/vendor/js/libraries/myth.min.js',
       init: function (ready) {
         ready();
       },
@@ -550,7 +550,7 @@ var processors = jsbin.processors = (function () {
       id: 'stylus',
       target: 'css',
       extensions: ['styl'],
-      url: jsbin.static + '/js/vendor/stylus.js',
+      url: jsbin.static + '/vendor/js/libraries/stylus.js',
       init: passthrough,
       handler: function stylus(source, resolve, reject) {
         window.stylus(source).render(function (error, result) {
@@ -586,7 +586,7 @@ var processors = jsbin.processors = (function () {
         id: 'traceur',
         target: 'javascript',
         extensions: ['traceur'],
-        url: jsbin.static + '/js/vendor/traceur.js',
+        url: jsbin.static + '/vendor/js/libraries/traceur.js',
         init: function (ready) {
           // Only create these once, when the processor is loaded
           $('#library').val( $('#library').find(':contains("Traceur")').val() ).trigger('change');

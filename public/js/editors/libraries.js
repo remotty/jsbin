@@ -479,7 +479,7 @@ var libraries = [
   },
   {
     'url': [
-      jsbin.static + '/js/vendor/traceur.js'
+      jsbin.static + '/vendor/js/libraries/traceur.js'
     ],
     'label': 'Traceur'
   },

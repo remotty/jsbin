@@ -13,9 +13,9 @@
 
     var focusedPanel = jsbin.panels.focused;
     var beautifyUrls = {
-      html: jsbin['static'] + '/js/vendor/beautify/beautify-html.js',
-      css: jsbin['static'] + '/js/vendor/beautify/beautify-css.js',
-      js: jsbin['static'] + '/js/vendor/beautify/beautify.js'
+      html: jsbin['static'] + '/vendor/js/libraries/beautify/beautify-html.js',
+      css: jsbin['static'] + '/vendor/js/libraries/beautify/beautify-css.js',
+      js: jsbin['static'] + '/vendor/js/libraries/beautify/beautify.js'
     };
 
     if (jsbin.state.processors[focusedPanel.id] === 'html') {

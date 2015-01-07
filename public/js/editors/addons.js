@@ -53,14 +53,14 @@
 
   var addons = {
     closebrackets: {
-      url: '/js/vendor/codemirror4/addon/edit/closebrackets.js',
+      url: '/vendor/js/libraries/codemirror4/addon/edit/closebrackets.js',
       test: defaultTest('autoCloseBrackets'),
       done: function (cm) {
         setOption(cm, 'autoCloseBrackets', true);
       }
     },
     highlight: {
-      url: '/js/vendor/codemirror4/addon/search/match-highlighter.js',
+      url: '/vendor/js/libraries/codemirror4/addon/search/match-highlighter.js',
       test: defaultTest('highlightSelectionMatches'),
       done: function (cm) {
         setOption(cm, 'highlightSelectionMatches', true);
@@ -68,7 +68,7 @@
     },
     vim: {
       url: [
-        '/js/vendor/codemirror4/keymap/vim.js'
+        '/vendor/js/libraries/codemirror4/keymap/vim.js'
       ],
       test: defaultTest('vimMode'),
       done: function (cm) {
@@ -78,7 +78,7 @@
     },
     emacs: {
       url: [
-        '/js/vendor/codemirror4/keymap/emacs.js'
+        '/vendor/js/libraries/codemirror4/keymap/emacs.js'
       ],
       test: function () {
         return CodeMirror.keyMap.emacs;
@@ -89,8 +89,8 @@
     },
     matchtags: {
       url: [
-        '/js/vendor/codemirror4/addon/fold/xml-fold.js',
-        '/js/vendor/codemirror4/addon/edit/matchtags.js'
+        '/vendor/js/libraries/codemirror4/addon/fold/xml-fold.js',
+        '/vendor/js/libraries/codemirror4/addon/edit/matchtags.js'
       ],
       test: function () {
         return CodeMirror.scanForClosingTag &&
@@ -102,7 +102,7 @@
       }
     },
     trailingspace: {
-      url: '/js/vendor/codemirror4/addon/edit/trailingspace.js',
+      url: '/vendor/js/libraries/codemirror4/addon/edit/trailingspace.js',
       test: defaultTest('showTrailingSpace'),
       done: function (cm) {
         setOption(cm, 'showTrailingSpace', true);
@@ -110,12 +110,12 @@
     },
     fold: {
       url: [
-        '/js/vendor/codemirror4/addon/fold/foldgutter.css',
-        '/js/vendor/codemirror4/addon/fold/foldcode.js',
-        '/js/vendor/codemirror4/addon/fold/foldgutter.js',
-        '/js/vendor/codemirror4/addon/fold/brace-fold.js',
-        '/js/vendor/codemirror4/addon/fold/xml-fold.js',
-        '/js/vendor/codemirror4/addon/fold/comment-fold.js'
+        '/vendor/js/libraries/codemirror4/addon/fold/foldgutter.css',
+        '/vendor/js/libraries/codemirror4/addon/fold/foldcode.js',
+        '/vendor/js/libraries/codemirror4/addon/fold/foldgutter.js',
+        '/vendor/js/libraries/codemirror4/addon/fold/brace-fold.js',
+        '/vendor/js/libraries/codemirror4/addon/fold/xml-fold.js',
+        '/vendor/js/libraries/codemirror4/addon/fold/comment-fold.js'
       ],
       test: function () {
         return CodeMirror.helpers.fold &&
@@ -136,7 +136,7 @@
     },
     sublime: {
       url: [
-        '/js/vendor/codemirror4/keymap/sublime.js'
+        '/vendor/js/libraries/codemirror4/keymap/sublime.js'
       ],
       test: function () {
         return CodeMirror.keyMap.sublime;
@@ -159,9 +159,9 @@
     },
     tern: {
       url: [
-        '/js/vendor/codemirror4/addon/hint/show-hint.css',
-        '/js/vendor/codemirror4/addon/tern/tern.css',
-        '/js/vendor/codemirror4/addon/hint/show-hint.js',
+        '/vendor/js/libraries/codemirror4/addon/hint/show-hint.css',
+        '/vendor/js/libraries/codemirror4/addon/tern/tern.css',
+        '/vendor/js/libraries/codemirror4/addon/hint/show-hint.js',
         '/js/prod/addon-tern-' + jsbin.version + '.min.js'
       ],
       test: function () {
@@ -176,7 +176,7 @@
     },
     activeline: {
       url: [
-        '/js/vendor/codemirror4/addon/selection/active-line.js'
+        '/vendor/js/libraries/codemirror4/addon/selection/active-line.js'
       ],
       test: function() {
         return (typeof CodeMirror.defaults.styleActiveLine !== 'undefined');
@@ -196,8 +196,8 @@
     },
     csshint: {
       url: [
-        '/js/vendor/csslint/csslint.min.js',
-        '/js/vendor/cm_addons/lint/css-lint.js'
+        '/vendor/js/libraries/csslint/csslint.min.js',
+        '/vendor/js/libraries/cm_addons/lint/css-lint.js'
       ],
       test: function() {
         return hintingTest('css') &&
@@ -236,8 +236,8 @@
     },
     htmlhint: {
       url: [
-        '/js/vendor/htmlhint/htmlhint.js',
-        '/js/vendor/cm_addons/lint/html-lint.js'
+        '/vendor/js/libraries/htmlhint/htmlhint.js',
+        '/vendor/js/libraries/cm_addons/lint/html-lint.js'
       ],
       test: function() {
         return hintingTest('htmlmixed') &&
@@ -257,8 +257,8 @@
     },
     coffeescripthint: {
       url: [
-        '/js/vendor/coffeelint/coffeelint.min.js',
-        '/js/vendor/cm_addons/lint/coffeescript-lint.js'
+        '/vendor/js/libraries/coffeelint/coffeelint.min.js',
+        '/vendor/js/libraries/cm_addons/lint/coffeescript-lint.js'
       ],
       test: function() {
         return hintingTest('coffeescript') &&

@@ -2,7 +2,7 @@
   if ('EventSource' in global) {
     return setupInfocard()
   } else {
-    $.getScript(jsbin['static'] + '/js/vendor/eventsource.js', setupInfocard);
+    $.getScript(jsbin['static'] + '/vendor/js/libraries/eventsource.js', setupInfocard);
   }
   function setupInfocard() {
     /*global spinner, $, jsbin, prettyDate, EventSource, throttle, $document, analytics, throttle*/
