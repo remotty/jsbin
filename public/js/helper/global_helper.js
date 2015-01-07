@@ -3,10 +3,28 @@ var GlobalHelper = (function(){
   var $body = $('body');
   var $document = $(document);
   var $bin = $('#bin');
+  var $source = $('#source');
   var debug = jsbin.settings.debug === undefined ? false : jsbin.settings.debug;
   var documentTitle = 'JS Bin';
   var loadGist;
 
+  var editorModes = {
+    html: 'htmlmixed',
+    javascript: 'javascript',
+    css: 'css',
+    typescript: 'javascript',
+    markdown: 'markdown',
+    coffeescript: 'coffeescript',
+    livescript: 'text/x-livescript',
+    jsx: 'javascript',
+    less: 'text/x-less',
+    sass: 'text/x-sass',
+    scss: 'text/x-scss',
+    processing: 'text/x-csrc',
+    jade: 'text/x-jade',
+    csv: 'text'
+  };
+  
   function throttle(fn, delay) {
     var timer = null;
     var throttled = function () {
@@ -193,12 +211,29 @@ var GlobalHelper = (function(){
     }
   };
 
+  function sendReload() {
+    if (saveChecksum) {
+      $.ajax({
+        url: jsbin.getURL() + '/reload',
+        data: {
+          code: jsbin.state.code,
+          revision: jsbin.state.revision,
+          checksum: saveChecksum
+        },
+        type: 'post'
+      });
+    }
+  }
+  
   return {
     $window: $window,
     $body: $body,
     $document: $document,
     $bin: $bin,
+    $source: $source,
 
+    editorModes: editorModes,
+    
     debug: debug,
     documentTitle: documentTitle,
     loadGist: loadGist,
@@ -210,7 +245,9 @@ var GlobalHelper = (function(){
     dedupe: dedupe,
     isDOM: isDOM,
     exposeSettings: exposeSettings,
-    objectValue: objectValue
+    objectValue: objectValue,
+    
+    sendReload: sendReload
   }
 })();
 
@@ -218,6 +255,9 @@ var $window = GlobalHelper.$window;
 var $body = GlobalHelper.$body;
 var $document = GlobalHelper.$document;
 var $bin = GlobalHelper.$bin;
+var $source = GlobalHelper.$source;
+
+var editorModes = GlobalHelper.editorModes;
 
 var debug = GlobalHelper.debug;
 var documentTitle = GlobalHelper.documentTitle;
@@ -232,3 +272,4 @@ var isDOM = GlobalHelper.isDOM
 var exposeSettings = GlobalHelper.exposeSettings
 var objectValue = GlobalHelper.objectValue;
 
+var sendReload = GlobalHelper.sendReload;
