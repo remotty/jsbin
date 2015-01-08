@@ -72,6 +72,8 @@ function codeChangeLive(event, data) {
       line,
       panel = jsbin.panels.panels.live;
 
+  var ignoreDuringLive = /^\s*(while|do|for)[\s*|$]/;
+
   if (jsbin.panels.ready) {
     if (jsbin.settings.includejs === false && data.panelId === 'javascript') {
       // ignore
