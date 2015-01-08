@@ -1,4 +1,4 @@
-var jsbinInitializer = (function(){
+var JsbinInitializer = (function(){
   function setup(){
     var storedSettings = store.localStorage.getItem('settings');
     if (storedSettings === "undefined") {
@@ -156,5 +156,9 @@ var jsbinInitializer = (function(){
     }
   }
 
-  setup();
+  return {
+    setup: setup
+  }
 })();
+
+JsbinInitializer.setup();
