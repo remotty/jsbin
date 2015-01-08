@@ -165,7 +165,7 @@
         '/js/prod/addon-tern-' + jsbin.version + '.min.js'
       ],
       test: function () {
-        return (typeof window.ternBasicDefs !== 'undefined') &&
+        return (typeof ternBasicDefs !== 'undefined') &&
                CodeMirror.showHint &&
                CodeMirror.TernServer &&
                CodeMirror.startTern;

@@ -6007,3 +6007,5 @@ var Defs = function(){
     ternBasicDefs: ternBasicDefs
   }
 }();
+
+var ternBasicDefs = Defs.ternBasicDefs;
