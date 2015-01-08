@@ -78,7 +78,7 @@ function updateSavedState() {
     var path = this.getAttribute('data-path');
     var url = jsbin.getURL({ withRevision: withRevision }) + path + (query && this.id !== 'livepreview' ? '?' + query : ''),
         nodeName = this.nodeName;
-    var hash = panels.getHighlightLines();
+    var hash = Panels.getHighlightLines();
 
     if (hash) {
       hash = '#' + hash;
@@ -413,7 +413,7 @@ function saveCode(method, ajax, ajaxCallback) {
 
           if (window.history && window.history.pushState) {
             // updateURL(edit);
-            var hash = panels.getHighlightLines();
+            var hash = Panels.getHighlightLines();
             if (hash) {hash = '#' + hash;}
             // If split is truthy (> 0) then we are using the revisonless feature
             // this is temporary until we release the feature!
