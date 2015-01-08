@@ -54,6 +54,7 @@
     "/js/editors/setup_code_mirror.js",    
     "/js/editors/panels.js",
     "/js/editors/panel.js",
+    "/js/editors/panel_factory.js",
     "/js/editors/editors.js",
     "/js/editors/libraries.js",
     "/js/editors/library.js",

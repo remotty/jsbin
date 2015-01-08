@@ -12,7 +12,16 @@ var Panel = (function () {
 })();
 
 // Panel Object
-Panel.prototype = (function(){
+Panel.prototype = (function($, $source, $document, $body, jsbin,
+                            CodeMirror, processors, RSVP, analytics,
+                            store, editorModes, Panels,
+                            panelShortcuts){
+
+  var virgin = true;
+  var visible = false;
+  var badChars =  new RegExp('[\u200B\u0080-\u00a0]', 'g');
+  var userResizeable = !$('html').hasClass('layout');
+  
   var initialize = function(target, name, settings){
     var panel = this,
         showPanelButton = true,
@@ -40,8 +49,8 @@ Panel.prototype = (function(){
 
     this._eventHandlers = {};
     
-    panel.on('show', panels.updateQuery);
-    panel.on('hide', panels.updateQuery);
+    panel.on('show', Panels.updateQuery);
+    panel.on('hide', Panels.updateQuery);
 
     // keyboard shortcut (set in keyboardcontrol.js)
     panelShortcuts[panelShortcuts.start + panel.order] = panel.id;
@@ -95,7 +104,7 @@ Panel.prototype = (function(){
       panel.editor = CodeMirror.fromTextArea(panel.el, cmSettings);
 
       panel.editor.on('highlightLines', function () {
-        window.location.hash = panels.getHighlightLines();
+        window.location.hash = Panels.getHighlightLines();
       });
 
       // Bind events using CM3 syntax
@@ -186,13 +195,10 @@ Panel.prototype = (function(){
     });
   }
 
-  var virgin = true;
-  var visible = false;
-  var badChars =  new RegExp('[\u200B\u0080-\u00a0]', 'g');
-  var userResizeable = !$('html').hasClass('layout');
   var updateAriaState = function updateAriaState() {
     this.controlButton.attr('aria-label', this.label + ' Panel: ' + (this.visible ? 'Active' : 'Inactive'));
   };
+  
   var show = function show(x) {
     if (this.visible) {
       return;
@@ -231,44 +237,47 @@ Panel.prototype = (function(){
 
     // update the splitter - but do it on the next tick
     // required to allow the splitter to see it's visible first
-    setTimeout(function () {
-      if (this.userResizeable) {
-        if (x !== undefined) {
-          panel.splitter.trigger('init', x);
-        } else {
-          panel.distribute();
-        }
-      }
-      if (panel.editor) {
-        // populate the panel for the first time
-        if (panel.virgin) {
-          var top = panel.$el.find('.label').outerHeight();
-          top += 8;
-          $(panel.editor.scroller).find('.CodeMirror-lines').css('padding-top', top);
 
-          _populateEditor(panel, panel.name);
-        }
-        if (!panel.virgin || jsbin.panels.ready) {
-          panel.editor.focus();
-          panel.focus();
-        }
-        if (panel.virgin) {
-          if (panel.settings.init) {
-            setTimeout(function () {
-              panel.settings.init.call(panel);
-            }, 10);
-          }
-        }
+    // setTimeout(function () {
+    // }, 0);
+
+    if (this.userResizeable) {
+      if (x !== undefined) {
+        panel.splitter.trigger('init', x);
       } else {
+        panel.distribute();
+      }
+    }
+    
+    if (panel.editor) {
+      // populate the panel for the first time
+      if (panel.virgin) {
+        var top = panel.$el.find('.label').outerHeight();
+        top += 8;
+        $(panel.editor.scroller).find('.CodeMirror-lines').css('padding-top', top);
+
+        _populateEditor(panel, panel.name);
+      }
+      if (!panel.virgin || jsbin.panels.ready) {
+        panel.editor.focus();
         panel.focus();
       }
-      // update all splitter positions
-      $document.trigger('sizeeditors');
+      if (panel.virgin) {
+        if (panel.settings.init) {
+          setTimeout(function () {
+            panel.settings.init.call(panel);
+          }, 10);
+        }
+      }
+    } else {
+      panel.focus();
+    }
+    // update all splitter positions
+    $document.trigger('sizeeditors');
 
-      panel.trigger('show');
+    panel.trigger('show');
 
-      panel.virgin = false;
-    }, 0);
+    panel.virgin = false;
 
     // TODO save which panels are visible in their profile - but check whether it's their code
   };
@@ -567,11 +576,17 @@ Panel.prototype = (function(){
     }
   }
 
+  // dirty, but simple
+  var distribute = function () {
+    Panels.distribute();
+  };
+  
   return{
     initialize: initialize,
     virgin: virgin,
     visible: visible,
     badChars: badChars,
+    userResizeable: userResizeable,
     updateAriaState: updateAriaState,
     show: show,
     hide: hide,
@@ -586,7 +601,9 @@ Panel.prototype = (function(){
     _setupEditor: _setupEditor,
     populateEditor: populateEditor,
     on: on,
-    trigger: trigger
+    trigger: trigger,
+    distribute: distribute
   }
-})();
+})($, $source, $document, $body, jsbin, CodeMirror, processors, RSVP,
+   analytics, store, editorModes, Panels, panelShortcuts);
 
