@@ -1,4 +1,4 @@
-(function () {
+(function (Defs, Definitions) {
   'use strict';
   /*globals $, jsbin, CodeMirror, template, ternDefinitions, ternBasicDefs */
 
@@ -69,12 +69,14 @@
   };
 
   var loadTern = function(editor) {
-    initTern(editor, ternBasicDefs);
+    initTern(editor, Defs.ternBasicDefs);
     ternLoaded.ecma5 = true;
     ternLoaded.browser = true;
   };
 
   var searchTernDefinition = function(htmlCode) {
+    var ternDefinitions = Definitions.ternDefinitions;
+    
     for (var i = 0; i < ternDefinitions.length-1; i++) {
       if (ternDefinitions[i].match.test(htmlCode)) {
         if (ternDefinitions[i].type === 'def') {
@@ -120,5 +122,4 @@
       searchTernDefinition(jsbin.panels.panels.html.getCode());
     });
   };
-
-})();
+})(Defs, Definitions);
