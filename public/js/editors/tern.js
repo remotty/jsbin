@@ -1,4 +1,4 @@
-(function (Defs, Definitions) {
+(function ($, jsbin, CodeMirror, Defs, Definitions) {
   'use strict';
   /*globals $, jsbin, CodeMirror, template, ternDefinitions, ternBasicDefs */
 
@@ -122,4 +122,4 @@
       searchTernDefinition(jsbin.panels.panels.html.getCode());
     });
   };
-})(Defs, Definitions);
+})($, jsbin, CodeMirror, Defs, Definitions);
