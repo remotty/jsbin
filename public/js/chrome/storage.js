@@ -1,13 +1,14 @@
-function hasStore(type) {
-  try {
-    return type in window && window[type] !== null;
-  } catch(e) {
-    return false;
-  }
-}
-
 var store = (function () {
   "use strict";
+
+  function hasStore(type) {
+    try {
+      return type in window && window[type] !== null;
+    } catch(e) {
+      return false;
+    }
+  }
+  
   var polyfill = false;
 
   // Firefox with Cookies disabled triggers a security error when we probe window.sessionStorage
