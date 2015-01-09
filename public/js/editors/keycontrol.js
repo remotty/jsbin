@@ -275,7 +275,7 @@ Keycontrol = (function(){
       } else if (event.which === 188 && event.ctrlKey && event.shiftKey && codePanel) {
         // start a new tag
         event.stop();
-        return startTagComplete(panel);
+        return Autocomplete.startTagComplete(panel);
       }
     }
     // return true;
