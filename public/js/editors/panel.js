@@ -1,235 +1,205 @@
 /*globals $, CodeMirror, jsbin, jshintEnabled, RSVP */
 
-var $document = $(document),
-    $source = $('#source'),
-    userResizeable = !$('html').hasClass('layout');
-
-var editorModes = {
-  html: 'htmlmixed',
-  javascript: 'javascript',
-  css: 'css',
-  typescript: 'javascript',
-  markdown: 'markdown',
-  coffeescript: 'coffeescript',
-  livescript: 'text/x-livescript',
-  jsx: 'javascript',
-  less: 'text/x-less',
-  sass: 'text/x-sass',
-  scss: 'text/x-scss',
-  processing: 'text/x-csrc',
-  jade: 'text/x-jade'
-};
-
-var badChars = new RegExp('[\u200B\u0080-\u00a0]', 'g');
-
-if (jsbin.settings.editor.tabMode === 'default') {
-  CodeMirror.keyMap.basic.Tab = undefined;
-} else if (jsbin.settings.editor.tabMode !== 'classic') {
-  CodeMirror.keyMap.basic.Tab = 'indentMore';
-}
-
-if (!CodeMirror.commands) {
-  CodeMirror.commands = {};
-}
-
-// Save a reference to this autocomplete function to use it when Tern scripts
-// are loaded but not used, since they will automatically overwrite the
-// CodeMirror autocomplete function with CodeMirror.showHint
-var simpleJsHint = function(cm) {
-  if (CodeMirror.snippets(cm) === CodeMirror.Pass) {
-    return CodeMirror.simpleHint(cm, CodeMirror.hint.javascript);
-  }
-};
-CodeMirror.commands.autocomplete = simpleJsHint;
-
-CodeMirror.commands.snippets = function (cm) {
-  'use strict';
-  if (['htmlmixed', 'javascript', 'css', editorModes['less'], editorModes['sass'], editorModes['scss']].indexOf(cm.options.mode) === -1) {
-    return CodeMirror.simpleHint(cm, CodeMirror.hint.anyword);
-  } else {
-    return CodeMirror.snippets(cm);
-  }
-};
-
-var Panel = function (target, name, settings) {
-  'use strict';
-  var panel = this,
-      showPanelButton = true,
-      $panel = null,
-      splitterSettings = {},
-      cmSettings = {},
-      panelLanguage = name,
-      $panelwrapper = $('<div class="stretch panelwrapper"></div>');
-
-  panel.settings = settings = settings || {};
-  panel.id = panel.name = target;
-  $panel = $('.panel.' + target);
-  $panel.data('name', target);
-  panel.$el = $panel.detach();
-  panel.$el.appendTo($panelwrapper);
-  $panelwrapper.appendTo($source);
-  panel.$panel = panel.$el;
-  panel.$el = panel.$el.parent().hide();
-  panel.el = document.getElementById(target);
-  panel.order = ++Panel.order;
-
-  panel.label = (settings.label || target);
-
-  panel.$el.data('panel', panel);
-
-  this._eventHandlers = {};
-
-  panel.on('show', panels.updateQuery);
-  panel.on('hide', panels.updateQuery);
-
-  // keyboard shortcut (set in keyboardcontrol.js)
-  panelShortcuts[panelShortcuts.start + panel.order] = panel.id;
-
-  if (panel.order === 1) {
-    settings.nosplitter = true;
+// Panel Class
+var Panel = (function () {
+  var Panel = function(){
+    this.initialize.apply(this, arguments);
   }
 
-  if (settings.editor) {
-    cmSettings = {
-      parserfile: [],
-      readOnly: jsbin.state.embed ? 'nocursor' : false,
-      dragDrop: false, // we handle it ourselves
-      mode: editorModes[panelLanguage],
-      lineWrapping: true,
-      // gutters: ['line-highlight'],
-      theme: jsbin.settings.theme || 'jsbin',
-      highlightLine: true
-    };
+  Panel.order = 0;
 
-    $.extend(cmSettings, jsbin.settings.editor || {});
+  return Panel;
+})();
 
-    cmSettings.extraKeys = {};
+// Panel Object
+Panel.prototype = (function($, $source, $document, $body, jsbin,
+                            CodeMirror, processors, RSVP, analytics,
+                            store, editorModes, Panels,
+                            panelShortcuts){
 
-    // only the js panel for now, I'd like this to work in
-    // the HTML panel too, but only when you were in JS scope
-    if (name === 'javascript') {
-      // cmSettings.extraKeys.Tab = 'autocomplete';
-    } else {
-      cmSettings.extraKeys.Tab = 'snippets';
+  var virgin = true;
+  var visible = false;
+  var badChars =  new RegExp('[\u200B\u0080-\u00a0]', 'g');
+  var userResizeable = !$('html').hasClass('layout');
+  
+  var initialize = function(target, name, settings){
+    var panel = this,
+        showPanelButton = true,
+        $panel = null,
+        splitterSettings = {},
+        cmSettings = {},
+        panelLanguage = name,
+        $panelwrapper = $('<div class="stretch panelwrapper"></div>');
+
+    panel.settings = settings = settings || {};
+    panel.id = panel.name = target;
+    $panel = $('.panel.' + target);
+    $panel.data('name', target);
+    panel.$el = $panel.detach();
+    panel.$el.appendTo($panelwrapper);
+    $panelwrapper.appendTo($source);
+    panel.$panel = panel.$el;
+    panel.$el = panel.$el.parent().hide();
+    panel.el = document.getElementById(target);
+    panel.order = ++Panel.order;
+
+    panel.label = (settings.label || target);
+
+    panel.$el.data('panel', panel);
+
+    this._eventHandlers = {};
+    
+    panel.on('show', Panels.updateQuery);
+    panel.on('hide', Panels.updateQuery);
+
+    // keyboard shortcut (set in keyboardcontrol.js)
+    panelShortcuts[panelShortcuts.start + panel.order] = panel.id;
+
+    if (panel.order === 1) {
+      settings.nosplitter = true;
     }
 
-    // some emmet "stuff" - TODO decide whether this is needed still...
-    $.extend(cmSettings, {
-      syntax: name,   /* define Zen Coding syntax */
-      profile: name   /* define Zen Coding output profile */
-    });
+    if (settings.editor) {
+      cmSettings = {
+        parserfile: [],
+        readOnly: jsbin.state.embed ? 'nocursor' : false,
+        dragDrop: false, // we handle it ourselves
+        mode: editorModes[panelLanguage],
+        lineWrapping: true,
+        // gutters: ['line-highlight'],
+        theme: jsbin.settings.theme || 'jsbin',
+        highlightLine: true
+      };
 
-    // make sure tabSize and indentUnit are numbers
-    if (typeof cmSettings.tabSize === 'string') {
-      cmSettings.tabSize = parseInt(cmSettings.tabSize, 10) || 2;
-    }
-    if (typeof cmSettings.indentUnit === 'string') {
-      cmSettings.indentUnit = parseInt(cmSettings.indentUnit, 10) || 2;
-    }
-
-    panel.editor = CodeMirror.fromTextArea(panel.el, cmSettings);
-
-    panel.editor.on('highlightLines', function () {
-      window.location.hash = panels.getHighlightLines();
-    });
-
-    // Bind events using CM3 syntax
-    panel.editor.on('change', function codeChange(cm, changeObj) {
-      if (jsbin.saveDisabled) {
-        $document.trigger('codeChange.live', [{ panelId: panel.id, revert: true, origin: changeObj.origin }]);
-      } else {
-        $document.trigger('codeChange', [{ panelId: panel.id, revert: true, origin: changeObj.origin }]);
+      if (name === 'dataframe') {
+        cmsettings.mode = {name: "javascript", json: true}
       }
-      return true;
-    });
+      
+      $.extend(cmSettings, jsbin.settings.editor || {});
 
-    panel.editor.on('focus', function () {
+      cmSettings.extraKeys = {};
+
+      // only the js panel for now, I'd like this to work in
+      // the HTML panel too, but only when you were in JS scope
+      if (name === 'javascript') {
+        // cmSettings.extraKeys.Tab = 'autocomplete';
+      } else {
+        cmSettings.extraKeys.Tab = 'snippets';
+      }
+
+      // some emmet "stuff" - TODO decide whether this is needed still...
+      $.extend(cmSettings, {
+        syntax: name,   /* define Zen Coding syntax */
+        profile: name   /* define Zen Coding output profile */
+      });
+
+      // make sure tabSize and indentUnit are numbers
+      if (typeof cmSettings.tabSize === 'string') {
+        cmSettings.tabSize = parseInt(cmSettings.tabSize, 10) || 2;
+      }
+      if (typeof cmSettings.indentUnit === 'string') {
+        cmSettings.indentUnit = parseInt(cmSettings.indentUnit, 10) || 2;
+      }
+
+      panel.editor = CodeMirror.fromTextArea(panel.el, cmSettings);
+
+      panel.editor.on('highlightLines', function () {
+        window.location.hash = Panels.getHighlightLines();
+      });
+
+      // Bind events using CM3 syntax
+      panel.editor.on('change', function codeChange(cm, changeObj) {
+        if (jsbin.saveDisabled) {
+          $document.trigger('codeChange.live', [{ panelId: panel.id, revert: true, origin: changeObj.origin }]);
+        } else {
+          $document.trigger('codeChange', [{ panelId: panel.id, revert: true, origin: changeObj.origin }]);
+        }
+        return true;
+      });
+
+      panel.editor.on('focus', function () {
+        panel.focus();
+      });
+
+      // Restore keymaps taken by emmet but that we need for other functionalities
+      if (name === 'javascript' || name == 'jasmine') {
+        var cmd = $.browser.platform === 'mac' ? 'Cmd' : 'Ctrl';
+        var map = {};
+        map[cmd + '-D'] = 'deleteLine';
+        map[cmd + '-/'] = function(cm) { CodeMirror.commands.toggleComment(cm); };
+        map.name = 'noEmmet';
+        panel.editor.addKeyMap(map);
+      }
+
+      panel._setupEditor(panel.editor, name);
+    }
+
+    if ($('html').is('.layout')) {
+      panel.splitter = $();
+      panel.$el.removeClass('stretch');
+    } else if (!settings.nosplitter) {
+      panel.splitter = panel.$el.splitter(splitterSettings).data('splitter');
+      panel.splitter.hide();
+    } else {
+      // create a fake splitter to let the rest of the code work
+      panel.splitter = $();
+    }
+
+    if (jsbin.state.processors && jsbin.state.processors[name]) {
+      panelLanguage = jsbin.state.processors[name];
+      jsbin.processors.set(panel, jsbin.state.processors[name]);
+    } else if (settings.processor) { // FIXME is this even used?
+      panelLanguage = settings.processors[settings.processor];
+      jsbin.processors.set(panel, settings.processor);
+    } else if (processors[panel.id]) {
+      jsbin.processors.set(panel, panel.id);
+    } else {
+      // this is just a dummy function for console & output...which makes no sense...
+      panel.processor = function (str) {
+        return new RSVP.Promise(function (resolve) {
+          resolve(str);
+        });
+      };
+
+    }
+
+    if (settings.beforeRender) {
+      $document.bind('render', $.proxy(settings.beforeRender, panel));
+    }
+
+    if (!settings.editor) {
+      panel.ready = true;
+    }
+
+    // append panel to controls
+    if (jsbin.state.embed) {
+      // showPanelButton = window.location.search.indexOf(panel.id) !== -1;
+    }
+
+    if (showPanelButton) {
+      this.controlButton = $('<a role="button" class="button group" href="?' + name + '">' + panel.label + '</a>');
+      this.updateAriaState();
+
+      this.controlButton.click(function () {
+        panel.toggle();
+        return false;
+      });
+      this.controlButton.appendTo('#panels');
+    }
+
+    $panel.focus(function () {
       panel.focus();
     });
-
-    // Restore keymaps taken by emmet but that we need for other functionalities
-    if (name === 'javascript' || name == 'jasmine') {
-      var cmd = $.browser.platform === 'mac' ? 'Cmd' : 'Ctrl';
-      var map = {};
-      map[cmd + '-D'] = 'deleteLine';
-      map[cmd + '-/'] = function(cm) { CodeMirror.commands.toggleComment(cm); };
-      map.name = 'noEmmet';
-      panel.editor.addKeyMap(map);
-    }
-
-    panel._setupEditor(panel.editor, name);
-  }
-
-  if ($('html').is('.layout')) {
-    panel.splitter = $();
-    panel.$el.removeClass('stretch');
-  } else if (!settings.nosplitter) {
-    panel.splitter = panel.$el.splitter(splitterSettings).data('splitter');
-    panel.splitter.hide();
-  } else {
-    // create a fake splitter to let the rest of the code work
-    panel.splitter = $();
-  }
-
-  if (jsbin.state.processors && jsbin.state.processors[name]) {
-    panelLanguage = jsbin.state.processors[name];
-    jsbin.processors.set(panel, jsbin.state.processors[name]);
-  } else if (settings.processor) { // FIXME is this even used?
-    panelLanguage = settings.processors[settings.processor];
-    jsbin.processors.set(panel, settings.processor);
-  } else if (processors[panel.id]) {
-    jsbin.processors.set(panel, panel.id);
-  } else {
-    // this is just a dummy function for console & output...which makes no sense...
-    panel.processor = function (str) {
-      return new RSVP.Promise(function (resolve) {
-        resolve(str);
-      });
-    };
-
-  }
-
-  if (settings.beforeRender) {
-    $document.bind('render', $.proxy(settings.beforeRender, panel));
-  }
-
-  if (!settings.editor) {
-    panel.ready = true;
-  }
-
-  // append panel to controls
-  if (jsbin.state.embed) {
-    // showPanelButton = window.location.search.indexOf(panel.id) !== -1;
-  }
-
-  if (showPanelButton) {
-    this.controlButton = $('<a role="button" class="button group" href="?' + name + '">' + panel.label + '</a>');
-    this.updateAriaState();
-
-    this.controlButton.click(function () {
-      panel.toggle();
-      return false;
+    $panel.add(this.$el.find('.label')).click(function () {
+      panel.focus();
     });
-    this.controlButton.appendTo('#panels');
   }
 
-  $panel.focus(function () {
-    panel.focus();
-  });
-  $panel.add(this.$el.find('.label')).click(function () {
-    panel.focus();
-  });
-};
-
-Panel.order = 0;
-
-Panel.prototype = {
-  virgin: true,
-  visible: false,
-  updateAriaState: function updateAriaState() {
+  var updateAriaState = function updateAriaState() {
     this.controlButton.attr('aria-label', this.label + ' Panel: ' + (this.visible ? 'Active' : 'Inactive'));
-  },
-  show: function show(x) {
+  };
+  
+  var show = function show(x) {
     if (this.visible) {
       return;
     }
@@ -267,48 +237,52 @@ Panel.prototype = {
 
     // update the splitter - but do it on the next tick
     // required to allow the splitter to see it's visible first
-    setTimeout(function () {
-      if (userResizeable) {
-        if (x !== undefined) {
-          panel.splitter.trigger('init', x);
-        } else {
-          panel.distribute();
-        }
-      }
-      if (panel.editor) {
-        // populate the panel for the first time
-        if (panel.virgin) {
-          var top = panel.$el.find('.label').outerHeight();
-          top += 8;
-          $(panel.editor.scroller).find('.CodeMirror-lines').css('padding-top', top);
 
-          populateEditor(panel, panel.name);
-        }
-        if (!panel.virgin || jsbin.panels.ready) {
-          panel.editor.focus();
-          panel.focus();
-        }
-        if (panel.virgin) {
-          if (panel.settings.init) {
-            setTimeout(function () {
-              panel.settings.init.call(panel);
-            }, 10);
-          }
-        }
+    // setTimeout(function () {
+    // }, 0);
+
+    if (this.userResizeable) {
+      if (x !== undefined) {
+        panel.splitter.trigger('init', x);
       } else {
+        panel.distribute();
+      }
+    }
+    
+    if (panel.editor) {
+      // populate the panel for the first time
+      if (panel.virgin) {
+        var top = panel.$el.find('.label').outerHeight();
+        top += 8;
+        $(panel.editor.scroller).find('.CodeMirror-lines').css('padding-top', top);
+
+        _populateEditor(panel, panel.name);
+      }
+      if (!panel.virgin || jsbin.panels.ready) {
+        panel.editor.focus();
         panel.focus();
       }
-      // update all splitter positions
-      $document.trigger('sizeeditors');
+      if (panel.virgin) {
+        if (panel.settings.init) {
+          setTimeout(function () {
+            panel.settings.init.call(panel);
+          }, 10);
+        }
+      }
+    } else {
+      panel.focus();
+    }
+    // update all splitter positions
+    $document.trigger('sizeeditors');
 
-      panel.trigger('show');
+    panel.trigger('show');
 
-      panel.virgin = false;
-  }, 0);
+    panel.virgin = false;
 
     // TODO save which panels are visible in their profile - but check whether it's their code
-  },
-  hide: function () {
+  };
+
+  var hide = function () {
     var panel = this;
     // panel.$el.hide();
     panel.visible = false;
@@ -369,36 +343,40 @@ Panel.prototype = {
     // note: the history:open does first check whether there's an open panels
     // and if there are, it won't show the history, it'll just ignore the event
     $document.trigger('history:open');
-  },
-  toggle: function () {
+  };
+
+  var toggle = function () {
     (this)[this.visible ? 'hide' : 'show']();
-  },
-  getCode: function () {
+  };
+
+  var getCode = function () {
     if (this.editor) {
-      badChars.lastIndex = 0;
-      return this.editor.getCode().replace(badChars, '');
+      this.badChars.lastIndex = 0;
+      return this.editor.getCode().replace(this.badChars, '');
     }
-  },
-  setCode: function (content) {
+  };
+
+  var setCode = function (content) {
     if (this.editor) {
       if (content === undefined) {
         content = '';
       }
       this.controlButton.toggleClass('hasContent', !!content.trim().length);
       this.codeSet = true;
-      this.editor.setCode(content.replace(badChars, ''));
+      this.editor.setCode(content.replace(this.badChars, ''));
     }
-  },
-  codeSet: false,
-  blur: function () {
+  };
+  
+  var codeSet = false;
+  var blur = function () {
     this.$panel.addClass('blur');
-  },
-  focus: function () {
+  };
+  var focus = function () {
     this.$panel.removeClass('blur');
     jsbin.panels.focus(this);
     $(jsbin.panels.panels[this.name].$el).find('textarea').focus();
-  },
-  render: function () {
+  };
+  var render = function () {
     'use strict';
     var args = [].slice.call(arguments);
     var panel = this;
@@ -412,11 +390,13 @@ Panel.prototype = {
         resolve();
       }
     });
-  },
-  init: function () {
-    if (this.settings.init) this.settings.init.call(this);
-  },
-  _setupEditor: function () {
+  };
+
+  var init = function () {
+      if (this.settings.init) this.settings.init.call(this);
+  }
+  
+  var _setupEditor = function () {
     var focusedPanel = store.sessionStorage.getItem('panel') || jsbin.settings.focusedPanel,
         panel = this,
         editor = panel.editor;
@@ -443,7 +423,7 @@ Panel.prototype = {
 
     // editor.setOption('onKeyEvent', keycontrol);
     // editor.setOption('onFocus', function () {
-      // panel.$el.trigger('focus');
+    // panel.$el.trigger('focus');
     // });
 
     // This prevents the browser from jumping
@@ -505,7 +485,7 @@ Panel.prototype = {
       // it appears that CM2 uses the visible height to work out what
       // should be shown.
       panel.ready = true;
-      populateEditor(panel, panel.name);
+      _populateEditor(panel, panel.name);
 
       if (focusedPanel == panel.name) {
         // another fracking timeout to avoid conflict with other panels firing up
@@ -530,18 +510,19 @@ Panel.prototype = {
         }, 110); // This is totally arbitrary
       }
     }, 0);
-  },
-  populateEditor: function () {
-    populateEditor(this, this.name);
-  },
+  };
+
+  var populateEditor = function () {
+    _populateEditor(this, this.name);
+  };
 
   // events
-  on: function (event, fn) {
+  var on =  function (event, fn) {
     (this._eventHandlers[event] = this._eventHandlers[event] || []).push(fn);
     return this;
-  },
+  };
 
-  trigger: function (event) {
+  var trigger = function (event) {
     var args = [].slice.call(arguments, 1);
     args.unshift({ type: event });
     for (var list = this._eventHandlers[event], i = 0; list && list[i];) {
@@ -549,49 +530,80 @@ Panel.prototype = {
     }
     return this;
   }
-};
 
-function populateEditor(editor, panel) {
-  if (!editor.codeSet) {
-    // populate - should eventually use: session, saved data, local storage
-    var cached = store.sessionStorage.getItem('jsbin.content.' + panel), // session code
-        saved = jsbin.embed ? null : store.localStorage.getItem('saved-' + panel), // user template
-        sessionURL = store.sessionStorage.getItem('url'),
-        changed = false;
+  function _populateEditor(editor, panel) {
+    if (!editor.codeSet) {
+      // populate - should eventually use: session, saved data, local storage
+      var cached = store.sessionStorage.getItem('jsbin.content.' + panel), // session code
+          saved = jsbin.embed ? null : store.localStorage.getItem('saved-' + panel), // user template
+          sessionURL = store.sessionStorage.getItem('url'),
+          changed = false;
 
-    // if we clone the bin, there will be a checksum on the state object
-    // which means we happily have write access to the bin
-    if (sessionURL !== jsbin.getURL() && !jsbin.state.checksum) {
-      // nuke the live saving checksum
-      store.sessionStorage.removeItem('checksum');
-      saveChecksum = false;
-    }
-
-    if (template && cached == template[panel]) { // restored from original saved
-      editor.setCode(cached);
-    } else if (cached && sessionURL == jsbin.getURL() && sessionURL !== jsbin.root) { // try to restore the session first - only if it matches this url
-      editor.setCode(cached);
-      // tell the document that it's currently being edited, but check that it doesn't match the saved template
-      // because sessionStorage gets set on a reload
-      changed = cached != saved && cached != template[panel];
-    } else if (!template.post && saved !== null && !/(edit|embed)$/.test(window.location) && !window.location.search) { // then their saved preference
-      editor.setCode(saved);
-      var processor = JSON.parse(store.localStorage.getItem('saved-processors') || '{}')[panel];
-      if (processor) {
-        jsbin.processors.set(jsbin.panels.panels[panel], processor);
+      // if we clone the bin, there will be a checksum on the state object
+      // which means we happily have write access to the bin
+      if (sessionURL !== jsbin.getURL() && !jsbin.state.checksum) {
+        // nuke the live saving checksum
+        store.sessionStorage.removeItem('checksum');
+        saveChecksum = false;
       }
-    } else { // otherwise fall back on the JS Bin default
-      editor.setCode(template[panel]);
+
+      if (template && cached == template[panel]) { // restored from original saved
+        editor.setCode(cached);
+      } else if (cached && sessionURL == jsbin.getURL() && sessionURL !== jsbin.root) { // try to restore the session first - only if it matches this url
+        editor.setCode(cached);
+        // tell the document that it's currently being edited, but check that it doesn't match the saved template
+        // because sessionStorage gets set on a reload
+        changed = cached != saved && cached != template[panel];
+      } else if (!template.post && saved !== null && !/(edit|embed)$/.test(window.location) && !window.location.search) { // then their saved preference
+        editor.setCode(saved);
+        var processor = JSON.parse(store.localStorage.getItem('saved-processors') || '{}')[panel];
+        if (processor) {
+          jsbin.processors.set(jsbin.panels.panels[panel], processor);
+        }
+      } else { // otherwise fall back on the JS Bin default
+        editor.setCode(template[panel]);
+      }
+
+      editor.editor.clearHistory();
+
+    } else {
+      // this means it was set via the url
+      changed = true;
     }
 
-    editor.editor.clearHistory();
-
-  } else {
-    // this means it was set via the url
-    changed = true;
+    if (changed) {
+      $document.trigger('codeChange', [ { revert: false, onload: true } ]);
+    }
   }
 
-  if (changed) {
-    $document.trigger('codeChange', [ { revert: false, onload: true } ]);
+  // dirty, but simple
+  var distribute = function () {
+    Panels.distribute();
+  };
+  
+  return{
+    initialize: initialize,
+    virgin: virgin,
+    visible: visible,
+    badChars: badChars,
+    userResizeable: userResizeable,
+    updateAriaState: updateAriaState,
+    show: show,
+    hide: hide,
+    toggle: toggle,
+    getCode: getCode,
+    setCode: setCode,
+    codeSet: codeSet,
+    blur: blur,
+    focus: focus,
+    render: render,
+    init: init,
+    _setupEditor: _setupEditor,
+    populateEditor: populateEditor,
+    on: on,
+    trigger: trigger,
+    distribute: distribute
   }
-}
+})($, $source, $document, $body, jsbin, CodeMirror, processors, RSVP,
+   analytics, store, editorModes, Panels, panelShortcuts);
+

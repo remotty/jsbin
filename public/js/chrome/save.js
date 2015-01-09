@@ -78,7 +78,7 @@ function updateSavedState() {
     var path = this.getAttribute('data-path');
     var url = jsbin.getURL({ withRevision: withRevision }) + path + (query && this.id !== 'livepreview' ? '?' + query : ''),
         nodeName = this.nodeName;
-    var hash = panels.getHighlightLines();
+    var hash = Panels.getHighlightLines();
 
     if (hash) {
       hash = '#' + hash;
@@ -92,7 +92,7 @@ function updateSavedState() {
         this.value += hash;
       }
     } else if (nodeName === 'TEXTAREA') {
-      this.value = ('<a class="jsbin-embed" href="' + url + hash + '">' + documentTitle + '</a><' + 'script src="' + jsbin.static + '/js/embed.js"><' + '/script>').replace(/<>"&/g, function (m) {
+      this.value = ('<a class="jsbin-embed" href="' + url + hash + '">' + documentTitle + '</a><' + 'script src="' + jsbin.static + '/js/chrome/embed.js"><' + '/script>').replace(/<>"&/g, function (m) {
           return {
             '<': '&lt;',
             '>': '&gt;',
@@ -413,7 +413,7 @@ function saveCode(method, ajax, ajaxCallback) {
 
           if (window.history && window.history.pushState) {
             // updateURL(edit);
-            var hash = panels.getHighlightLines();
+            var hash = Panels.getHighlightLines();
             if (hash) {hash = '#' + hash;}
             // If split is truthy (> 0) then we are using the revisonless feature
             // this is temporary until we release the feature!

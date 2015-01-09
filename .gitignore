@@ -4,7 +4,8 @@ config.*.json
 public/js/jsbin*.js
 .nodemonignore
 public/js/prod
-public/js/components
+public/vendor
+public/vendor/*
 !config.default.json
 statsd.js
 .allow-devtools-edit
@@ -20,3 +21,5 @@ build/config.gypi
 .ideas
 /test/lib/sample
 .idea
+
+npm-debug.log

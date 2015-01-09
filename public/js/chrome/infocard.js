@@ -1,8 +1,8 @@
-;(function (global) {
+(function (global) {
   if ('EventSource' in global) {
     return setupInfocard()
   } else {
-    $.getScript(jsbin['static'] + '/js/vendor/eventsource.js', setupInfocard);
+    $.getScript(jsbin['static'] + '/vendor/js/libraries/eventsource.js', setupInfocard);
   }
   function setupInfocard() {
     /*global spinner, $, jsbin, prettyDate, EventSource, throttle, $document, analytics, throttle*/
@@ -223,7 +223,7 @@
             }
           });
         } else if (jsbin.saveDisabled === true && window.location.pathname.slice(-5) === '/edit') {
-          $.getScript(jsbin.static + '/js/spike.js?' + jsbin.version);
+          $.getScript(jsbin.static + '/js/chrome/spike.js?' + jsbin.version);
           $document.on('stats', throttle(updateStats, 1000));
         }
       }
@@ -264,7 +264,7 @@
 
       $template.one('open', function () {
         var statusCode = $('#status').data('status') || 200;
-        $.getJSON(jsbin.static + '/js/http-codes.json', function (codes) {
+        $.getJSON(jsbin.static + '/js/chrome/http-codes.json', function (codes) {
           var html = '';
           codes.forEach(function (code) {
             html += '<option value="' + code.code + '">' + code.string + '</option>';

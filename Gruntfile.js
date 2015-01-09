@@ -97,17 +97,17 @@ module.exports = function (grunt) {
       },
       dist: {
         src: [
-          'public/js/intro-start.js',
+          'public/js/etc/intro-start.js',
           '<%= scriptsRelative %>',
-          'public/js/outro-start.js'
+          'public/js/etc/outro-start.js'
         ],
         dest: distpaths.script
       },
       runner: {
         src: [
-          'public/js/intro.js',
+          'public/js/etc/intro.js',
           '<%= runnerScripts %>',
-          'public/js/outro.js'
+          'public/js/etc/outro.js'
         ],
         dest: distpaths.runner
       }
