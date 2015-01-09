@@ -47,6 +47,8 @@
     "/js/render/title.js",
     "/js/render/get_rendered_code.js",
     "/js/render/get_prepared_code_creator.js",
+    "/js/render/renderer.js",
+    "/js/render/render_live_preview.js",
     "/js/render/live.js",
     "/js/editors/keycontrol.js",
     "/js/render/console.js",
