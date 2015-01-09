@@ -8,7 +8,6 @@ var processors = jsbin.processors = (function () {
    * jsbin behaves when the processor isn't ready and the user makes calls to it
    */
 
-
   /**
    * Add properties to a function using underscore
    */

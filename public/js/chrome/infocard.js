@@ -1,4 +1,4 @@
-;(function (global) {
+(function (global) {
   if ('EventSource' in global) {
     return setupInfocard()
   } else {
