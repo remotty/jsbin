@@ -4,6 +4,8 @@ var GlobalHelper = (function(){
   var $document = $(document);
   var $bin = $('#bin');
   var $source = $('#source');
+  var $library = $('#library');
+  var $live = $('#live');
   var debug = jsbin.settings.debug === undefined ? false : jsbin.settings.debug;
   var documentTitle = 'JS Bin';
   var loadGist;
@@ -231,6 +233,8 @@ var GlobalHelper = (function(){
     $document: $document,
     $bin: $bin,
     $source: $source,
+    $library: $library,
+    $live: $live,
 
     editorModes: editorModes,
     
@@ -256,6 +260,8 @@ var $body = GlobalHelper.$body;
 var $document = GlobalHelper.$document;
 var $bin = GlobalHelper.$bin;
 var $source = GlobalHelper.$source;
+var $library = GlobalHelper.$library;
+var $live = GlobalHelper.$live
 
 var editorModes = GlobalHelper.editorModes;
 
