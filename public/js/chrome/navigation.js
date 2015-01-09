@@ -815,6 +815,14 @@ var Navigation = (function($, jsbin, $document){
     })
   }
 
+  var setup_download_event = function(){
+    $('#download').click(function (event) {
+      event.preventDefault();
+      window.location = jsbin.getURL({ withRevision: true }) + '/download';
+      analytics.download();
+    });
+  }
+  
   var setup = function(){
     setup_startingpoint_event();
     setup_disabled_event();
@@ -855,6 +863,7 @@ var Navigation = (function($, jsbin, $document){
     setup_skipToEditor_event();
     setup_autocomplte_library_event();
     setup_jasmine_snippet_button_event();
+    setup_download_event();
   }
 
   return {
