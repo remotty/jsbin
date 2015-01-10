@@ -1,4 +1,6 @@
 var ESC = (function(){
+  'use strict';
+  
   var loginVisible = false;
   var dropdownOpen = false;
   var keyboardHelpVisible = false;
@@ -20,7 +22,7 @@ var ESC = (function(){
       analytics.closeMenu('login');
       loginVisible = false;
     }
-  }
+  };
 
   var setup = function(){
     $document.keydown(function (event) {
@@ -34,14 +36,14 @@ var ESC = (function(){
         hideOpen();
       }
     });
-  }
+  };
   return {
     loginVisible: loginVisible,
     dropdownOpen: dropdownOpen,
     keyboardHelpVisible: keyboardHelpVisible,
     urlHelpVisible: urlHelpVisible,
     setup: setup
-  }
+  };
 })();
 
 var loginVisible = ESC.loginVisible;

@@ -376,7 +376,7 @@
         }, 10);
       });
     }
-  }
+  };
 
   var options = Object.keys(settingsAddons);
 

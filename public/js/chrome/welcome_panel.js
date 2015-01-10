@@ -126,7 +126,7 @@
       $('.toppanel-help ul').html('<li><a href="' + root + '/' + help[0].slug + '" target="_blank" class="toppanel-link">' + help[0].title + '</a></li><li><a href="' + root + '/' + help[1].slug + '" target="_blank" class="toppanel-link">' + help[1].title + '</a></li>');
 
     }
-  })
+  });
 
   // analytics for links
   $('#toppanel').find('.toppanel-link').mousedown(function() {

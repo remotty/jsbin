@@ -1,5 +1,5 @@
 /*globals $:true*/
-(function () {
+(function ($, $body) {
 
   // don't bother with this functionality if there's no datalist support
   if (!('dataset' in document.createElement('i'))) {
@@ -38,4 +38,4 @@
     }
   });
 
-})();
+})($, $body);

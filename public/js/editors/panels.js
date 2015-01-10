@@ -1,4 +1,6 @@
 var Panels = (function(){
+  'use strict';
+  
   var panels = {};
   var ready = false;
   var saveOnExit = false;
@@ -32,14 +34,14 @@ var Panels = (function(){
 
   var left_panel = function(){
     var panels = Panels.visible_panels();
-    var index = Panels.current_visible_index() - 1
+    var index = Panels.current_visible_index() - 1;
     
     return jsbin.panels.panels[panels[index].name];
   };
 
   var right_panel = function(){
     var panels = Panels.visible_panels();
-    var index = Panels.current_visible_index() + 1
+    var index = Panels.current_visible_index() + 1;
     
     return jsbin.panels.panels[panels[index].name];
   };
@@ -80,7 +82,6 @@ var Panels = (function(){
   };
 
   var restore = function () {
-    'use strict';
     /*globals jsbin, editors, $window, $document*/
     // if there are panel names on the hash (v2 of jsbin) or in the query (v3)
     // then restore those specific panels and evenly distribute them.
@@ -284,11 +285,10 @@ var Panels = (function(){
   };
 
   var getHighlightLines = function () {
-    'use strict';
     var hash = [];
     var lines = '';
     var panel;
-    for (name in Panels.panels) {
+    for (var name in Panels.panels) {
       panel = Panels.panels[name];
       if (panel.editor) {
         lines = panel.editor.highlightLines().string;
@@ -305,7 +305,7 @@ var Panels = (function(){
     if (panel) {
       $('.panel').removeClass('focus').filter('.' + panel.id).addClass('focus');
     }
-  }
+  };
 
   var updateQuery = throttle(function updateQuery() {
     var alt = {
@@ -370,7 +370,7 @@ var Panels = (function(){
         right = 100 - (width * (i+1));
         panel.$el.css({ top: 0, bottom: 0, left: left + '%', right: right + '%' });
         panel.splitter.trigger('init', innerW * left/100);
-        panel.splitter[i == 0 ? 'hide' : 'show']();
+        panel.splitter[i === 0 ? 'hide' : 'show']();
         left += width;
 
         nestedPanels = $(visible[i]).find('.panel');
@@ -386,7 +386,7 @@ var Panels = (function(){
             $(this).css('bottom', bottom + '%' );
             if (panel.splitter.hasClass('vertical')) {
               panel.splitter.trigger('init', innerH * top/100);
-              panel.splitter[i == 0 ? 'hide' : 'show']();
+              panel.splitter[i === 0 ? 'hide' : 'show']();
             }
             top += height;
           });
@@ -551,7 +551,7 @@ var Panels = (function(){
     hide: hide,
     hideAll: hideAll,
     allEditors: allEditors
-  }
+  };
 })();
 
 jsbin.panels = Panels;

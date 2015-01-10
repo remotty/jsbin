@@ -1,6 +1,8 @@
 var Navigation = (function($, jsbin, $document){
-  var $enableUniversalEditor = $('#enableUniversalEditor')
-  var $startingpoint = $('a.startingpoint')
+  'use strict';
+  
+  var $enableUniversalEditor = $('#enableUniversalEditor');
+  var $startingpoint = $('a.startingpoint');
   var $privateButton = $('#control a.visibilityToggle#private');
   var $publicButton = $('#control a.visibilityToggle#public');
   var $visibilityButtons = $('#control a.visibilityToggle');
@@ -39,7 +41,7 @@ var Navigation = (function($, jsbin, $document){
       }
       return false;
     });
-  }
+  };
     
   // if (localStorage && localStorage['saved-html']) {
   // $startingpoint.append('')
@@ -50,9 +52,9 @@ var Navigation = (function($, jsbin, $document){
       event.stopImmediatePropagation();
       return false;
     });
-  }
+  };
 
-  var setup_login_event = function(){
+  var setup_loginbtn_event = function(){
     $('#loginbtn').click(function () {
       analytics.login();
       $(this).toggleClass('open');
@@ -60,7 +62,7 @@ var Navigation = (function($, jsbin, $document){
       // loginVisible = true;
       // return false;
     });
-  }
+  };
     
   var setup_logout_event = function(){
     $('a.logout').click(function (event) {
@@ -78,7 +80,7 @@ var Navigation = (function($, jsbin, $document){
         }
       }
     });
-  }
+  };
 
   var setup_homebtn_event = function(){
     $('.homebtn').click(function (event, data) {
@@ -94,7 +96,7 @@ var Navigation = (function($, jsbin, $document){
       jsbin.panels.hideAll();
       return false;
     });
-  }
+  };
 
   var setup_lockrevision_event = function(){
     $lockrevision.on('click', function (event) {
@@ -104,7 +106,7 @@ var Navigation = (function($, jsbin, $document){
     }).on('mouseup', function () {
       return false;
     });
-  }
+  };
 
   var setup_document_event = function(){
     $document.on('locked', function () {
@@ -123,7 +125,7 @@ var Navigation = (function($, jsbin, $document){
       $lockrevision.removeClass('icon-lock').addClass('icon-unlocked').data('locked', false);
       $lockrevision.html('<span>Click to lock and prevent further changes</span>');
     });
-  }
+  };
 
   // TODO decide whether to remove this, since it definitely doesn't work!
   // $('#share input[type=text], #share textarea').on('beforecopy', function (event) {
@@ -146,7 +148,7 @@ var Navigation = (function($, jsbin, $document){
       });
 
     }
-  }
+  };
 
   function opendropdown(el) {
     var menu;
@@ -201,13 +203,13 @@ var Navigation = (function($, jsbin, $document){
       menuDown = false;
       return false;
     });
-  }
+  };
 
   var setup_actionmenu_event = function(){
     $('#actionmenu').click(function () {
       dropdownOpen = true;
     });
-  }
+  };
 
   var setup_body_event = function(){
     var ignoreUp = false;
@@ -226,7 +228,7 @@ var Navigation = (function($, jsbin, $document){
       }
       ignoreUp = false;
     });
-  }
+  };
 
   var setup_dropdown_links_event = function(){
     var fromClick = false;
@@ -260,7 +262,7 @@ var Navigation = (function($, jsbin, $document){
       }
       fromClick = true;
     });
-  }
+  };
 
   var setup_jsbinurl_event = function(){
     $('#jsbinurl').click(function (e) {
@@ -268,7 +270,7 @@ var Navigation = (function($, jsbin, $document){
         jsbin.panels.panels.live.hide();
       }, 0);
     });
-  }
+  };
 
   var setup_runwithalerts_event = function(){
     $('#runwithalerts').click(function (event, data) {
@@ -280,7 +282,7 @@ var Navigation = (function($, jsbin, $document){
       }
       return false;
     });
-  }
+  };
 
   var setup_runconsole_event = function(){
     $('#runconsole').click(function () {
@@ -288,14 +290,14 @@ var Navigation = (function($, jsbin, $document){
       editors.console.render(true);
       return false;
     });
-  }
+  };
 
   var setup_clearconsole_event = function(){
     $('#clearconsole').click(function () {
       jsconsole.clear();
       return false;
     });
-  }
+  };
 
   var setup_showhelp_event = function(){
     $('#showhelp').click(function () {
@@ -306,7 +308,7 @@ var Navigation = (function($, jsbin, $document){
       }
       return false;
     });
-  }
+  };
 
   var setup_showurls_event = function(){
     $('#showurls').click(function () {
@@ -317,7 +319,7 @@ var Navigation = (function($, jsbin, $document){
       }
       return false;
     });
-  }
+  };
 
   var setup_code_dblclick_event = function(){
     $('.code.panel > .label > span.name').dblclick(function () {
@@ -327,7 +329,7 @@ var Navigation = (function($, jsbin, $document){
         jsbin.settings.editor.lineNumbers = lineNumbers;
       });
     });
-  }
+  };
 
   var setup_createnew_event = function(){
     $('a#createnew').click(function (event) {
@@ -378,7 +380,7 @@ var Navigation = (function($, jsbin, $document){
     //     window.location = jsbin.root;
     //   }, 0);
     // });
-  }
+  };
 
   var setup_visibility_button_event = function(){
     $visibilityButtons.click(function(event) {
@@ -417,21 +419,21 @@ var Navigation = (function($, jsbin, $document){
         }
       });
     });
-  }
+  };
 
   var setup_login_event = function(){
     $('form.login').closest('.menu').bind('close', function () {
       $(this).find('.loginFeedback').empty().hide();
       $('#login').removeClass('forgot');
     });
-  }
+  };
 
   var setup_lostpass_event = function(){
     $('#lostpass').click(function (e) {
       $('#login').addClass('forgot').find('input[name=email]').focus();
       return false;
     });
-  }
+  };
 
   var warning_enablejs_uncheck = function(){
     jsbin.settings.includejs = jsbin.settings.includejs === undefined ? true : jsbin.settings.includejs;
@@ -444,7 +446,7 @@ var Navigation = (function($, jsbin, $document){
       });
       jsbin.settings.includejs = false;
     }
-  }
+  };
 
   var setup_enablejs_event = function(){
     jsbin.settings.includejs = jsbin.settings.includejs === undefined ? true : jsbin.settings.includejs;
@@ -454,14 +456,14 @@ var Navigation = (function($, jsbin, $document){
       analytics.enableLiveJS(jsbin.settings.includejs);
       editors.live.render();
     }).attr('checked', jsbin.settings.includejs);
-  }
+  };
 
   var hideheader = function(){
     if (!jsbin.embed && jsbin.settings.hideheader) {
       $body.addClass('hideheader');
     }
-  }
-
+  };
+  
   var setup_cancel_up = function(){
     var cancelUp = false;
     $('form input, form textarea').focus(function () {
@@ -473,13 +475,13 @@ var Navigation = (function($, jsbin, $document){
         return false;
       }
     });
-  }
+  };
 
   var move_hash = function(){
     if (window.location.hash) {
       $('a[href$="' + window.location.hash + '"]').mousedown();
     }
-  }
+  };
 
   var setup_add_shortcut_events = function(){
     var ismac = navigator.userAgent.indexOf(' Mac ') !== -1,
@@ -500,7 +502,7 @@ var Navigation = (function($, jsbin, $document){
 
       $this.append('<span class="keyshortcut">' + key + '</span>');
     });
-  }
+  };
 
   var add_description = function(){
     var re = {
@@ -554,13 +556,13 @@ var Navigation = (function($, jsbin, $document){
     cm.focus();
 
     return false;
-  }
+  };
 
   var setup_add_meta_event = function(){
     $('#addmeta').click(function () {
       add_description();
     });
-  }
+  };
 
   var setup_publish_to_vanity_event = function(){
     $('a.publish-to-vanity').on('click', function (event) {
@@ -583,9 +585,9 @@ var Navigation = (function($, jsbin, $document){
             content: 'There was a problem publishing to your vanity URL. Can you try again or file a <a target="_blank" href="' + githubIssue() + '">new issue</a>?'
           });
         }
-      })
+      });
     });
-  }
+  };
   
   var setup_delete_all_bin_event = function(){
     $('a.deleteallbins').on('click', function (e) {
@@ -618,7 +620,7 @@ var Navigation = (function($, jsbin, $document){
         });
       }
     });
-  }
+  };
 
   var setup_delete_bin_event = function(){
     $('a.deletebin').on('click', function (e) {
@@ -646,7 +648,7 @@ var Navigation = (function($, jsbin, $document){
         });
       }
     });
-  }
+  };
 
   var setup_rename_bin_event = function(){
     $('a.renamebin').on('click', function (e) {
@@ -685,7 +687,7 @@ var Navigation = (function($, jsbin, $document){
         }
       });  
     });
-  }
+  };
 
   var setup_archive_bin_event = function(){
     $('a.archivebin').on('click', function (e) {
@@ -697,7 +699,7 @@ var Navigation = (function($, jsbin, $document){
       e.preventDefault();
       archive(false);
     });
-  }
+  };
 
   var setup_universal_editor_event = function(){
     $enableUniversalEditor.on('change', function (e) {
@@ -712,7 +714,7 @@ var Navigation = (function($, jsbin, $document){
     if (jsbin.settings.editor.simple) {
       $enableUniversalEditor.prop('checked', true);
     }
-  }
+  };
 
   var setup_skipToEditor_event = function(){
     $('#skipToEditor').click(function () {
@@ -722,7 +724,7 @@ var Navigation = (function($, jsbin, $document){
         jsbin.panels.panels.html.editor.focus();
       }
     });
-  }
+  };
   
   var setup_autocomplte_library_event = function(){
     // deault libraries
@@ -770,7 +772,7 @@ var Navigation = (function($, jsbin, $document){
             return {
               value: library.name,
               url: library.latest
-            }
+            };
           });
         }
       }
@@ -791,7 +793,7 @@ var Navigation = (function($, jsbin, $document){
       Library.insertResources(library.url);
       closedropdown();
     }); 
-  }
+  };
 
   var setup_jasmine_snippet_button_event = function(){
     // Input Jasmine Button
@@ -805,15 +807,15 @@ var Navigation = (function($, jsbin, $document){
 
       $.each(javascripts, function(ext, js){
         Library.insertResources(js);
-        ;})
+        });
       
       var css_url = cdnjs_url + '/jasmine/2.0.0/jasmine.css';
       var css_tag = '<link href="' + css_url +'" rel="stylesheet">';
 
       Library.insertSnippet(css_tag);
       closedropdown();
-    })
-  }
+    });
+  };
 
   var setup_download_event = function(){
     $('#download').click(function (event) {
@@ -821,12 +823,12 @@ var Navigation = (function($, jsbin, $document){
       window.location = jsbin.getURL({ withRevision: true }) + '/download';
       analytics.download();
     });
-  }
+  };
   
   var setup = function(){
     setup_startingpoint_event();
     setup_disabled_event();
-    setup_login_event();
+    setup_loginbtn_event();
     setup_logout_event();
     setup_homebtn_event();
     setup_lockrevision_event();
@@ -864,12 +866,12 @@ var Navigation = (function($, jsbin, $document){
     setup_autocomplte_library_event();
     setup_jasmine_snippet_button_event();
     setup_download_event();
-  }
+  };
 
   return {
     setup: setup,
     add_description: add_description
-  }
+  };
 })($, jsbin, $document);
 
 Navigation.setup();

@@ -1,5 +1,6 @@
 (function () {
-
+  'use strict';
+  
   var $html = $(document.documentElement),
       $tip = $('#tip'),
       $tipContent = $('p', $tip),
@@ -10,7 +11,7 @@
     $tip.removeClass();
     $tipContent.html('');
     $(window).resize();
-    cb && setTimeout(cb, 0);
+    if (cb) { setTimeout(cb, 0); }
   };
 
   var setTip = function (data) {

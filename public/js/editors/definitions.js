@@ -1,4 +1,6 @@
 var Definitions = (function(){
+  'use strict';
+  
   var ternDefinitions = [
     {
       name: 'd3',
@@ -112,5 +114,5 @@ var Definitions = (function(){
 
   return {
     ternDefinitions: ternDefinitions
-  }
+  };
 })();

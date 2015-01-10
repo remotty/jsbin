@@ -1,4 +1,6 @@
-(function(){
+(function(jsbin){
+  'use strict';
+  
   // if a gist has been requested, lazy load the gist library and plug it in
   if (/gist\/.*/.test(window.location.pathname)) {
     window.editors = editors; // needs to be global when the callback triggers to set the content
@@ -43,4 +45,4 @@
   if (jsbin.embed) {
     analytics.embed();
   }
-});
+})(jsbin);

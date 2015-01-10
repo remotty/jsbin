@@ -1,4 +1,6 @@
 var Defs = function(){
+  'use strict';
+  
   var ternBasicDefs = [];
   ternBasicDefs[0] = ({
     "!name": "ecma5",
@@ -6005,7 +6007,7 @@ var Defs = function(){
 
   return {
     ternBasicDefs: ternBasicDefs
-  }
+  };
 }();
 
 var ternBasicDefs = Defs.ternBasicDefs;

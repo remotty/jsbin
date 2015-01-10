@@ -4,6 +4,8 @@
  * ========================================================================== */
 
 var rendererCreator = function (target, is_test) {
+  'use strict';
+  
   var renderer = {};
 
   /**
@@ -98,7 +100,6 @@ var rendererCreator = function (target, is_test) {
    */
   renderer.loopProtectHit = function (line) {
     var cm = jsbin.panels.panels.javascript.editor;
-
     // grr - more setTimeouts to the rescue. We need this to go in *after*
     // jshint does it's magic, but jshint set on a setTimeout, so we have to
     // schedule after.

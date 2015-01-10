@@ -1,4 +1,6 @@
 (function(){
+  'use strict';
+  
   try {
     console.log('Dave is ready.');
   } catch (e) {

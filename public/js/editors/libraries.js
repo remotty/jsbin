@@ -643,9 +643,9 @@ var Libraries = (function(){
     libraries: libraries,
     add: add,
     clear: clear
-  }
+  };
 })();
 
 var libraries = Libraries.libraries;
 libraries.add = Libraries.add;
-libraries.clear = Libraries.clear
+libraries.clear = Libraries.clear;

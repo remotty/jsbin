@@ -1,4 +1,6 @@
 var jsconsole = (function (window) {
+  'use strict';
+  
   // Key-code library
   var keylib={left:37,up:38,right:39,down:40,space:32,
               alt:18,ctrl:17,shift:16,tab:9,enter:13,webkitEnter:10,
@@ -73,12 +75,12 @@ var jsconsole = (function (window) {
 
     historyPosition = history.length;
 
-    if (typeof response === 'undefined') return;
+    if (typeof response === 'undefined') { return; }
 
     el.className = 'response';
     span.innerHTML = response[1];
 
-    if (response[0] != 'info') prettyPrint([span]);
+    if (response[0] != 'info') { prettyPrint([span]); }
     el.appendChild(span);
 
     li.className = response[0];
@@ -145,20 +147,20 @@ var jsconsole = (function (window) {
     output.parentNode.scrollTop = output.parentNode.scrollHeight + 1000;
     return;
 
-    if (echo) {
-      if (!output.firstChild) {
-        output.appendChild(el);
-      } else {
-        output.insertBefore(el, output.firstChild);
-      }
-    } else {
-      if (!output.lastChild) {
-        output.appendChild(el);
-      } else {
-        // console.log(output.lastChild.nextSibling);
-        output.insertBefore(el, logAfter ? logAfter : output.lastChild.nextSibling); //  ? output.lastChild.nextSibling : output.firstChild
-      }
-    }
+    // if (echo) {
+    //   if (!output.firstChild) {
+    //     output.appendChild(el);
+    //   } else {
+    //     output.insertBefore(el, output.firstChild);
+    //   }
+    // } else {
+    //   if (!output.lastChild) {
+    //     output.appendChild(el);
+    //   } else {
+    //     // console.log(output.lastChild.nextSibling);
+    //     output.insertBefore(el, logAfter ? logAfter : output.lastChild.nextSibling); //  ? output.lastChild.nextSibling : output.firstChild
+    //   }
+    // }
   }
 
   function internalCommand(cmd) {
@@ -216,7 +218,7 @@ var jsconsole = (function (window) {
       } else {
         return "You need to be online to use :load";
       }
-    }
+    };
   }());
 
   function loadScript() {
@@ -427,7 +429,7 @@ var jsconsole = (function (window) {
       pos += list[i].nodeValue.length;
     }
     return -1;
-  };
+  }
 
   /**
    * Handle keydown events in the console - the money shot.
@@ -457,7 +459,7 @@ var jsconsole = (function (window) {
         // Don't go past the end
         if (historyPosition >= history.length) historyPosition = history.length; //0;
       }
-      if (history[historyPosition] != undefined && history[historyPosition] !== '') {
+      if (history[historyPosition] !== undefined && history[historyPosition] !== '') {
         setCursorTo(history[historyPosition]);
         return false;
       } else if (historyPosition == history.length) {
@@ -467,7 +469,7 @@ var jsconsole = (function (window) {
     }
 
     // Execute the code
-    else if (enterDown && event.shiftKey == false) { // enter (what about the other one)
+    else if (enterDown && event.shiftKey === false) { // enter (what about the other one)
       var command = exec.textContent || exec.value;
       // ======================================================================
       if (command.length) post(command);
@@ -476,9 +478,9 @@ var jsconsole = (function (window) {
     }
 
     // Expand the textarea
-    else if (enterDown && event.shiftKey == true) {
+    else if (enterDown && event.shiftKey === true) {
       var rows = exec.value.match(/\n/g);
-      rows = rows != null ? rows.length + 2 : 2;
+      rows = rows !== null ? rows.length + 2 : 2;
       exec.setAttribute('rows', rows);
     }
 
@@ -493,7 +495,7 @@ var jsconsole = (function (window) {
   if (enableCC && iOSMobile) {
     fakeInput.onkeydown = function (event) {
       var which = whichKey(event),
-          enterDown = (which == keylib.enter || which == keylib.webkitEnter)
+          enterDown = (which === keylib.enter || which === keylib.webkitEnter);
 
       if (enterDown) {
         post(this.value);
@@ -506,7 +508,7 @@ var jsconsole = (function (window) {
 
   form.onsubmit = function (event) {
     event = event || window.event;
-    event.preventDefault && event.preventDefault();
+    if (event.preventDefault) { event.preventDefault(); }
     post(exec.textContent || exec.value);
     return false;
   };
@@ -585,6 +587,8 @@ var msgType = '';
 jsconsole.init(document.getElementById('output'));
 
 function upgradeConsolePanel(console) {
+  'use strict';
+  
   console.$el.click(function (event) {
     if (!$(event.target).closest('#output').length) {
       jsconsole.focus();

@@ -1,4 +1,6 @@
 var PanelFactory = (function(renderLivePreview, Panels, Panel){
+  'use strict';
+  
   var createDataframe = function () {
     return new Panel('dataframe', 'javascript', { editor: true, label: 'Data' });
   };
@@ -80,7 +82,7 @@ var PanelFactory = (function(renderLivePreview, Panels, Panel){
     }
 
     return new Panel('livetest', 'live', { label: 'OutputTest', show: show, hide: hide });
-  }
+  };
 
   return {
     createDataframe: createDataframe,
@@ -91,5 +93,5 @@ var PanelFactory = (function(renderLivePreview, Panels, Panel){
     createConsole: createConsole,
     createLive: createLive,
     createLivetest: createLivetest
-  }
+  };
 })(renderLivePreview, Panels, Panel);

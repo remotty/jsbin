@@ -1,4 +1,6 @@
 var Spinner = (function(){
+  'use strict';
+  
   function spinner(element) {
     'use strict';
     var c = element || document.createElement('canvas');
@@ -66,7 +68,7 @@ var Spinner = (function(){
 
   return {
     spinner: spinner
-  }
+  };
 })();
 
 var spinner = Spinner.spinner;

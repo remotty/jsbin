@@ -1,4 +1,8 @@
+/* globals $:true, jsbin:true, store:true, saveChecksum:true */
+
 var GlobalHelper = (function(){
+  'use strict';
+  
   var $window = $(window);
   var $body = $('body');
   var $document = $(document);
@@ -45,7 +49,6 @@ var GlobalHelper = (function(){
   }
 
   function debounceAsync(fn) {
-    'use strict';
     var waiting = false;
     var last = null;
 
@@ -84,7 +87,7 @@ var GlobalHelper = (function(){
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;');
-  };
+  }
 
   function dedupe(array) {
     var hash    = {},
@@ -105,7 +108,6 @@ var GlobalHelper = (function(){
   }
 
   function isDOM(obj) {
-    'use strict';
     var Node = window.Node || false;
     if (Node) {
       return obj instanceof Node;
@@ -114,8 +116,6 @@ var GlobalHelper = (function(){
   }
 
   function exposeSettings() {
-    'use strict';
-
     function mockEditor (editor, methods) {
       return methods.reduce(function (mockEditor, method) {
         mockEditor[method] = editor[method].bind(editor);
@@ -252,7 +252,7 @@ var GlobalHelper = (function(){
     objectValue: objectValue,
     
     sendReload: sendReload
-  }
+  };
 })();
 
 var $window = GlobalHelper.$window;
@@ -261,7 +261,7 @@ var $document = GlobalHelper.$document;
 var $bin = GlobalHelper.$bin;
 var $source = GlobalHelper.$source;
 var $library = GlobalHelper.$library;
-var $live = GlobalHelper.$live
+var $live = GlobalHelper.$live;
 
 var editorModes = GlobalHelper.editorModes;
 
@@ -270,12 +270,12 @@ var documentTitle = GlobalHelper.documentTitle;
 var loadGist = GlobalHelper.loadGist;
 var unload = GlobalHelper.unload;
 
-var throttle = GlobalHelper.throttle
-var debounceAsync = GlobalHelper.debounceAsync
-var escapeHTML = GlobalHelper.escapeHTML
-var dedupe = GlobalHelper.dedupe
-var isDOM = GlobalHelper.isDOM
-var exposeSettings = GlobalHelper.exposeSettings
+var throttle = GlobalHelper.throttle;
+var debounceAsync = GlobalHelper.debounceAsync;
+var escapeHTML = GlobalHelper.escapeHTML;
+var dedupe = GlobalHelper.dedupe;
+var isDOM = GlobalHelper.isDOM;
+var exposeSettings = GlobalHelper.exposeSettings;
 var objectValue = GlobalHelper.objectValue;
 
 var sendReload = GlobalHelper.sendReload;

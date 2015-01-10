@@ -63,7 +63,7 @@
     }));
   }
 
-  var ctrlKey = $.browser.platform === 'mac' ? 'metaKey' : 'ctrlKey'
+  var ctrlKey = $.browser.platform === 'mac' ? 'metaKey' : 'ctrlKey';
 
   $(document).on('keydown', function beautifyKeyBinding(e) {
     if (e[ctrlKey] && e.shiftKey && e.which == 76) {

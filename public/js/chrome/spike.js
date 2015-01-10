@@ -18,7 +18,8 @@ To test: curl --header "Accept: text/event-stream" <jsbinurl>
 
 */
 
-;(function (global) {
+(function (global) {
+  'use strict';
 
   function sortci(a, b) {
     return a.toLowerCase() < b.toLowerCase() ? -1 : 1;
@@ -36,7 +37,6 @@ To test: curl --header "Accept: text/event-stream" <jsbinurl>
         parts.push(stringify(o[i], simple));
       }
       json += parts.join(', ') + ']';
-      json;
     } else if (type == '[object Object]') {
       json = '{';
       for (i in o) {
@@ -57,7 +57,7 @@ To test: curl --header "Accept: text/event-stream" <jsbinurl>
       json = 'null';
     } else if (o === undefined) {
       json = 'undefined';
-    } else if (simple == undefined) {
+    } else if (simple === undefined) {
       json = type + '{\n';
       for (i in o) {
         names.push(i);
@@ -76,7 +76,11 @@ To test: curl --header "Accept: text/event-stream" <jsbinurl>
   }
 
   function addEvent(type, fn) {
-    window.addEventListener ? window.addEventListener(type, fn, false) : window.attachEvent('on' + type, fn);
+    if (window.addEventListener) {
+      window.addEventListener(type, fn, false);
+    } else {
+      window.attachEvent('on' + type, fn);
+    }
   }
 
   function cleanPath(str) {

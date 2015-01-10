@@ -72,7 +72,7 @@ var Gist = (function () { // jshint ignore:line
       });
 
       if (!gist.files.javascript && !gist.files.css) {
-        delete gist.files[['jsbin', (jsbin.state.code || 'untitled'), 'html'].join('.')]
+        delete gist.files[['jsbin', (jsbin.state.code || 'untitled'), 'html'].join('.')];
       }
 
       if (jsbin.state.processors) {

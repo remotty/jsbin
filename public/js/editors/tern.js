@@ -1,6 +1,7 @@
+  /*globals $:true, jsbin:true, CodeMirror:true, Definitions:true, Defs:true */
+
 (function ($, jsbin, CodeMirror, Defs, Definitions) {
   'use strict';
-  /*globals $, jsbin, CodeMirror, template, ternDefinitions, ternBasicDefs */
 
   if (jsbin.embed) {
     return;

@@ -1,7 +1,8 @@
 var Archive = (function(){
+  'use strict';
+  
   function archive(unarchive) {
     /*global jsbin, $, $document, analytics*/
-    'use strict';
     var type = unarchive === false ? 'unarchive' : 'archive';
     var text = unarchive === false ? 'restore from archive' : 'archiving';
     analytics[type](jsbin.getURL({ withRevision: true }));
@@ -53,7 +54,7 @@ var Archive = (function(){
   return {
     archive: archive,
     unarchive: unarchive
-  }
+  };
 })();
 
 var archive = Archive.archive;

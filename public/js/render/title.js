@@ -1,14 +1,15 @@
 var Title = (function(){
+  'use strict';
+  
   function updateTitle(source) {
-    'use strict';
     /*globals jsbin, documentTitle, $*/
     if (source === undefined) {
       source = jsbin.panels.panels.html.getCode();
     }
     // read the element out of the source code and plug it in to our document.title
-    var newDocTitle = source.match(this.re);
+    var newDocTitle = source.match(re);
     if (newDocTitle !== null && newDocTitle[1] !== documentTitle) {
-      this.lastState = jsbin.state.latest;
+      lastState = jsbin.state.latest;
       documentTitle = $('<div>').html(newDocTitle[1].trim()).text(); // jshint ignore:line
       if (documentTitle) {
         document.title = documentTitle + ' - ' + 'JS Bin';
@@ -34,5 +35,5 @@ var Title = (function(){
 
   return {
     updateTitle: updateTitle
-  }
+  };
 })();
