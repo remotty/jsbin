@@ -1,3 +1,5 @@
+/* globals loopProtect:true, sandbox:true, getIframeWindow:true
+ * , proxyConsole:true, processor:true */
 /** ============================================================================
  * JS Bin Runner
  * Accepts incoming postMessage events and updates a live iframe accordingly.
@@ -14,7 +16,7 @@ var runner = (function () {
   loopProtect.hit = function (line) {
     console.warn('Exiting potential infinite loop at line ' + line + '. To disable loop protection: add "// noprotect" to your code');
     runner.postMessage('loopProtectHit', line);
-  }
+  };
 
   /**
    * Store what parent origin *should* be
@@ -74,7 +76,7 @@ var runner = (function () {
     sandbox.use(iframe, function () {
       var childDoc = iframe.contentDocument,
           childWindow = getIframeWindow(iframe);
-      if (!childDoc) childDoc = childWindow.document;
+      if (!childDoc) { childDoc = childWindow.document; }
 
       // Reset the console to the prototype state
       proxyConsole.methods.forEach(function (method) {
@@ -142,7 +144,9 @@ var runner = (function () {
    */
   runner['console:load:script'] = function (url) {
     sandbox.injectScript(url, function (err) {
-      if (err) return runner.postMessage('console:load:script:error', err);
+      if (err) {
+        return runner.postMessage('console:load:script:error', err);
+      }
       runner.postMessage('console:load:script:success', url);
     });
   };
@@ -152,7 +156,9 @@ var runner = (function () {
    */
   runner['console:load:dom'] = function (html) {
     sandbox.injectDOM(html, function (err) {
-      if (err) return runner.postMessage('console:load:dom:error', err);
+      if (err) {
+        return runner.postMessage('console:load:dom:error', err);
+      }
       runner.postMessage('console:load:dom:success');
     });
   };

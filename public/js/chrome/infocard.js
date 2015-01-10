@@ -1,13 +1,14 @@
+    /*global spinner, $, jsbin, prettyDate, EventSource, throttle, $document, analytics, throttle*/
+
 (function (global) {
+  'use strict';
+  
   if ('EventSource' in global) {
-    return setupInfocard()
+    return setupInfocard();
   } else {
     $.getScript(jsbin['static'] + '/vendor/js/libraries/eventsource.js', setupInfocard);
   }
   function setupInfocard() {
-    /*global spinner, $, jsbin, prettyDate, EventSource, throttle, $document, analytics, throttle*/
-    'use strict';
-
     // don't insert this on embeded views
     if (jsbin.embed) {
       return;
@@ -30,8 +31,6 @@
     if ($template.length === 0) {
       return;
     }
-
-
 
     function updateStats(event, _data) {
       var data = _data ? JSON.parse(_data) : JSON.parse(event.data);

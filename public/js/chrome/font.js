@@ -4,6 +4,8 @@
  * ========================================================================== */
 /*global jsbin:true*/
 var font = (function (document) {
+  'use strict';
+  
   var head = document.getElementsByTagName('head')[0],
       selectors = '#output li, #exec, .fakeInput, .fakeInput:before, #exec:before, #bin .editbox .CodeMirror, .mobile .editbox textarea',
       size = jsbin.settings.font || 14;

@@ -1,6 +1,8 @@
 // directly from @wookiehangover's amazing demo: https://github.com/wookiehangover/pandaco.de
 
 var SyncWorker = (function(){
+  'use strict';
+  
   var setup = function(){
     var reader = new FileReader();
     var modified_cache;
@@ -31,7 +33,7 @@ var SyncWorker = (function(){
             lastModified: file.timeStamp
           });
         } else {
-          delete file;
+          file = undefined;
         }
 
         if( multiplier < 8 )
@@ -43,7 +45,7 @@ var SyncWorker = (function(){
 
   return {
     setup: setup
-  }
+  };
 })();
 
 SyncWorker.setup();

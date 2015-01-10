@@ -1,9 +1,11 @@
+/* globals sandbox:true, addEvent:true, runner:true */
 /** =========================================================================
  * JS Bin Runner
  * ========================================================================== */
 
 window.onload = function () {
-
+  'use strict';
+  
   /**
    * Live rendering, basic mode.
    * Fallback - load the bin into a new iframe, and let it keep itself up
@@ -26,5 +28,4 @@ window.onload = function () {
   sandbox.target = document.getElementsByClassName('sandbox-wrapper')[0];
   // Hook into postMessage
   addEvent(window, 'message', runner.handleMessage);
-
 };

@@ -1,4 +1,6 @@
 (function(){
+  'use strict';
+  
   var deferredLiveRender = null;
 
   // timer value: used in the delayed render (because iframes don't have
@@ -36,5 +38,5 @@
     }
   }
 
-  $document.bind('codeChange.live', codeChangeLive);
-})();
+  $document.bind('codeChange.live', codeChangeLive);})
+();

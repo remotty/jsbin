@@ -1,5 +1,6 @@
-;(function () {
-  /*global jsbin, $, $document, analytics*/
+/*global jsbin, $, $document, analytics*/
+
+(function () {
   'use strict';
   if (!jsbin.user || !jsbin.user.name || jsbin.embed) {
     return;

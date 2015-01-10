@@ -1,4 +1,6 @@
 function Sandbox(url) {
+  'use strict';
+  
   function send(data) {
     source.postMessage(data, frameHost);
   }
@@ -8,7 +10,7 @@ function Sandbox(url) {
       iframe.src = jsbin.root + '/sandbox.html?' + url,
       body = document.body,
       source = null,
-      guid = +new Date,
+      guid = +new Date(),
       callbacks = {},
       queue = new Queue(send);
 
@@ -41,5 +43,5 @@ function Sandbox(url) {
       callbacks[guid] = callback;
       queue.push(JSON.stringify({ guid: guid, what: what }));
     }
-  }
+  };
 }

@@ -2,6 +2,8 @@
 
 var settings = {
   save: function () {
+    'use strict';
+    
     localStorage.setItem('settings', JSON.stringify(jsbin.settings));
 
     $.ajax({

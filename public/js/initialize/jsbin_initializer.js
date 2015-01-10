@@ -1,7 +1,13 @@
+/*globals $:true, jQuery:true, store:true, jsbin:true, $window:true
+ * , throttle:true, $bin:true, $body:true, $document:true,
+ * , Sandbox:true, exposeSettings:true, unload:true */
+
 var JsbinInitializer = (function(){
+  'use strict';
+  
   function setup(){
     var storedSettings = store.localStorage.getItem('settings');
-    if (storedSettings === "undefined") {
+    if (storedSettings === 'undefined') {
       // yes, equals the *string* "undefined", then something went wrong
       storedSettings = null;
     }
@@ -158,7 +164,7 @@ var JsbinInitializer = (function(){
 
   return {
     setup: setup
-  }
+  };
 })();
 
 JsbinInitializer.setup();

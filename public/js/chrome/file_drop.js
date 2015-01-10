@@ -1,4 +1,6 @@
 var FileDrop = (function(){
+  'use strict';
+  
   function allowDrop(holder) {
     var cursorPosition = null;
     var panel = null;
@@ -296,7 +298,7 @@ var FileDrop = (function(){
 
   return {
     allowDrop: allowDrop
-  }
+  };
 })();
 
 // test for dnd and file api first

@@ -1,10 +1,14 @@
+/* globals loopProtect:true, sandbox:true, getIframeWindow:true
+ * , proxyConsole:true, processor:true, runner:true, addEvent:true
+ * , prependChild:true, throttle:true */
 /** ============================================================================
  * Sandbox
  * Handles creating and insertion of dynamic iframes
  * ========================================================================== */
 
 var sandbox = (function () {
-
+  'use strict';
+  
   var sandbox = {};
 
   /**
@@ -33,7 +37,9 @@ var sandbox = (function () {
    * the old one.
    */
   sandbox.use = function (iframe, done) {
-    if (!sandbox.target) throw new Error("Sandbox has no target element.");
+    if (!sandbox.target) {
+      throw new Error("Sandbox has no target element.");
+    }
     sandbox.old = sandbox.active;
     var state = sandbox.saveState(sandbox.old);
     sandbox.active = iframe;
@@ -42,7 +48,7 @@ var sandbox = (function () {
     // allowing us access to the calculated properties like innerWidth.
     setTimeout(function () {
       // call the code that renders the iframe source
-      if (done) done();
+      if (done) { done(); }
 
       // remove *all* the iframes, baring the active one
       var iframes = sandbox.target.getElementsByTagName('iframe'),
@@ -64,9 +70,9 @@ var sandbox = (function () {
    * Restore the state of a prvious iframe, like scroll position.
    */
   sandbox.restoreState = function (iframe, state) {
-    if (!iframe) return {};
+    if (!iframe) { return {}; } 
     var win = getIframeWindow(iframe);
-    if (!win) return {};
+    if (!win) { return {}; }
     if (state.scroll) {
       win.scrollTo(state.scroll.x, state.scroll.y);
     }
@@ -76,9 +82,9 @@ var sandbox = (function () {
    * Save the state of an iframe, like scroll position.
    */
   sandbox.saveState = function (iframe) {
-    if (!iframe) return {};
+    if (!iframe) { return {}; }
     var win = getIframeWindow(iframe);
-    if (!win) return {};
+    if (!win) { return {}; }
     return {
       scroll: {
         x: win.scrollX,
@@ -92,7 +98,7 @@ var sandbox = (function () {
    * window during live rendering.
    */
   sandbox.wrap = function (childWindow, options) {
-    if (!childWindow) return;
+    if (!childWindow) { return; }
     options = options || {};
 
     // Notify the parent of resize events (and send one straight away)
@@ -150,7 +156,9 @@ var sandbox = (function () {
    * Inject a script via a URL into the page
    */
   sandbox.injectScript = function (url, cb) {
-    if (!sandbox.active) throw new Error("sandbox.injectScript: has no active iframe.");
+    if (!sandbox.active) {
+      throw new Error("sandbox.injectScript: has no active iframe.");
+    }
     var childWindow = sandbox.active.contentWindow,
         childDocument = childWindow.document;
     var script = childDocument.createElement('script');
@@ -168,13 +176,15 @@ var sandbox = (function () {
    * Inject full DOM into the page
    */
   sandbox.injectDOM = function (html, cb) {
-    if (!sandbox.active) throw new Error("sandbox.injectDOM: has no active iframe.");
+    if (!sandbox.active) {
+      throw new Error('sandbox.injectDOM: has no active iframe.');
+    }
     var childWindow = sandbox.active.contentWindow,
         childDocument = childWindow.document;
     try {
       childDocument.body.innerHTML = html;
     } catch (e) {
-      cb("Failed to load DOM.");
+      cb('Failed to load DOM.');
     }
     cb();
   };

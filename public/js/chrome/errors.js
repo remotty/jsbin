@@ -1,6 +1,8 @@
 /*globals $:true, JSHINT:true, editors:true, $document:true, escapeHTML:true, jsbin:true, throttle:true */
 
-var Error = (function(){
+var Errors = (function(){
+  'use strict';
+  
   var jshint = function () {
     var source = editors.javascript.editor.getCode();
     
@@ -81,7 +83,7 @@ var Error = (function(){
       $(document).bind('codeChange', throttle(checkForErrors, 1000));
       $(document).bind('jsbinReady', checkForErrors);
     }
-  }
+  };
   
   var checkForErrors = function () {
     // exit if the javascript panel isn't visible or jshint is disabled (for example by the user or when using a js preprocessor)
@@ -121,12 +123,12 @@ var Error = (function(){
   return {
     setup: setup,
     jshint: jshint
-  }
+  };
 })();
 
-var jshint = Error.jshint;
+var jshint = Errors.jshint;
 
-Error.setup();
+Errors.setup();
 
 
 

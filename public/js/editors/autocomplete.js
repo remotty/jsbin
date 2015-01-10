@@ -1,8 +1,15 @@
 var AutoComplete = (function(){
+  'use strict';
+  
   // Minimal event-handling wrapper.
   function stopEvent() {
-    if (this.preventDefault) {this.preventDefault(); this.stopPropagation();}
-    else {this.returnValue = false; this.cancelBubble = true;}
+    if (this.preventDefault) {
+      this.preventDefault();
+      this.stopPropagation();
+    } else {
+      this.returnValue = false;
+      this.cancelBubble = true;
+    }
   }
   function addStop(event) {
     if (!event.stop) event.stop = stopEvent;
@@ -36,8 +43,10 @@ var AutoComplete = (function(){
       tprop = editor.getTokenAt({line: cur.line, ch: tprop.start});
       if (tprop.string != ".") return;
       tprop = editor.getTokenAt({line: cur.line, ch: tprop.start});
-      if (!context) var context = [];
-      context.push(tprop);
+      if (!context) {
+        var context = [];
+        context.push(tprop);
+      }
     }
     
     function insert(str) {
@@ -57,7 +66,7 @@ var AutoComplete = (function(){
     var cur = editor.getCursor(false), token = editor.getTokenAt(cur), tprop = token;
     // If it's not a 'word-style' token, ignore the token.
 
-    if (token.string == '') return;
+    if (token.string === '') { return; }
 
     if (!/^[\w$_]*$/.test(token.string)) {
       token = tprop = {start: cur.ch, end: cur.ch, string: "", state: token.state,
@@ -120,7 +129,7 @@ var AutoComplete = (function(){
     }
     
     function pickandclose() {
-      pick()
+      pick();
       setTimeout(function () { editor.focus(); }, 50);
     }
     
@@ -192,5 +201,5 @@ var AutoComplete = (function(){
 
   return {
     startTagComplete: startTagComplete
-  }
+  };
 })();

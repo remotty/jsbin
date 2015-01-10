@@ -1,6 +1,8 @@
 /*globals objectValue, $, jsbin, $body, $document, saveChecksum, jsconsole*/
 
 Keycontrol = (function(){
+  'use strict';
+  
   var KEYCODE = {
     'ESC': 27,
     '0': 48,
@@ -14,7 +16,7 @@ Keycontrol = (function(){
     'O': 79,
     'S': 83,
     'BACKSPACE': 8
-  }
+  };
   
   var keyboardHelpVisible = false;
   var customKeys = objectValue('settings.keys', jsbin) || {};
@@ -22,7 +24,7 @@ Keycontrol = (function(){
 
   $('input.enablealt').attr('checked', customKeys.useAlt ? true : false).change(enableAltUse);
 
-  $.browser.platform = identifyBrowser()
+  $.browser.platform = identifyBrowser();
 
   if (!customKeys.disabled) {
     $body.keydown(keycontrol);
@@ -31,30 +33,30 @@ Keycontrol = (function(){
   }
 
   if (!customKeys.disabled) {
-    $document.keydown(setShortcuts)
+    $document.keydown(setShortcuts);
   }
   
   function setShortcuts(event){
     var isMetaShortcut = function (key) {
-      return event.metaKey && event.which === KEYCODE[key]
-    }
+      return event.metaKey && event.which === KEYCODE[key];
+    };
 
     var archive = function () {
       archive(!event.shiftKey);
       return event.preventDefault();
-    }
+    };
 
     var focusLeftPanel = function () {
       Panels.left_panel().focus();
-    }
+    };
 
     var focusRightPanel = function () {
       Panels.right_panel().focus();
-    }
+    };
 
     var addDescription = function () {
       Navigation.add_description();
-    }
+    };
 
     var open = function() {
       var visible_panels = Panels.visible_panels_name();
@@ -68,7 +70,7 @@ Keycontrol = (function(){
         });
       }
       event.preventDefault();
-    }
+    };
     
     var zoom_out = function () {
       var current_panel = jsbin.panels.focused;
@@ -77,7 +79,7 @@ Keycontrol = (function(){
         jsbin.panels.panels[data].show();
         current_panel.hide();
       });
-    }
+    };
 
     var zoom_in = function () {
       var panels = Panels.visible_panels_name();
@@ -86,7 +88,7 @@ Keycontrol = (function(){
       $.cookie('zoom-panels', panels.join(','));
 
       var target_panels = _.reject(panels, function(panel){
-        return panel === "live"
+        return panel === "live";
       });
 
       $.each(target_panels, function(i, data){
@@ -95,7 +97,7 @@ Keycontrol = (function(){
 
       jsbin.panels.panels.live.show();
       current_panel.hide();
-    }
+    };
     
     var includeAltKey = customKeys.useAlt ? event.altKey : !event.altKey;
     var closekey = customKeys.closePanel ? customKeys.closePanel : KEYCODE['9'];
@@ -110,10 +112,10 @@ Keycontrol = (function(){
     
     if (isMetaShortcut(['O'])) { // open
       open();
-    } else if (event.metaKey && event.shiftKey && event.which === KEYCODE['BACKSPACE']) { // cmd+shift+backspace
+    } else if (event.metaKey && event.shiftKey && event.which === KEYCODE.BACKSPACE) { // cmd+shift+backspace
       $('a.deletebin:first').trigger('click', 'keyboard');
       event.preventDefault();
-    } else if (!jsbin.embed && event.metaKey && event.which === KEYCODE['S']) { // save
+    } else if (!jsbin.embed && event.metaKey && event.which === KEYCODE.S) { // save
       if (event.shiftKey === false) {
         // if (saveChecksum) {
         //   saveChecksum = false;
@@ -252,11 +254,11 @@ Keycontrol = (function(){
         // show help
         opendropdown($('#help').prev()[0]);
         event.stop();
-      } else if (event.which === KEYCODE['ESC'] && keyboardHelpVisible) {
+      } else if (event.which === KEYCODE.ESC && keyboardHelpVisible) {
         $body.removeClass('keyboardHelp');
         keyboardHelpVisible = false;
         event.stop();
-      } else if (event.which === KEYCODE['ESC'] && jsbin.panels.focused && codePanel) {
+      } else if (event.which === KEYCODE.ESC && jsbin.panels.focused && codePanel) {
         // event.stop();
         // return CodeMirror.commands.autocomplete(jsbin.panels.focused.editor);
       } else if (event.which === KEYCODE['.'] && includeAltKey && event.metaKey && panel.id === 'html') {
@@ -345,7 +347,7 @@ Keycontrol = (function(){
   return {
     customKeys: customKeys,
     panelShortcuts: panelShortcuts
-  }
+  };
 })();
 
 var customKeys = Keycontrol.customKeys;

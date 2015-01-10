@@ -362,12 +362,12 @@ function pad(n){
 }
 
 function ISODateString(d){
-  return d.getFullYear()+'-'
-    + pad(d.getMonth()+1)+'-'
-    + pad(d.getDate())+'T'
-    + pad(d.getHours())+':'
-    + pad(d.getMinutes())+':'
-    + pad(d.getSeconds())+'Z';
+  return d.getFullYear()+'-'+
+     pad(d.getMonth()+1)+'-'+
+     pad(d.getDate())+'T'+
+     pad(d.getHours())+':'+
+     pad(d.getMinutes())+':'+
+     pad(d.getSeconds())+'Z';
 }
 
 function saveCode(method, ajax, ajaxCallback) {

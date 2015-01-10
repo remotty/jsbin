@@ -2,6 +2,8 @@
 // 'use strict'; // this causes bigger issues :-\
 
 var Library = (function($, jsbin, editors){
+  'use strict';
+  
   var groups = {};
 
   $library.bind('init', function () {
@@ -147,7 +149,7 @@ var Library = (function($, jsbin, editors){
     editors.html.setCode(code);
     editors.html.editor.setCursor({ line: state.line + state.add, ch: state.character });
 
-  }
+  };
 
   var insertSnippet = function(snippet) {
     var code = editors.html.getCode(),
@@ -164,7 +166,7 @@ var Library = (function($, jsbin, editors){
 
     editors.html.setCode(code);
     editors.html.editor.setCursor({ line: state.line + state.add, ch: state.character });
-  }
+  };
 
   function createHTMLToJadeTagConverter(tagName, attribute, suffix){
     var regExToGrabResource = new RegExp(attribute+'=(\'|").+.'+suffix+'\\1');
@@ -195,5 +197,5 @@ var Library = (function($, jsbin, editors){
   return { 
     insertResources: insertResources,
     insertSnippet: insertSnippet
-  }
+  };
 })($, jsbin, editors);

@@ -1,4 +1,8 @@
-(function(){
+/*globals jsbin:true, CodeMirror:true, editorModes:true*/
+
+(function(jsbin, CodeMirror, editorModes){
+  'use strict';
+  
   if (jsbin.settings.editor.tabMode === 'default') {
     CodeMirror.keyMap.basic.Tab = undefined;
   } else if (jsbin.settings.editor.tabMode !== 'classic') {
@@ -21,11 +25,10 @@
   CodeMirror.commands.autocomplete = simpleJsHint;
 
   CodeMirror.commands.snippets = function (cm) {
-    'use strict';
-    if (['htmlmixed', 'javascript', 'css', editorModes['less'], editorModes['sass'], editorModes['scss']].indexOf(cm.options.mode) === -1) {
+    if (['htmlmixed', 'javascript', 'css', editorModes.less, editorModes.sass, editorModes.scss].indexOf(cm.options.mode) === -1) {
       return CodeMirror.simpleHint(cm, CodeMirror.hint.anyword);
     } else {
       return CodeMirror.snippets(cm);
     }
   };
-})();
+})(jsbin, CodeMirror, editorModes);

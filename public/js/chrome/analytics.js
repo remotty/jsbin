@@ -1,4 +1,8 @@
-var Analytics = (function(){
+/*global jsbin:true, _gaq: true */
+
+var Analytics = (function(window){
+  'use strict';
+  
   return {
     track: function (category, action, label, value) {
       var data = ['_trackEvent', category, action];
@@ -8,8 +12,10 @@ var Analytics = (function(){
       if (value) {
         data.push(value);
       }
-
-      window._gaq && _gaq.push(data);
+      
+      if (window._gaq) {
+        window._gaq.push(data);
+      }
     },
     universalEditor: function (value) {
       analytics.track('menu', 'universalEditor', value);
@@ -24,7 +30,7 @@ var Analytics = (function(){
       analytics.track('state', 'embed');
       try {
         analytics.track('state', 'embed', window.top.location);
-      } catch (e) {};
+      } catch (e) {}
     },
     milestone: function () {
       analytics.track('bin', 'save', window.location.pathname);
@@ -137,6 +143,6 @@ var Analytics = (function(){
       analytics.track('welcome-panel-link', url);
     }
   };
-})();
+})(window);
 
 var analytics = Analytics;

@@ -2,9 +2,11 @@
 
 // Panel Class
 var Panel = (function () {
+  'use strict';
+  
   var Panel = function(){
     this.initialize.apply(this, arguments);
-  }
+  };
 
   Panel.order = 0;
 
@@ -16,6 +18,7 @@ Panel.prototype = (function($, $source, $document, $body, jsbin,
                             CodeMirror, processors, RSVP, analytics,
                             store, editorModes, Panels,
                             panelShortcuts){
+  'use strict';
 
   var virgin = true;
   var visible = false;
@@ -72,7 +75,7 @@ Panel.prototype = (function($, $source, $document, $body, jsbin,
       };
 
       if (name === 'dataframe') {
-        cmsettings.mode = {name: "javascript", json: true}
+        cmsettings.mode = {name: "javascript", json: true};
       }
       
       $.extend(cmSettings, jsbin.settings.editor || {});
@@ -193,7 +196,7 @@ Panel.prototype = (function($, $source, $document, $body, jsbin,
     $panel.add(this.$el.find('.label')).click(function () {
       panel.focus();
     });
-  }
+  };
 
   var updateAriaState = function updateAriaState() {
     this.controlButton.attr('aria-label', this.label + ' Panel: ' + (this.visible ? 'Active' : 'Inactive'));
@@ -394,7 +397,7 @@ Panel.prototype = (function($, $source, $document, $body, jsbin,
 
   var init = function () {
       if (this.settings.init) this.settings.init.call(this);
-  }
+  };
   
   var _setupEditor = function () {
     var focusedPanel = store.sessionStorage.getItem('panel') || jsbin.settings.focusedPanel,
@@ -529,7 +532,7 @@ Panel.prototype = (function($, $source, $document, $body, jsbin,
       list[i++].apply(this, args);
     }
     return this;
-  }
+  };
 
   function _populateEditor(editor, panel) {
     if (!editor.codeSet) {
@@ -603,7 +606,7 @@ Panel.prototype = (function($, $source, $document, $body, jsbin,
     on: on,
     trigger: trigger,
     distribute: distribute
-  }
+  };
 })($, $source, $document, $body, jsbin, CodeMirror, processors, RSVP,
    analytics, store, editorModes, Panels, panelShortcuts);
 

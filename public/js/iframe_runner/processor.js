@@ -4,7 +4,8 @@
  * ========================================================================== */
 
 var processor = (function () {
-
+  'use strict';
+  
   var processor = {};
 
   processor.blockingMethods = {
@@ -39,9 +40,9 @@ var processor = (function () {
    */
   processor.debug = function (source) {
     return '<pre>' + source.replace(/[<>&]/g, function (m) {
-      if (m == '<') return '&lt;';
-      if (m == '>') return '&gt;';
-      if (m == '&') return '&amp;';
+      if (m == '<') { return '&lt;'; } 
+      if (m == '>') { return '&gt;'; }
+      if (m == '&') { return '&amp;'; }
     }) + '</pre>';
   };
 

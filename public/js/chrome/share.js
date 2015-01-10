@@ -161,7 +161,7 @@
 
     var directLinksHTML = []; //['<a href="' + url + '.html">html</a>'];
 
-    var code = ''
+    var code = '';
     var ext = '';
 
     code = jsbin.panels.panels.html.getCode().trim();

@@ -25,7 +25,7 @@ var getPreparedCodeCreator = function (is_test) { // jshint ignore:line
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.0.0/jasmine-html.js"></script>\
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.0.0/boot.js"></script>\
 <link href="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.0.0/jasmine.css" rel="stylesheet">\
-      '
+   ';
 
   return function (nojs) {
     // reset all the regexp positions for reuse
@@ -53,9 +53,9 @@ var getPreparedCodeCreator = function (is_test) { // jshint ignore:line
           replaceWith = 'window.runnerWindow.proxyConsole.';
 
       try{
-        dataframe = JSON.stringify(JSON.parse(dataframe))
+        dataframe = JSON.stringify(JSON.parse(dataframe));
       }catch(error){
-        dataframe = ""
+        dataframe = "";
       }
       
       if (is_test) {

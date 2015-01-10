@@ -1,4 +1,7 @@
-var Editors = (function($document, renderLivePreview, PanelFactory, Panels, upgradeConsolePanel){
+var Editors = (function($document, renderLivePreview, PanelFactory,
+                        Panels, upgradeConsolePanel){
+  'use strict';
+  
   var editors = Panels.panels;
 
   var createPanels = function(){
@@ -13,7 +16,7 @@ var Editors = (function($document, renderLivePreview, PanelFactory, Panels, upgr
     upgradeConsolePanel(editors.console);
     editors.live = PanelFactory.createLive();
     editors.livetest = PanelFactory.createLivetest();
-  }
+  };
 
   var setup = function(){
     createPanels();
@@ -84,12 +87,12 @@ var Editors = (function($document, renderLivePreview, PanelFactory, Panels, upgr
         $document.trigger('jsbinReady');
       }
     }, 100);
-  }
+  };
 
   return{
     editors: editors,
     setup: setup
-  }
+  };
 })($document, renderLivePreview, PanelFactory, Panels, upgradeConsolePanel);
 
 var editors = Editors.editors;

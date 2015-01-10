@@ -16,7 +16,10 @@
  * Create the runner iframe, and if postMe wait until the iframe is loaded to
  * start postMessaging the runner.
  */
-var renderLivePreviewCreator = function (target, renderer, is_test, has_event) {
+var renderLivePreviewCreator = function (target, renderer, is_test,
+                                         has_event) {
+  'use strict';
+  
   var deferCallable = function (newFn, trigger) {
     var args,
         pointerFn = function () {
@@ -170,8 +173,10 @@ var renderLiveViewPreview = renderLivePreviewCreator($('#live'), renderer, false
 var renderLiveTestPreview = renderLivePreviewCreator($('#livetest'), rendererTest, true, false);
 
 var renderLivePreview = function(args){
+  'use strict';
+  
   renderLiveViewPreview(args);
   
   // Test output panel use lazy evaluation
   // renderLiveTestPreview(args);
-}
+};

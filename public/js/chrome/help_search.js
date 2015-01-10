@@ -1,5 +1,6 @@
 (function () {
   'use strict';
+  
   var results = $('#results');
   var resultCount = $('#result-count');
   var searchTerms = [];
@@ -102,7 +103,6 @@
   }
 
   function searchFor(needles, haystack) {
-    'use strict';
     needles = wordmap(needles);
     var matches = haystack.map(function (data) {
       var matches = needles.filter(function (needle) {
@@ -133,6 +133,4 @@
     }
     resultCount.html(matches.length + ' result' + s);
   }
-
-
 })();

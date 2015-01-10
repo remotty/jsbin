@@ -1,4 +1,5 @@
 /*global jsbin:true, CodeMirror:true */
+
 (function() {
   'use strict';
   var defaults = {

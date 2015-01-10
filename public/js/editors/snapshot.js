@@ -1,14 +1,15 @@
+/*globals $document, jsbin, updateTitle, saveChecksum*/
+
 var Snapshot = (function(){
+  'use strict';
+  
   var setup = function(){
     if (testLocalStorage() && window.addEventListener) {
       watchForSnapshots();
     }
-  }
+  };
 
   function watchForSnapshots() {
-    /*globals $document, jsbin, updateTitle, saveChecksum*/
-    'use strict';
-
     $document.on('saved', function () {
       localStorage.latest = jsbin.state.code + '/' + jsbin.state.revision;
     });
@@ -28,7 +29,6 @@ var Snapshot = (function(){
   }
 
   function testLocalStorage() {
-    'use strict';
     try {
       if ('localStorage' in window && window['localStorage'] !== null) { // jshint ignore:line
         return true;
@@ -40,7 +40,7 @@ var Snapshot = (function(){
 
   return {
     setup: setup
-  }
+  };
 })();
 
 Snapshot.setup();
