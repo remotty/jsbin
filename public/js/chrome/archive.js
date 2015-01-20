@@ -1,13 +1,17 @@
-var Archive = (function(){
+/*global jsbin, $ */
+
+var helper = require('../helper/global_helper');
+var analytics = require('./analytics');
+
+module.exports = (function(){
   'use strict';
   
   function archive(unarchive) {
-    /*global jsbin, $, $document, analytics*/
     var type = unarchive === false ? 'unarchive' : 'archive';
     var text = unarchive === false ? 'restore from archive' : 'archiving';
     analytics[type](jsbin.getURL({ withRevision: true }));
     if (!jsbin.user.name) {
-      $document.trigger('tip', {
+      helper.$document.trigger('tip', {
         type: 'notication',
         content: 'You must be logged in and the owner of the bin to archive.'
       });
@@ -16,7 +20,7 @@ var Archive = (function(){
         type: 'POST',
         url: jsbin.getURL({ withRevision: true }) + '/' + type,
         error: function () {
-          $document.trigger('tip', {
+          helper.$document.trigger('tip', {
             type: 'error',
             content: 'The ' + text + ' failed. If this continues, please can you file an issue?'
           });
@@ -24,7 +28,7 @@ var Archive = (function(){
         success: function () {
           jsbin.state.metadata.archive = unarchive !== false;
           updateArchiveMenu();
-          $document.trigger('tip', {
+          helper.$document.trigger('tip', {
             type: 'notication',
             autohide: 5000,
             content: 'This bin is now ' + (unarchive === false ? 'restored from the archive.' : 'archived.')
@@ -32,7 +36,7 @@ var Archive = (function(){
         }
       });
     } else {
-      $document.trigger('tip', {
+      helper.$document.trigger('tip', {
         type: 'notication',
         content: 'The ' + text + ' failed. You can only archive bins that you own.'
       });
@@ -56,6 +60,3 @@ var Archive = (function(){
     unarchive: unarchive
   };
 })();
-
-var archive = Archive.archive;
-var unarchive = Archive.unarchive;

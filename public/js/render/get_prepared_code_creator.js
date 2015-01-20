@@ -1,4 +1,7 @@
-/*globals $, jsbin, editors, RSVP, loopProtect, documentTitle, CodeMirror, hintingDone*/
+/*global $, jsbin, RSVP, CodeMirror, hintingDone, loopProtect, module */
+
+var getRenderedCode = require('../render/get_rendered_code');
+var helper = require('../helper/global_helper');
 
 var getPreparedCodeCreator = function (is_test) { // jshint ignore:line
   'use strict';
@@ -40,6 +43,9 @@ var getPreparedCodeCreator = function (is_test) { // jshint ignore:line
     re.scriptopen.lastIndex = 0;
 
     return getRenderedCode().then(function (code) {
+      console.log('code');
+      console.log(code);
+      
       var parts = [],
           html = code.html,
           js = !nojs ? code.javascript : '',
@@ -62,7 +68,7 @@ var getPreparedCodeCreator = function (is_test) { // jshint ignore:line
         html = html.replace('</head>', JASMINE_ASSETS + '</head>');
       }
 
-      // this is used to capture errors with processors, sometimes their errors
+      // this is used to capture errors with gprocessors, sometimes their errors
       // aren't useful (Script error. (line 0) #1354) so we try/catch and then
       // throw the real error. This also works exactly as expected with non-
       // processed JavaScript
@@ -184,10 +190,10 @@ var getPreparedCodeCreator = function (is_test) { // jshint ignore:line
 
       // read the element out of the html code and plug it in to our document.title
       var newDocTitle = (html.match(re.title) || [,''])[1].trim();
-      if (newDocTitle && newDocTitle !== documentTitle) {
-        jsbin.state.title = documentTitle = newDocTitle; // jshint ignore:line
-        if (documentTitle) {
-          document.title = documentTitle + ' - ' + 'JS Bin';
+      if (newDocTitle && newDocTitle !== helper.documentTitle) {
+        jsbin.state.title = helper.documentTitle = newDocTitle; // jshint ignore:line
+        if (helper.documentTitle) {
+          document.title = helper.documentTitle + ' - ' + 'JS Bin';
         } else {
           document.title = 'JS Bin';
         }
@@ -199,6 +205,8 @@ var getPreparedCodeCreator = function (is_test) { // jshint ignore:line
 
 };
 
-var getPreparedTest = getPreparedCodeCreator(true);
-var getPreparedCode = getPreparedCodeCreator(false);
+module.exports = {
+  getPreparedTest: getPreparedCodeCreator(true),
+  getPreparedCode: getPreparedCodeCreator(false)
+};
 

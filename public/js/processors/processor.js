@@ -1,5 +1,12 @@
-/*globals jsbin, _, $, RSVP, renderLivePreview, editors, throttle, debounceAsync, hintingDone, CodeMirror, Panel, editorModes */
-var processors = jsbin.processors = (function () {
+/*global jsbin, _, $, RSVP, CodeMirror, hintingDone, module, to5, location */
+
+var helper = require('../helper/global_helper');
+var renderLivePreview = require('../render/render_live_preview').renderLivePreview;
+
+// var Panels = require('../editors/panels');
+
+
+module.exports = jsbin.processors = (function () {
   'use strict';
   /*
    * Debugging note: to emulate a slow connection, or a processor taking too
@@ -191,7 +198,7 @@ var processors = jsbin.processors = (function () {
       init: function jsx(ready) {
         // Don't add React if the code already contains a script whose name
         // starts with 'react', to avoid duplicate copies.
-        var code = editors.html.getCode();
+        var code = jsbin.panels.panels.html.getCode();
         if (!(/<script[^>]*src=\S*\breact\b/i).test(code)) {
           $('#library').val( $('#library').find(':contains("React with Add-Ons")').val() ).trigger('change');
         }
@@ -414,7 +421,7 @@ var processors = jsbin.processors = (function () {
         /* keeping old code for local version of scss if we ever want it again */
         // getScript(jsbin.static + '/vendor/js/libraries/codemirror3/mode/sass/sass.js', function () {
         // Sass.initialize(jsbin.static + '/vendor/js/libraries/sass/dist/worker.min.js');
-      handler: throttle(debounceAsync(function sass(source, resolve, reject, done) {
+      handler: helper.throttle(helper.debounceAsync(function sass(source, resolve, reject, done) {
         $.ajax({
           type: 'post',
           url: '/processor',
@@ -460,7 +467,7 @@ var processors = jsbin.processors = (function () {
       init: function (ready) {
         getScript(jsbin.static + '/vendor/js/libraries/codemirror4/mode/sass/sass.js', ready);
       },
-      handler: throttle(debounceAsync(function (source, resolve, reject, done) {
+      handler: helper.throttle(helper.debounceAsync(function (source, resolve, reject, done) {
         $.ajax({
           type: 'post',
           url: '/processor',
@@ -621,7 +628,7 @@ var processors = jsbin.processors = (function () {
 
   var render = function() {
     if (jsbin.panels.ready) {
-      editors.console.render();
+      jsbin.panels.panels.console.render();
     }
   };
 
@@ -693,7 +700,9 @@ var processors = jsbin.processors = (function () {
 
     // panelId can be id or instance of a panel.
     // this is kinda nasty, but it allows me to set panel processors during boot
-    if (panelId instanceof Panel) {
+    // TODO
+    //if (panelId instanceof Panel) {
+    if(true){
       panel = panelId;
       panelId = panel.id;
     } else {
@@ -704,7 +713,7 @@ var processors = jsbin.processors = (function () {
       jsbin.state.processors = {};
     }
 
-    var cmMode = processorName ? editorModes[processorName] || editorModes[panelId] : editorModes[panelId];
+    var cmMode = processorName ? helper.editorModes[processorName] || helper.editorModes[panelId] : helper.editorModes[panelId];
 
     // For JSX, use the plain JavaScript mode but disable smart indentation
     // because it doesn't work properly
@@ -772,5 +781,4 @@ var processors = jsbin.processors = (function () {
   processors.by = processorBy;
 
   return processors;
-
 }());

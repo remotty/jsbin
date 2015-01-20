@@ -1,3 +1,7 @@
+/*global $, jsbin */
+
+var helper = require('../helper/global_helper');
+
 (function () {
   'use strict';
   
@@ -7,7 +11,7 @@
   var search = $('#helpsearch');
   var position = -1;
 
-  search.on('input', throttle(function () {
+  search.on('input', helper.throttle(function () {
     if (searchTerms.length === 0) {
       $.ajax({
         url: '/help/search.json?' + (new Date()).toString().split(' ').slice(0, 4).join('-'),

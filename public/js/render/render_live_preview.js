@@ -1,3 +1,5 @@
+/*global jsbin, $ */
+
 /** ============================================================================
  * Live rendering.
  *
@@ -16,6 +18,12 @@
  * Create the runner iframe, and if postMe wait until the iframe is loaded to
  * start postMessaging the runner.
  */
+
+var helper = require('../helper/global_helper');
+var store = require('../chrome/storage');
+var get_prepared_code_creator = require('../render/get_prepared_code_creator');
+var renderer_creator = require('../render/renderer');
+
 var renderLivePreviewCreator = function (target, renderer, is_test,
                                          has_event) {
   'use strict';
@@ -50,8 +58,8 @@ var renderLivePreviewCreator = function (target, renderer, is_test,
   // Runner iframe
   var iframe;
 
-  var htmlGenerator = (is_test ? getPreparedTest : getPreparedCode);
-  
+  var htmlGenerator = (is_test ? get_prepared_code_creator.getPreparedTest : get_prepared_code_creator.getPreparedCode);
+
   // Basic mode
   // This adds the runner iframe to the page. It's only run once.
   if (!target.find('iframe').length) {
@@ -80,9 +88,12 @@ var renderLivePreviewCreator = function (target, renderer, is_test,
     if (!window.postMessage) { return; }
 
     // Inform other pages event streaming render to reload
-    if (requested) { sendReload(); }
+    if (requested) { helper.sendReload(); }
 
     htmlGenerator().then(function (source) {
+      console.log('source');
+      console.log(source);
+      
       var includeJsInRealtime = jsbin.settings.includejs;
 
       // Tell the iframe to reload
@@ -114,7 +125,7 @@ var renderLivePreviewCreator = function (target, renderer, is_test,
    */
   
   if (has_event) {
-    $document.on('codeChange.live', function (event, arg) {
+    helper.$document.on('codeChange.live', function (event, arg) {
       if (arg.origin === 'setValue' || arg.origin === undefined) {
         return;
       }
@@ -122,25 +133,25 @@ var renderLivePreviewCreator = function (target, renderer, is_test,
     });
 
     // Listen for console input and post it to the iframe
-    $document.on('console:run', function (event, cmd) {
+    helper.$document.on('console:run', function (event, cmd) {
       renderer.postMessage('console:run', cmd);
     });
 
-    $document.on('console:load:script', function (event, url) {
+    helper.$document.on('console:load:script', function (event, url) {
       renderer.postMessage('console:load:script', url);
     });
 
-    $document.on('console:load:dom', function (event, html) {
+    helper.$document.on('console:load:dom', function (event, html) {
       renderer.postMessage('console:load:dom', html);
     });
   }
 
   // When the iframe loads, swap round the callbacks and immediately invoke
-  // if renderLivePreview was called already.
-  return deferCallable(throttle(renderLivePreview, 200), function (done) {
+  // if renderLivePreview was called alretady.
+  return deferCallable(helper.throttle(renderLivePreview, 200), function (done) {
     iframe.onload = function () {
       if (window.postMessage) {
-        $window.on('message', function (event) {
+        helper.$window.on('message', function (event) {
           renderer.handleMessage(event.originalEvent);
         });
         renderer.setup(iframe);
@@ -169,8 +180,8 @@ var renderLivePreviewCreator = function (target, renderer, is_test,
   
 };
 
-var renderLiveViewPreview = renderLivePreviewCreator($('#live'), renderer, false, true);
-var renderLiveTestPreview = renderLivePreviewCreator($('#livetest'), rendererTest, true, false);
+var renderLiveViewPreview = renderLivePreviewCreator($('#live'), renderer_creator.renderer, false, true);
+var renderLiveTestPreview = renderLivePreviewCreator($('#livetest'), renderer_creator.rendererTest, true, false);
 
 var renderLivePreview = function(args){
   'use strict';
@@ -179,4 +190,9 @@ var renderLivePreview = function(args){
   
   // Test output panel use lazy evaluation
   // renderLiveTestPreview(args);
+};
+
+module.exports = {
+  renderLiveTestPreview: renderLiveTestPreview,
+  renderLivePreview: renderLivePreview
 };

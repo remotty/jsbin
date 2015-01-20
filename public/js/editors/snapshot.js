@@ -1,6 +1,11 @@
-/*globals $document, jsbin, updateTitle, saveChecksum*/
+/*global jsbin */
 
-var Snapshot = (function(){
+var helper = require('../helper/global_helper');
+var saveChecksum = require('../helper/global_helper').saveChecksum;
+var title = require('../render/title');
+var localStorage = require('../chrome/storage').localStorage;
+
+(function(){
   'use strict';
   
   var setup = function(){
@@ -10,7 +15,7 @@ var Snapshot = (function(){
   };
 
   function watchForSnapshots() {
-    $document.on('saved', function () {
+    helper.$document.on('saved', function () {
       localStorage.latest = jsbin.state.code + '/' + jsbin.state.revision;
     });
 
@@ -21,7 +26,7 @@ var Snapshot = (function(){
           jsbin.state.latest = false;
           saveChecksum = false; // jshint ignore:line
           jsbin.state.checksum = false;
-          updateTitle();
+          title.updateTitle();
           window.history.replaceState(null, null, jsbin.getURL() + '/edit');
         }
       }
@@ -38,9 +43,6 @@ var Snapshot = (function(){
     }
   }
 
-  return {
-    setup: setup
-  };
+  setup();
 })();
 
-Snapshot.setup();

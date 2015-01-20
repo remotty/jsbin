@@ -1,6 +1,7 @@
-'use strict';
 /*global module:false*/
 module.exports = function (grunt) {
+  'use strict';
+
   var fs = require('fs'),
       path = require('path'),
       exec = require('child_process').exec,
@@ -155,5 +156,4 @@ module.exports = function (grunt) {
   grunt.registerTask('build', ['concat', 'uglify']);
   grunt.registerTask('addons', ['uglify:addons']);
   grunt.registerTask('default', ['jshint']);
-
 };

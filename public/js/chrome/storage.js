@@ -1,5 +1,7 @@
-var store = (function () {
-  "use strict";
+/*global $, jsbin, module */
+
+module.exports = (function() {
+  'use strict';
 
   function hasStore(type) {
     try {
@@ -76,7 +78,9 @@ var store = (function () {
     jsbin.sandbox = true;
   }
 
-  return { polyfill: polyfill, sessionStorage: sessionStorage, localStorage: localStorage };
-
+  return {
+    polyfill: polyfill,
+    sessionStorage: sessionStorage,
+    localStorage: localStorage
+  };
 })();
-

@@ -1,12 +1,17 @@
-/*global $:true, editors:true, libraries:true, analytics:true */
-// 'use strict'; // this causes bigger issues :-\
+/*global $, jsbin, module, require */
 
-var Library = (function($, jsbin, editors){
+var helper = require('../helper/global_helper');
+var analytics = require('../chrome/analytics');
+// var editors = require('../editors/editors');
+var libraries = require('../editors/libraries');
+var Panels = require('../editors/panels');
+
+module.exports = (function(){
   'use strict';
   
   var groups = {};
 
-  $library.bind('init', function () {
+  helper.$library.bind('init', function () {
     var i = 0,
         j = 0,
         k = 0,
@@ -18,7 +23,7 @@ var Library = (function($, jsbin, editors){
 
     // reset
     groups = {};
-    $library.empty();
+    helper.$library.empty();
 
     for (i = 0; i < libraries.length; i++) {
       library = libraries[i];
@@ -47,10 +52,10 @@ var Library = (function($, jsbin, editors){
       }
     }
 
-    $library.html( html.join('') );
+    helper.$library.html( html.join('') );
   }).trigger('init');
 
-  $library.bind('change', function () {
+  helper.$library.bind('change', function () {
     if (!this.value) { return; }
 
     var selected = this.value.split(':'),
@@ -74,9 +79,9 @@ var Library = (function($, jsbin, editors){
     var i = 0,
         length = urls.length,
         url = '',
-        code = editors.html.getCode(),
-        state = { line: editors.html.editor.currentLine(),
-                  character: editors.html.editor.getCursor().ch,
+        code = Panels.panels.html.getCode(),
+        state = { line: Panels.panels.html.editor.currentLine(),
+                  character: Panels.panels.html.editor.getCursor().ch,
                   add: 0
                 },
         html = [],
@@ -146,15 +151,15 @@ var Library = (function($, jsbin, editors){
       }
     }
 
-    editors.html.setCode(code);
-    editors.html.editor.setCursor({ line: state.line + state.add, ch: state.character });
+    Panels.panels.html.setCode(code);
+    Panels.panels.html.editor.setCursor({ line: state.line + state.add, ch: state.character });
 
   };
 
   var insertSnippet = function(snippet) {
-    var code = editors.html.getCode(),
-        state = { line: editors.html.editor.currentLine(),
-                  character: editors.html.editor.getCursor().ch,
+    var code = Panels.panels.html.getCode(),
+        state = { line: Panels.panels.html.editor.currentLine(),
+                  character: Panels.panels.html.editor.getCursor().ch,
                   add: 0
                 };
 
@@ -164,8 +169,8 @@ var Library = (function($, jsbin, editors){
       code = snippet + '\n' + code;
     }
 
-    editors.html.setCode(code);
-    editors.html.editor.setCursor({ line: state.line + state.add, ch: state.character });
+    Panels.panels.html.setCode(code);
+    Panels.panels.html.editor.setCursor({ line: state.line + state.add, ch: state.character });
   };
 
   function createHTMLToJadeTagConverter(tagName, attribute, suffix){
@@ -198,4 +203,4 @@ var Library = (function($, jsbin, editors){
     insertResources: insertResources,
     insertSnippet: insertSnippet
   };
-})($, jsbin, editors);
+})();

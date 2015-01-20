@@ -1,4 +1,7 @@
-/*global jsbin, $, $document, analytics*/
+/*global jsbin, $, setTimeout */
+
+var helper = require('../helper/global_helper');
+var analytics = require('../chrome/analytics');
 
 (function () {
   'use strict';
@@ -6,12 +9,11 @@
     return;
   }
 
-  var $body = $('body'),
-      loaded = false,
+  var loaded = false,
       requestAttempts = 5,
       $history; // set in hookUserHistory()
 
-  $document.on('history:open', function () {
+  helper.$document.on('history:open', function () {
     if ($history && jsbin.panels.getVisible().length === 0) {
       $history.appendTo('body');
     }
@@ -43,7 +45,7 @@
         },
         success: function (html) {
           $('#history').remove();
-          $body.append(html);
+          helper.$body.append(html);
           hookUserHistory();
           loaded = true;
 
@@ -214,7 +216,7 @@
       updateLayout($tbodys, false);
     }, 0);
 
-    $document.trigger('history:open');
+    helper.$document.trigger('history:open');
 
     return $history;
   };
@@ -227,7 +229,7 @@
 
     var $panelButtons = $('#panels a'),
         $homebtn = $('.homebtn'),
-        panelsVisible = $body.hasClass('panelsVisible');
+        panelsVisible = helper.$body.hasClass('panelsVisible');
 
     var panelCloseIntent = function() {
       var activeCount = $panelButtons.filter('.active').length;
@@ -252,8 +254,5 @@
     if (!panelsVisible) {
       loadList();
     }
-
   });
-
-
 }());

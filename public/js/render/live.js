@@ -1,3 +1,8 @@
+/*global jsbin, clearTimeout, setTimeout */
+
+var helper = require('../helper/global_helper');
+var renderLivePreview = require('../render/render_live_preview').renderLivePreview;
+
 (function(){
   'use strict';
   
@@ -38,5 +43,5 @@
     }
   }
 
-  $document.bind('codeChange.live', codeChangeLive);})
-();
+  helper.$document.bind('codeChange.live', codeChangeLive);
+})();

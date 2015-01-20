@@ -1,27 +1,36 @@
+/*global $, jsbin, CodeMirror */
+
+var helper = require('../helper/global_helper');
+var analytics = require('../chrome/analytics');
+var editors = require('../editors/editors');
+var Gist = require('../chrome/gist')
+
 (function(jsbin){
   'use strict';
   
   // if a gist has been requested, lazy load the gist library and plug it in
   if (/gist\/.*/.test(window.location.pathname)) {
     window.editors = editors; // needs to be global when the callback triggers to set the content
-    loadGist = function () {
+    var loadGist = function () {
       window.gist = new Gist(window.location.pathname.replace(/.*\/([^/]+)$/, "$1"));
     };
 
     if (editors.ready) {
       loadGist();
     } else {
-      $document.on('jsbinReady', loadGist);
+      helper.$document.on('jsbinReady', loadGist);
     }
   }
 
   // prevent the app from accidently getting scrolled out of view
-  if (!jsbin.mobile) document.body.onscroll = window.onscroll = function () {
-    if (document.body.scrollTop !== 0) {
-      window.scrollTo(0,0);
-    }
-    return false;
-  };
+  if (!jsbin.mobile) {
+    document.body.onscroll = window.onscroll = function () {
+      if (document.body.scrollTop !== 0) {
+        window.scrollTo(0,0);
+      }
+      return false;
+    };
+  }
 
   window.CodeMirror = CodeMirror; // fix to allow code mirror to break naturally
 
@@ -45,4 +54,6 @@
   if (jsbin.embed) {
     analytics.embed();
   }
+  
 })(jsbin);
+

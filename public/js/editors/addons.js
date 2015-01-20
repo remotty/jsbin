@@ -1,6 +1,9 @@
+/*global $, jsbin, CodeMirror, require */
+
+var helper = require('../helper/global_helper');
+
 (function () {
   'use strict';
-  /*globals $, jsbin, CodeMirror*/
 
   // ignore addons for embedded views
   if (jsbin.embed) {
@@ -123,7 +126,7 @@
                CodeMirror.optionHandlers.gutters;
       },
       done: function (cm) {
-        $body.addClass('code-fold');
+        helper.$body.addClass('code-fold');
         cm.addKeyMap({'Ctrl-Q': function (cm) {
           cm.foldCode(cm.getCursor());
         }});
@@ -162,7 +165,19 @@
         '/vendor/js/libraries/codemirror4/addon/hint/show-hint.css',
         '/vendor/js/libraries/codemirror4/addon/tern/tern.css',
         '/vendor/js/libraries/codemirror4/addon/hint/show-hint.js',
-        '/js/prod/addon-tern-' + jsbin.version + '.min.js'
+        //'/js/prod/addon-tern-' + jsbin.version + '.min.js'
+        '/vendor/js/libraries/cm_addons/tern.js',
+        '/vendor/js/libraries/acorn/acorn.js',
+        '/vendor/js/libraries/acorn/acorn_loose.js',
+        '/vendor/js/libraries/acorn/util/walk.js',
+        '/vendor/js/libraries/tern/lib/signal.js',
+        '/vendor/js/libraries/tern/lib/tern.js',
+        '/vendor/js/libraries/tern/lib/def.js',
+        '/vendor/js/libraries/tern/lib/comment.js',
+        '/vendor/js/libraries/tern/lib/infer.js',
+        '/vendor/js/libraries/tern/plugin/doc_comment.js',
+        //'/js/prod/tern.bundle.js'
+        'js/prod/addon-tern-3.25.3.min.js'
       ],
       test: function () {
         return (typeof ternBasicDefs !== 'undefined') &&
@@ -275,9 +290,6 @@
 
   // begin loading user addons
 
-
-  var $body = $('body');
-
   function load(url) {
     if (url.indexOf('http') !== 0) {
       url = jsbin.static + url;
@@ -292,7 +304,7 @@
     } else if (url.slice(-4) === '.css') {
       var d = $.Deferred();
       setTimeout(function () {
-        $body.append('<link rel="stylesheet" href="' + url + '?' + jsbin.version + '">');
+        helper.$body.append('<link rel="stylesheet" href="' + url + '?' + jsbin.version + '">');
         d.resolve();
       }, 0);
       return d;
@@ -334,7 +346,7 @@
            CodeMirror.optionHandlers.lint;
   }
 
-  window.hintingDone = function(cm, defhintOptions) {
+  var hintingDone = function(cm, defhintOptions) {
     var mode = cm.getOption('mode');
     if (mode === 'javascript' || mode === 'jasmine') {
       mode = 'js';
@@ -365,19 +377,21 @@
       });
     }
     if (opt.console) {
-      $document.trigger('sizeeditors');
+      helper.$document.trigger('sizeeditors');
       $(cm.consolelint.head).on('click', function() {
         if (!detailsSupport) {
           $(this).nextAll().toggle();
         }
         // trigger a resize after the click has completed and the details is close
         setTimeout(function () {
-          $document.trigger('sizeeditors');
+          helper.$document.trigger('sizeeditors');
         }, 10);
       });
     }
   };
 
+  window.hintingDone = hintingDone;
+  
   var options = Object.keys(settingsAddons);
 
   function loadAddon(key) {

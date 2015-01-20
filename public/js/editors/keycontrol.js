@@ -1,6 +1,15 @@
-/*globals objectValue, $, jsbin, $body, $document, saveChecksum, jsconsole*/
+/*global $, jsbin, module, _  */
 
-Keycontrol = (function(){
+var Panels = require('../editors/panels');
+var helper = require('../helper/global_helper');
+// var editors = require('../editors/editors');
+var Navigation = require('../chrome/navigation');
+var Archive = require('../chrome/archive');
+var renderLiveTestPreview = require('../render/render_live_preview').renderLiveTestPreview;
+var renderLivePreview = require('../render/render_live_preview').renderLivePreview;
+var jsconsole = require('../render/console');
+
+module.exports = (function(){
   'use strict';
   
   var KEYCODE = {
@@ -19,21 +28,22 @@ Keycontrol = (function(){
   };
   
   var keyboardHelpVisible = false;
-  var customKeys = objectValue('settings.keys', jsbin) || {};
-  var panelShortcuts = { start: KEYCODE['0'] }; // 49 (first panel...)
+  var customKeys = helper.objectValue('settings.keys', jsbin) || {};
+  var panelShortcuts = helper.panelShortcuts;
+        // { start: KEYCODE['0'] }; // 49 (first panel...)
 
   $('input.enablealt').attr('checked', customKeys.useAlt ? true : false).change(enableAltUse);
 
   $.browser.platform = identifyBrowser();
 
   if (!customKeys.disabled) {
-    $body.keydown(keycontrol);
+    helper.$body.keydown(keycontrol);
   } else {
-    $body.addClass('nokeyboardshortcuts');
+    helper.$body.addClass('nokeyboardshortcuts');
   }
 
   if (!customKeys.disabled) {
-    $document.keydown(setShortcuts);
+    helper.$document.keydown(setShortcuts);
   }
   
   function setShortcuts(event){
@@ -41,8 +51,8 @@ Keycontrol = (function(){
       return event.metaKey && event.which === KEYCODE[key];
     };
 
-    var archive = function () {
-      archive(!event.shiftKey);
+    var _archive = function () {
+      Archive.archive(!event.shiftKey);
       return event.preventDefault();
     };
 
@@ -66,24 +76,24 @@ Keycontrol = (function(){
         $('a.homebtn').trigger('click', 'keyboard');
       }else{
         $.each($.cookie('list-panels').split(","), function(i, data){
-          jsbin.panels.panels[data].toggle();
+          Panels.panels.panels[data].toggle();
         });
       }
       event.preventDefault();
     };
     
     var zoom_out = function () {
-      var current_panel = jsbin.panels.focused;
+      var current_panel = Panels.panels.focused;
       
       $.each($.cookie('zoom-panels').split(","), function(i, data){
-        jsbin.panels.panels[data].show();
+        Panels.panels.panels[data].show();
         current_panel.hide();
       });
     };
 
     var zoom_in = function () {
       var panels = Panels.visible_panels_name();
-      var current_panel = jsbin.panels.focused;
+      var current_panel = Panels.panels.focused;
       
       $.cookie('zoom-panels', panels.join(','));
 
@@ -92,10 +102,10 @@ Keycontrol = (function(){
       });
 
       $.each(target_panels, function(i, data){
-        jsbin.panels.panels[data].hide();
+        Panels.panels.panels[data].hide();
       });
 
-      jsbin.panels.panels.live.show();
+      Panels.panels.panels.live.show();
       current_panel.hide();
     };
     
@@ -105,7 +115,7 @@ Keycontrol = (function(){
 
     if (event.ctrlKey && $.browser.platform !== 'mac') { event.metaKey = true; }
 
-    if (isMetaShortcut('Y')) { archive(); }
+    if (isMetaShortcut('Y')) { _archive(); }
     if (isMetaShortcut('LEFT')) { focusLeftPanel(); }
     if (isMetaShortcut('RIGHT')) { focusRightPanel(); }
     if (isMetaShortcut('I')) { addDescription(); }
@@ -137,16 +147,16 @@ Keycontrol = (function(){
     } else if (event.which === closekey &&
                event.metaKey &&
                includeAltKey &&
-               jsbin.panels.focused) {
+               Panels.panels.focused) {
 
       // Close key (^9)
-      jsbin.panels.hide(jsbin.panels.focused.id);
+      Panels.panels.hide(Panels.panels.focused.id);
       event.preventDefault();
       
     } else if (event.which === zoomkey &&
                event.metaKey &&
                includeAltKey &&
-               jsbin.panels.focused) {
+               Panels.panels.focused) {
 
       if(panels.length === 2){
         zoom_out();
@@ -159,8 +169,8 @@ Keycontrol = (function(){
       
     } else if (event.which === 220 && (event.metaKey || event.ctrlKey)) {
       jsbin.settings.hideheader = !jsbin.settings.hideheader;
-      $body[jsbin.settings.hideheader ? 'addClass' : 'removeClass']('hideheader');
-    } else if (event.which === 76 && event.ctrlKey && jsbin.panels.panels.console.visible) {
+      helper.$body[jsbin.settings.hideheader ? 'addClass' : 'removeClass']('hideheader');
+    } else if (event.which === 76 && event.ctrlKey && Panels.panels.panels.console.visible) {
       if (event.shiftKey) {
         // reset
         jsconsole.reset();
@@ -170,16 +180,16 @@ Keycontrol = (function(){
       }
     }
   }
-  
+
   function keycontrol(event) {
     event = normalise(event);
 
     var panel = {};
 
-    if (jsbin.panels.focused && jsbin.panels.focused.editor) {
-      panel = jsbin.panels.focused.editor;
-    } else if (jsbin.panels.focused) {
-      panel = jsbin.panels.focused;
+    if (Panels.focused && Panels.focused.editor) {
+      panel = Panels.focused.editor;
+    } else if (Panels.focused) {
+      panel = Panels.focused;
     }
 
     var codePanel = { css: 1, javascript: 1, html: 1, jasmine: 1, dataframe: 1}[panel.id],
@@ -191,45 +201,49 @@ Keycontrol = (function(){
     if (event.type === 'keydown') {
       if (codePanel) {
         if (event.metaKey && event.which === 13) {
-          // renderTest
-          if( editors.livetest.visible ){
-            renderLiveTestPreview();
-          }
+          // // renderTest
+          // if( editors.livetest.visible ){
           
-          if (editors.console.visible && !editors.live.visible) {
-            hasRun = true;
-            // editors.console.render();
-            $('#runconsole').trigger('click', 'keyboard');
-          } else if (editors.live.visible) {
-            // editors.live.render(true);
-            $('#runwithalerts').trigger('click', 'keyboard');
-            hasRun = true;
-          } else {
-            $('#runwithalerts').trigger('click', 'keyboard');
-            hasRun = true;
-          }
+          console.log('cmd+enter');
+          console.log(renderLiveTestPreview);
+          renderLiveTestPreview();
+          renderLivePreview();
+          // }
+          
+          // if (editors.console.visible && !editors.live.visible) {
+          //   hasRun = true;
+          //   // editors.console.render();
+          //   $('#runconsole').trigger('click', 'keyboard');
+          // } else if (editors.live.visible) {
+          //   // editors.live.render(true);
+          //   $('#runwithalerts').trigger('click', 'keyboard');
+          //   hasRun = true;
+          // } else {
+          //   $('#runwithalerts').trigger('click', 'keyboard');
+          //   hasRun = true;
+          // }
 
           if (hasRun) {
             event.stop();
           } else {
             // if we have write access - do a save - this will make this bin our latest for use with
             // /<user>/last/ - useful for phonegap inject
-            sendReload();
+            helper.sendReload();
           }
         }
       }
 
       // shortcut for showing a panel
       if (panelShortcuts[event.which] !== undefined && event.metaKey && includeAltKey) {
-        if (jsbin.panels.focused.id === panelShortcuts[event.which]) {
+        if (Panels.panels.focused.id === panelShortcuts[event.which]) {
           // this has been disabled in favour of:
           // if the panel is visible, and the user tries cmd+n - then the browser
           // gets the key command.
-          jsbin.panels.hide(panelShortcuts[event.which]);
+          Panels.panels.hide(panelShortcuts[event.which]);
           event.stop();
         } else {
           // show
-          jsbin.panels.show(panelShortcuts[event.which]);
+          Panels.panels.show(panelShortcuts[event.which]);
           event.stop();
 
           if (!customKeys.useAlt && (!jsbin.settings.keys || !jsbin.settings.keys.seenWarning)) {
@@ -238,7 +252,7 @@ Keycontrol = (function(){
               jsbin.settings.keys = {};
             }
             jsbin.settings.keys.seenWarning = true;
-            $document.trigger('tip', {
+            helper.$document.trigger('tip', {
               type: 'notification',
               content: '<label><input type="checkbox" class="enablealt"> <strong>Turn this off</strong>. Reserve ' + cmd + '+[n] for switching browser tabs and use ' + cmd + '+<u>alt</u>+[n] to switch JS Bin panels. You can access this any time in <strong>Help&rarr;Keyboard</strong></label>'
             });
@@ -252,15 +266,15 @@ Keycontrol = (function(){
 
       if (event.which === KEYCODE['/'] && event.metaKey && event.shiftKey) {
         // show help
-        opendropdown($('#help').prev()[0]);
+        Navigation.opendropdown($('#help').prev()[0]);
         event.stop();
       } else if (event.which === KEYCODE.ESC && keyboardHelpVisible) {
-        $body.removeClass('keyboardHelp');
+        helper.$body.removeClass('keyboardHelp');
         keyboardHelpVisible = false;
         event.stop();
-      } else if (event.which === KEYCODE.ESC && jsbin.panels.focused && codePanel) {
+      } else if (event.which === KEYCODE.ESC && Panels.panels.focused && codePanel) {
         // event.stop();
-        // return CodeMirror.commands.autocomplete(jsbin.panels.focused.editor);
+        // return CodeMirror.commands.autocomplete(Panels.panels.focused.editor);
       } else if (event.which === KEYCODE['.'] && includeAltKey && event.metaKey && panel.id === 'html') {
         // auto close the element
         if (panel.somethingSelected()) {return;}
@@ -345,10 +359,6 @@ Keycontrol = (function(){
   }
 
   return {
-    customKeys: customKeys,
     panelShortcuts: panelShortcuts
   };
 })();
-
-var customKeys = Keycontrol.customKeys;
-var panelShortcuts = Keycontrol.panelShortcuts;

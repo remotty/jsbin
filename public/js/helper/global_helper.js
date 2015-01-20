@@ -1,6 +1,11 @@
-/* globals $:true, jsbin:true, store:true, saveChecksum:true */
+/*global $, jsbin, setTimeout, module, require */
+var localStorage = require('../chrome/storage').localStorage;
+var store = require('../chrome/storage');
 
-var GlobalHelper = (function(){
+// var saveChecksum = require('../chrome/save').saveChecksum;
+
+module.exports =
+(function(){
   'use strict';
   
   var $window = $(window);
@@ -10,9 +15,10 @@ var GlobalHelper = (function(){
   var $source = $('#source');
   var $library = $('#library');
   var $live = $('#live');
+  var $history = $('#hisotry');
+  
   var debug = jsbin.settings.debug === undefined ? false : jsbin.settings.debug;
   var documentTitle = 'JS Bin';
-  var loadGist;
 
   var editorModes = {
     html: 'htmlmixed',
@@ -32,7 +38,7 @@ var GlobalHelper = (function(){
   };
   
   function throttle(fn, delay) {
-    var timer = null;
+    // var timer = null;
     var throttled = function () {
       var context = this, args = arguments;
       throttled.cancel();
@@ -198,7 +204,7 @@ var GlobalHelper = (function(){
 
   var unload = function () {
     store.sessionStorage.setItem('url', jsbin.getURL());
-    store.localStorage.setItem('settings', JSON.stringify(jsbin.settings));
+    localStorage.setItem('settings', JSON.stringify(jsbin.settings));
 
     if (jsbin.panels.saveOnExit === false) {
       return;
@@ -226,6 +232,10 @@ var GlobalHelper = (function(){
       });
     }
   }
+
+  var saveChecksum = jsbin.state.checksum || store.sessionStorage.getItem('checksum') || false;
+
+  var panelShortcuts = { start: 48 };
   
   return {
     $window: $window,
@@ -235,14 +245,11 @@ var GlobalHelper = (function(){
     $source: $source,
     $library: $library,
     $live: $live,
-
+    $history: $history,
     editorModes: editorModes,
-    
     debug: debug,
     documentTitle: documentTitle,
-    loadGist: loadGist,
     unload: unload,
-    
     throttle: throttle,
     debounceAsync: debounceAsync,
     escapeHTML: escapeHTML,
@@ -250,32 +257,8 @@ var GlobalHelper = (function(){
     isDOM: isDOM,
     exposeSettings: exposeSettings,
     objectValue: objectValue,
-    
-    sendReload: sendReload
+    sendReload: sendReload,
+    saveChecksum: saveChecksum,
+    panelShortcuts: panelShortcuts
   };
 })();
-
-var $window = GlobalHelper.$window;
-var $body = GlobalHelper.$body;
-var $document = GlobalHelper.$document;
-var $bin = GlobalHelper.$bin;
-var $source = GlobalHelper.$source;
-var $library = GlobalHelper.$library;
-var $live = GlobalHelper.$live;
-
-var editorModes = GlobalHelper.editorModes;
-
-var debug = GlobalHelper.debug;
-var documentTitle = GlobalHelper.documentTitle;
-var loadGist = GlobalHelper.loadGist;
-var unload = GlobalHelper.unload;
-
-var throttle = GlobalHelper.throttle;
-var debounceAsync = GlobalHelper.debounceAsync;
-var escapeHTML = GlobalHelper.escapeHTML;
-var dedupe = GlobalHelper.dedupe;
-var isDOM = GlobalHelper.isDOM;
-var exposeSettings = GlobalHelper.exposeSettings;
-var objectValue = GlobalHelper.objectValue;
-
-var sendReload = GlobalHelper.sendReload;

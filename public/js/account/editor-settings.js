@@ -1,7 +1,9 @@
+/*global $, CodeMirror, jsbin, reloadAddons */
+
+var localStorage = require('../chrome/storage').localStorage;
+
 (function(){
   'use strict';
-
-  /*globals $, CodeMirror, jsbin, reloadAddons */
 
   // create fake jsbin object
   $.extend(jsbin, {

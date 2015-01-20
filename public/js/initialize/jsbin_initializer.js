@@ -1,10 +1,11 @@
-/*globals $:true, jQuery:true, store:true, jsbin:true, $window:true
- * , throttle:true, $bin:true, $body:true, $document:true,
- * , Sandbox:true, exposeSettings:true, unload:true */
+/*global $, jsbin, location, jQuery, setInterval, Sandbox */
 
-var JsbinInitializer = (function(){
+var helper = require('../helper/global_helper');
+var store = require('../chrome/storage');
+
+(function(){
   'use strict';
-  
+
   function setup(){
     var storedSettings = store.localStorage.getItem('settings');
     if (storedSettings === 'undefined') {
@@ -15,7 +16,7 @@ var JsbinInitializer = (function(){
     // In all cases localStorage takes precedence over user settings so users can
     // configure it from the console and overwrite the server delivered settings
     jsbin.settings = $.extend({}, jsbin.settings, JSON.parse(storedSettings || '{}'));
-
+    
     if (jsbin.user) {
       jsbin.settings = $.extend({}, jsbin.user.settings, jsbin.settings);
     }
@@ -33,8 +34,9 @@ var JsbinInitializer = (function(){
       while (
         div.innerHTML = '<!--[if gt IE ' + (++v) + ']><i></i><![endif]-->',
         all[0]
-      );
-      return v > 4 ? v : undef;
+      ){
+        return v > 4 ? v : undef;
+      }
     }());
 
     if (!storedSettings && (location.origin + location.pathname) === jsbin.root + '/') {
@@ -88,7 +90,7 @@ var JsbinInitializer = (function(){
       return url;
     };
 
-    jsbin.state.updateSettings = throttle(function updateBinSettingsInner(update, method) {
+    jsbin.state.updateSettings = helper.throttle(function updateBinSettingsInner(update, method) {
       if (!method) {
         method = 'POST';
       }
@@ -102,7 +104,7 @@ var JsbinInitializer = (function(){
       }
     }, 500);
 
-    $window.unload(unload);
+    helper.$window.unload(helper.unload);
 
     // window.addEventListener('storage', function (e) {
     //   if (e.storageArea === localStorage && e.key === 'settings') {
@@ -114,7 +116,7 @@ var JsbinInitializer = (function(){
 
     // hack for Opera because the unload event isn't firing to capture the settings, so we put it on a timer
     if ($.browser.opera) {
-      setInterval(unload, 500);
+      setInterval(helper.unload, 500);
     }
 
     if (location.search.indexOf('api=') !== -1) {
@@ -136,7 +138,7 @@ var JsbinInitializer = (function(){
           var sandbox = new Sandbox(apiurl);
           sandbox.get('settings', function (data) {
             $.extend(jsbin.settings, data);
-            unload();
+            helper.unload();
             window.location = location.pathname + (newUrlParts.length ? '?' + newUrlParts.join(',') : '');
           });
         });
@@ -144,27 +146,23 @@ var JsbinInitializer = (function(){
       }());
     }
 
-    $document.one('jsbinReady', function () {
-      exposeSettings();
-      $bin.removeAttr('style');
-      $body.addClass('ready');
+    helper.$document.one('jsbinReady', function () {
+      helper.exposeSettings();
+      helper.$bin.removeAttr('style');
+      helper.$body.addClass('ready');
     });
 
     if (navigator.userAgent.indexOf(' Mac ') !== -1) (function () {
       var el = $('#keyboardHelp')[0];
       el.innerHTML = el.innerHTML.replace(/ctrl/g, 'cmd').replace(/Ctrl/g, 'ctrl');
     })();
-
+    
     if (jsbin.embed) {
-      $window.on('focus', function () {
+      helper.$window.on('focus', function () {
         return false;
       });
     }
   }
 
-  return {
-    setup: setup
-  };
+  setup();
 })();
-
-JsbinInitializer.setup();

@@ -1,8 +1,7 @@
-var Spinner = (function(){
+module.exports = (function(){
   'use strict';
   
   function spinner(element) {
-    'use strict';
     var c = element || document.createElement('canvas');
     if (!c.getContext) {
       return false;
@@ -66,9 +65,6 @@ var Spinner = (function(){
     };
   }
 
-  return {
-    spinner: spinner
-  };
+  return spinner;
 })();
 
-var spinner = Spinner.spinner;

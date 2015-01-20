@@ -1,6 +1,10 @@
+/*global jsbin, $ */
+
+var processors = require('../processors/processor');
+var helper = require('../helper/global_helper');
+
 (function () {
   'use strict';
-  /*globals $, saveChecksum, jsbin, $document, documentTitle*/
 
   // only continue if the new share is enabled
   if ($('#sharemenu .share-split').length === 0) {
@@ -26,7 +30,7 @@
   // }).hide();
 
 
-  $document.on('saved', function () {
+  helper.$document.on('saved', function () {
     selectedSnapshot = jsbin.state.revision;
   });
 
@@ -65,7 +69,7 @@
   $sharemenu.find('.lockrevision').on('change', function () {
     saveChecksum = false; // jshint ignore:line
     jsbin.state.checksum = false;
-    $document.trigger('locked');
+    helper.$document.trigger('locked');
   });
   var $sharepreview = $('#share-preview');
   var $realtime = $('#sharebintype input[type=radio][value="realtime"]');
@@ -204,7 +208,7 @@
     $directLinks.html(directLinksHTML.join(''));
 
     linkselect.value = link.href = shareurl + query;
-    embed.value = ('<a class="jsbin-embed" href="' + url + '/embed' + query + '">' + documentTitle + ' on jsbin.com</a><' + 'script src="' + jsbin.static + '/js/chrome/embed.js"><' + '/script>').replace(/<>"&/g, function (m) {
+    embed.value = ('<a class="jsbin-embed" href="' + url + '/embed' + query + '">' + helper.documentTitle + ' on jsbin.com</a><' + 'script src="' + jsbin.static + '/js/chrome/embed.js"><' + '/script>').replace(/<>"&/g, function (m) {
         return {
           '<': '&lt;',
           '>': '&gt;',
@@ -230,7 +234,7 @@
 
   $sharemenu.find('input').on('change', update);
 
-  $document.on('saved', function () {
+  helper.$document.on('saved', function () {
 
     // revert to the latest bin state
     $realtime.prop('checked', true);

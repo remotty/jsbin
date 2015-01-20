@@ -1,6 +1,11 @@
-var ESC = (function(){
+/*global $, module, require */
+
+var helper = require('../helper/global_helper');
+var analytics = require('./analytics');
+
+module.exports = (function(){
   'use strict';
-  
+
   var loginVisible = false;
   var dropdownOpen = false;
   var keyboardHelpVisible = false;
@@ -8,11 +13,11 @@ var ESC = (function(){
 
   var hideOpen = function() {
     if (urlHelpVisible) {
-      $body.removeClass('urlHelp');
+      helper.$body.removeClass('urlHelp');
       urlHelpVisible = false;
       analytics.closeMenu('help');
     } else if (keyboardHelpVisible) {
-      $body.removeClass('keyboardHelp');
+      helper.$body.removeClass('keyboardHelp');
       keyboardHelpVisible = false;
       analytics.closeMenu('keyboardHelp');
     } else if (dropdownOpen) {
@@ -25,18 +30,21 @@ var ESC = (function(){
   };
 
   var setup = function(){
-    $document.keydown(function (event) {
+    helper.$document.keydown(function (event) {
       if (event.which == 27) {//} || (keyboardHelpVisible && event.which == 191 && event.shiftKey && event.metaKey)) {
         hideOpen();
       }
     });
 
-    $document.delegate('.modal', 'click', function (event) {
+    helper.$document.delegate('.modal', 'click', function (event) {
       if ($(event.target).is('.modal')) {
         hideOpen();
       }
     });
   };
+
+  setup();
+  
   return {
     loginVisible: loginVisible,
     dropdownOpen: dropdownOpen,
@@ -46,9 +54,3 @@ var ESC = (function(){
   };
 })();
 
-var loginVisible = ESC.loginVisible;
-var dropdownOpen = ESC.dropdownOpen;
-var keyboardHelpVisible = ESC.keyboardHelpVisible;
-var urlHelpVisible = ESC.urlHelpVisible;
-
-ESC.setup();

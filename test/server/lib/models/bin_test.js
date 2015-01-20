@@ -1,6 +1,6 @@
 var test_helper = require('../../test_helper.js'),
     assert = test_helper.assert,
-    Bin = require("../../../lib/models/bin.js"),
+    Bin = require("../../../../lib/models/bin.js"),
 
 bin = new Bin(test_helper.store);
 
@@ -13,7 +13,7 @@ describe('Bin Model', function(){
       latest: true
     }, function(err){
       if(err){
-        console.log(err)
+        console.log(err);
       }
       done();
     });
@@ -37,7 +37,7 @@ describe('Bin Model', function(){
         latest: true
       }, function(err){
         if(err){
-          assert.equal("This name already taken.", err)
+          assert.equal("This name already taken.", err);
         }
         done();
       });
@@ -61,7 +61,7 @@ describe('Bin Model', function(){
     it('There is hello_twosome bin', function(done){
       bin.store.binExistsByName('hello_twosome', function(err, is_exists){
         if(err){
-          console.log(err)
+          console.log(err);
         }
 
         assert.equal(true ,is_exists);
@@ -72,7 +72,7 @@ describe('Bin Model', function(){
     it('There isn\'t hello_onesome bin', function(done){
       bin.store.binExistsByName('hello_onesome', function(err, is_exists){
         if(err){
-          console.log(err)
+          console.log(err);
         }
 
         assert.equal(false ,is_exists);
@@ -87,4 +87,4 @@ describe('Bin Model', function(){
       assert.equal(-1, [1,2,3].indexOf(0));
     });
   });
-})
+});

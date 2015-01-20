@@ -1,4 +1,8 @@
-var FileDrop = (function(){
+/*global $, jsbin, RSVP */
+
+var editors = require('../editors/editors');
+
+module.exports = (function(){
   'use strict';
   
   function allowDrop(holder) {
@@ -296,13 +300,13 @@ var FileDrop = (function(){
 
   }
 
-  return {
-    allowDrop: allowDrop
+  var setup = function(){
+    // test for dnd and file api first
+    if (!!(window.File && window.FileList && window.FileReader)) {
+      allowDrop(document.body);
+    }
   };
-})();
 
-// test for dnd and file api first
-if (!!(window.File && window.FileList && window.FileReader)) {
-  FileDrop.allowDrop(document.body);
-}
+  setup();
+})();
 

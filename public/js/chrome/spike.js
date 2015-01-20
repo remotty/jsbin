@@ -1,3 +1,5 @@
+/*global jsbin, $ */
+
 // This simple script allows the client to take control of the device
 // and send a spike to reload the browser.
 // http://www.youtube.com/watch?v=mIq9jFdEfZo#t=2m03 "Spike"
@@ -17,6 +19,8 @@
 To test: curl --header "Accept: text/event-stream" <jsbinurl>
 
 */
+
+var helper = require('../helper/global_helper');
 
 (function (global) {
   'use strict';
@@ -240,9 +244,8 @@ To test: curl --header "Accept: text/event-stream" <jsbinurl>
       renderStream();
     }
     if (window.jQuery) {
-      var $document = $(document);
       es.addEventListener('stats', function (event) {
-        $document.trigger('stats', [event.data]);
+        helper.$document.trigger('stats', [event.data]);
       });
     }
 

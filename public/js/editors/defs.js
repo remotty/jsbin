@@ -1,6 +1,4 @@
 var Defs = function(){
-  'use strict';
-  
   var ternBasicDefs = [];
   ternBasicDefs[0] = ({
     "!name": "ecma5",

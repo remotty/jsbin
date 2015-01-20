@@ -1,6 +1,9 @@
-/*globals $, jsbin, editors, RSVP, loopProtect, documentTitle, CodeMirror, hintingDone*/
+/*global $, jsbin, RSVP, CodeMirror, module, hintingDone */
 
-var getRenderedCode = function () {
+// var editors = require('../editors/editors');
+// var Panels = require('../editors/panels');
+
+module.exports = function () {
   'use strict';
 
   var formatErrors = function(res) {
@@ -22,8 +25,8 @@ var getRenderedCode = function () {
 
   function render(language) {
     return new RSVP.Promise(function (resolve, reject) {
-      editors[language].render().then(resolve, function (error) {
-        console.warn(editors[language].processor.id + ' processor compilation failed');
+      jsbin.panels.panels[language].render().then(resolve, function (error) {
+        console.warn(jsbin.panels.panels[language].processor.id + ' processor compilation failed');
         if (!error) {
           error = {};
         }
@@ -60,5 +63,7 @@ var getRenderedCode = function () {
     css: render('css')
   };
 
+  console.log(promises.html);
+  
   return RSVP.hash(promises);
 };

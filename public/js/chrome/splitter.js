@@ -1,3 +1,7 @@
+/*global $, jsbin, setTimeout, clearTimeout */
+
+var localStorage = require('../chrome/storage').localStorage;
+
 $.fn.splitter = function () {
   'use strict';
   
@@ -6,7 +10,7 @@ $.fn.splitter = function () {
       $body = $('body');
       // blockiframe = $blocker.find('iframe')[0];
 
-  var splitterSettings = JSON.parse(store.localStorage.getItem('splitterSettings') || '[]');
+  var splitterSettings = JSON.parse(localStorage.getItem('splitterSettings') || '[]');
   return this.each(function () {
     var $el = $(this),
         $originalContainer = $(this),
@@ -131,10 +135,10 @@ $.fn.splitter = function () {
         $handle.css(css);
         settings[type] = pos;
         splitterSettings[guid] = settings;
-        store.localStorage.setItem('splitterSettings', JSON.stringify(splitterSettings));
+        localStorage.setItem('splitterSettings', JSON.stringify(splitterSettings));
 
         // wait until animations have completed!
-        if (moveSplitter.timer) clearTimeout(moveSplitter.timer);
+        if (moveSplitter.timer) { clearTimeout(moveSplitter.timer); }
         moveSplitter.timer = setTimeout(function () {
           $document.trigger('sizeeditors');
         }, 120);

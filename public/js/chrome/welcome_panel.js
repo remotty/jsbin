@@ -1,5 +1,11 @@
-(function () {
-  /*global jsbin, $, $body, $document, analytics, settings*/
+/*global jsbin, $ */
+
+var analytics = require('../chrome/analytics');
+var localStorage = require('../chrome/storage').localStorage;
+var helper = require('../helper/global_helper');
+var settings = require('../chrome/settings')
+
+module.exports = (function(){
   'use strict';
 
   if (!$('#toppanel').length) {
@@ -11,12 +17,12 @@
   }
   if (jsbin.settings.gui.toppanel === undefined) {
     jsbin.settings.gui.toppanel = true;
-    store.localStorage.setItem('settings', JSON.stringify(jsbin.settings));
+    localStorage.setItem('settings', JSON.stringify(jsbin.settings));
   }
 
-  if ($body.hasClass('toppanel') && jsbin.settings.gui.toppanel === false) {
-    $body.addClass('toppanel-close');
-    $body.removeClass('toppanel');
+  if (helper.$body.hasClass('toppanel') && jsbin.settings.gui.toppanel === false) {
+    helper.$body.addClass('toppanel-close');
+    helper.$body.removeClass('toppanel');
   }
 
   // analytics for panel state
@@ -25,8 +31,8 @@
   var removeToppanel = function() {
     jsbin.settings.gui.toppanel = false;
     settings.save();
-    $body.addClass('toppanel-close');
-    $body.removeClass('toppanel');
+    helper.$body.addClass('toppanel-close');
+    helper.$body.removeClass('toppanel');
 
     // $document.trigger('sizeeditors');
   };
@@ -34,19 +40,19 @@
   var showToppanel = function() {
     jsbin.settings.gui.toppanel = true;
     settings.save();
-    $body.removeClass('toppanel-close');
-    $body.addClass('toppanel');
+    helper.$body.removeClass('toppanel-close');
+    helper.$body.addClass('toppanel');
   };
 
   var goSlow = function(e) {
-    $body.removeClass('toppanel-slow');
+    helper.$body.removeClass('toppanel-slow');
     if (e.shiftKey) {
-      $body.addClass('toppanel-slow');
+      helper.$body.addClass('toppanel-slow');
     }
   };
 
   $('.toppanel-logo').on('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
-    $document.trigger('sizeeditors');
+    helper.$document.trigger('sizeeditors');
   });
 
   $('.toppanel-hide').click(function(event) {
@@ -100,7 +106,7 @@
       var last = null;
       var count = 1;
       try {
-        last = store.localStorage.getItem('lastpost') || null;
+        last = localStorage.getItem('lastpost') || null;
       } catch (e) {}
 
       if (last !== null) {
@@ -133,4 +139,4 @@
     analytics.welcomePanelLink(this.href);
   });
 
-}());
+})();

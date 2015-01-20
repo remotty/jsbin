@@ -191,4 +191,4 @@ var sandbox = (function () {
 
   return sandbox;
 
-}());
+})();

@@ -1,5 +1,9 @@
-var Gist = (function () { // jshint ignore:line
-  /*global $:true, jsbin:true, processors:true, $document*/
+/*global $, jsbin, RSVP, XDomainRequest */
+
+var helper = require('../helper/global_helper');
+var processors = require('../processors/processor');
+
+module.exports = (function () { // jshint ignore:line
   'use strict';
 
   // Only allow gist import/export if CORS is supported
@@ -11,10 +15,12 @@ var Gist = (function () { // jshint ignore:line
     });
   }
 
-  var Gist = function (id) {
+  function Gist(id) {
     var gist = this,
         token = '';
+
     gist.code = {};
+    
     if (jsbin.user && jsbin.user.github_token) { // jshint ignore:line
       token = '?access_token=' + jsbin.user.github_token; // jshint ignore:line
     }
@@ -27,7 +33,7 @@ var Gist = (function () { // jshint ignore:line
       gist.setCode();
     });
     return this;
-  };
+  }
 
   Gist.prototype.setCode = function () {
     var gist = this;
@@ -114,13 +120,13 @@ var Gist = (function () { // jshint ignore:line
         dataType: 'json',
         crossDomain: true,
         success: function (data) {
-          $document.trigger('tip', {
+          helper.$document.trigger('tip', {
             type: 'notification',
             content: 'Gist created! <a href="' + data.html_url + '" target="_blank">Open in new tab.</a>' // jshint ignore:line
           });
         },
         error: function (xhr, status, error) {
-          $document.trigger('tip', {
+          helper.$document.trigger('tip', {
             type: 'error',
             content: 'There was a problem creating the gist: ' + error
           });
@@ -138,5 +144,4 @@ var Gist = (function () { // jshint ignore:line
   });
 
   return Gist;
-
 }());

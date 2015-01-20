@@ -1,9 +1,10 @@
+/*global jsbin */
 /** =========================================================================
  * font
  * Reads user setting and configures the CodeMirror font size
  * ========================================================================== */
-/*global jsbin:true*/
-var font = (function (document) {
+
+(function (document) {
   'use strict';
   
   var head = document.getElementsByTagName('head')[0],

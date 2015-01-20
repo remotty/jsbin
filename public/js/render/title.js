@@ -1,18 +1,21 @@
-var Title = (function(){
+/*global jsbin, $ */
+
+var helper = require('../helper/global_helper');
+
+module.exports = (function(){
   'use strict';
   
   function updateTitle(source) {
-    /*globals jsbin, documentTitle, $*/
     if (source === undefined) {
       source = jsbin.panels.panels.html.getCode();
     }
     // read the element out of the source code and plug it in to our document.title
     var newDocTitle = source.match(re);
-    if (newDocTitle !== null && newDocTitle[1] !== documentTitle) {
+    if (newDocTitle !== null && newDocTitle[1] !== helper.documentTitle) {
       lastState = jsbin.state.latest;
       documentTitle = $('<div>').html(newDocTitle[1].trim()).text(); // jshint ignore:line
-      if (documentTitle) {
-        document.title = documentTitle + ' - ' + 'JS Bin';
+      if (helper.documentTitle) {
+        document.title = helper.documentTitle + ' - ' + 'JS Bin';
 
         // add the snapshot if not the latest
       } else {

@@ -1,6 +1,8 @@
-/*globals jsbin:true, CodeMirror:true, editorModes:true*/
+/*global jsbin, CodeMirror */
 
-(function(jsbin, CodeMirror, editorModes){
+var helper = require('../helper/global_helper');
+
+(function(){
   'use strict';
   
   if (jsbin.settings.editor.tabMode === 'default') {
@@ -25,10 +27,10 @@
   CodeMirror.commands.autocomplete = simpleJsHint;
 
   CodeMirror.commands.snippets = function (cm) {
-    if (['htmlmixed', 'javascript', 'css', editorModes.less, editorModes.sass, editorModes.scss].indexOf(cm.options.mode) === -1) {
+    if (['htmlmixed', 'javascript', 'css', helper.editorModes.less, helper.editorModes.sass, helper.editorModes.scss].indexOf(cm.options.mode) === -1) {
       return CodeMirror.simpleHint(cm, CodeMirror.hint.anyword);
     } else {
       return CodeMirror.snippets(cm);
     }
   };
-})(jsbin, CodeMirror, editorModes);
+})();

@@ -1,6 +1,6 @@
-  /*globals $:true, jsbin:true, CodeMirror:true, Definitions:true, Defs:true */
+  /*globals $, jsbin, CodeMirror, Definitions, Defs */
 
-(function ($, jsbin, CodeMirror, Defs, Definitions) {
+(function () {
   'use strict';
 
   if (jsbin.embed) {
@@ -123,4 +123,4 @@
       searchTernDefinition(jsbin.panels.panels.html.getCode());
     });
   };
-})($, jsbin, CodeMirror, Defs, Definitions);
+})();

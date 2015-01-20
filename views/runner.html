@@ -23,7 +23,11 @@
 <div class="sandbox-wrapper"></div>
 {{#if settings.is_production}}
   {{{analytics}}}
-  <script src="{{static}}/js/prod/runner-{{settings.version}}.min.js"></script>
+  <!-- <script src="{{static}}/js/prod/runner-{{settings.version}}.min.js"></script> -->
+  <script src="{{static}}/vendor/js/libraries/polyfills.js"></script>
+  <script src="{{static}}/vendor/js/libraries/stringify.js"></script>
+  <script src="{{static}}/vendor/js/libraries/loop-protect.min.js"></script>
+  <script src="{{static}}/js/prod/runner-3.25.3.js"></script>
 {{else}}
   {{#scripts}}
   <script src="{{../static}}{{.}}"></script>

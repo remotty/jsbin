@@ -1,4 +1,14 @@
-var jsconsole = (function (window) {
+/*global $, jsbin, module, prettyPrint */
+
+//var editors = require('../editors/editors');
+var helper = require('../helper/global_helper');
+// var renderLivePreview = require('../render/render_live_preview').renderLivePreview;
+// var renderer = require('../render/renderer').renderer;
+// var getPreparedCode = require('../render/get_prepared_code_creator').getPreparedCode;
+// var Panels = require('../editors/panels');
+
+
+module.exports= (function (window) {
   'use strict';
   
   // Key-code library
@@ -25,7 +35,7 @@ var jsconsole = (function (window) {
     if (internalCmd) {
       return cb(['info', internalCmd]);
     }
-    $document.trigger('console:run', cmd);
+    helper.$document.trigger('console:run', cmd);
   };
 
   /**
@@ -55,7 +65,7 @@ var jsconsole = (function (window) {
 
     // If we were handed a response, show the response straight away – otherwise
     // runs it
-    if (response) return showResponse(response);
+    if (response) { return showResponse(response); }
     run(cmd, showResponse);
 
     setCursorTo('');
@@ -192,19 +202,19 @@ var jsconsole = (function (window) {
    */
   var load = (function () {
 
-    $document.on('console:load:script:error', function (event, err) {
+    helper.$document.on('console:load:script:error', function (event, err) {
       showResponse(['error', err]);
     });
 
-    $document.on('console:load:script:success', function (event, url) {
+    helper.$document.on('console:load:script:success', function (event, url) {
       showResponse(['response', 'Loaded "' + url + '"']);
     });
 
-    $document.on('console:load:dom:error', function (event, err) {
+    helper.$document.on('console:load:dom:error', function (event, err) {
       showResponse(['error', err]);
     });
 
-    $document.on('console:load:dom:success', function (event, url) {
+    helper.$document.on('console:load:dom:success', function (event, url) {
       showResponse(['response', 'Loaded DOM.']);
     });
 
@@ -224,7 +234,7 @@ var jsconsole = (function (window) {
   function loadScript() {
     for (var i = 0; i < arguments.length; i++) {
       (function (url) {
-        $document.trigger('console:load:script', url);
+        helper.$document.trigger('console:load:script', url);
       })(libraries[arguments[i]] || arguments[i]);
     }
     return "Loading script...";
@@ -240,7 +250,7 @@ var jsconsole = (function (window) {
       if (yql.results.length) {
         var html = yql.results[0].replace(/type="text\/javascript"/ig,'type="x"').replace(/<body.*?>/, '').replace(/<\/body>/, '');
 
-        $document.trigger('console:load:dom', html);
+        helper.$document.trigger('console:load:dom', html);
       } else {
         log('Failed to load DOM', 'error');
       }
@@ -282,7 +292,7 @@ var jsconsole = (function (window) {
     props: function (obj) {
       var props = [], realObj;
       try {
-        for (var p in obj) props.push(p);
+        for (var p in obj) { props.push(p); } 
       } catch (e) {}
       return props;
     },
@@ -300,7 +310,7 @@ var jsconsole = (function (window) {
 
   function setHistory(history) {
     historyPosition = history.length;
-    if (typeof JSON == 'undefined') return;
+    if (typeof JSON == 'undefined') { return; }
 
     try {
       // because FF with cookies disabled goes nuts, and because sometimes WebKit goes nuts too...
@@ -311,7 +321,7 @@ var jsconsole = (function (window) {
   function getHistory() {
     var history = [''];
 
-    if (typeof JSON == 'undefined') return history;
+    if (typeof JSON == 'undefined') { return history; }
 
     try {
       // because FF with cookies disabled goes nuts, and because sometimes WebKit goes nuts too...
@@ -369,7 +379,7 @@ var jsconsole = (function (window) {
       getCursor = (function () {
         var cursor;
         return function () {
-          if (cursor) return cursor;
+          if (cursor) { return cursor; }
           return document.getElementById('cursor') || { focus: function () {} };
         };
       }()),
@@ -441,23 +451,23 @@ var jsconsole = (function (window) {
         which = whichKey(event),
         enterDown = (which == keylib.enter || which == keylib.webkitEnter);
 
-    if (typeof which == 'string') which = which.replace(/\/U\+/, '\\u');
+    if (typeof which == 'string') { which = which.replace(/\/U\+/, '\\u'); }
     // Is this a special key?
     if (keys[which]) {
-      if (event.shiftKey) return;
+      if (event.shiftKey) { return; }
       // History cycle
 
       // Up
       if (which == keylib.up) {
         historyPosition--;
         // Don't go past the start
-        if (historyPosition < 0) historyPosition = 0; //history.length - 1;
+        if (historyPosition < 0) { historyPosition = 0; }//history.length - 1;
       }
       // Down
       if (which == keylib.down) {
         historyPosition++;
         // Don't go past the end
-        if (historyPosition >= history.length) historyPosition = history.length; //0;
+        if (historyPosition >= history.length) { historyPosition = history.length; } //0;
       }
       if (history[historyPosition] !== undefined && history[historyPosition] !== '') {
         setCursorTo(history[historyPosition]);
@@ -472,7 +482,7 @@ var jsconsole = (function (window) {
     else if (enterDown && event.shiftKey === false) { // enter (what about the other one)
       var command = exec.textContent || exec.value;
       // ======================================================================
-      if (command.length) post(command);
+      if (command.length) { post(command); }
       // ======================================================================
       return false;
     }
@@ -563,7 +573,7 @@ var jsconsole = (function (window) {
       jsconsole.ready = true;
       jsconsole.onload();
 
-      if (nohelp === undefined) post(':help', true);
+      if (nohelp === undefined) { post(':help', true); }
     },
     rawMessage: function (data) {
       if (data.type && data.type == 'error') {
@@ -571,86 +581,20 @@ var jsconsole = (function (window) {
       } else if (data.type && data.type == 'info') {
         window.top.info(data.response);
       } else {
-        if (data.cmd.indexOf('console.log') === -1) data.response = data.response.substr(1, data.response.length - 2); // fiddle to remove the [] around the repsonse
+        if (data.cmd.indexOf('console.log') === -1) {
+          data.response = data.response.substr(1, data.response.length - 2);
+          // fiddle to remove the [] around the repsonse
+        }
         echo(data.cmd);
         log(data.response, 'response');
       }
-    }
+    },
   };
-
+  
+  jsconsole.init(document.getElementById('output'));
+  
   return jsconsole;
-
 })(this);
 
-var msgType = '';
 
-jsconsole.init(document.getElementById('output'));
 
-function upgradeConsolePanel(console) {
-  'use strict';
-  
-  console.$el.click(function (event) {
-    if (!$(event.target).closest('#output').length) {
-      jsconsole.focus();
-    }
-  });
-  console.reset = function () {
-    jsconsole.reset();
-  };
-  console.settings.render = function (withAlerts) {
-    var html = editors.html.getCode().trim();
-    if (html === "") {
-      editors.javascript.render().then(function (echo) {
-        echo = echo.trim();
-        return getPreparedCode().then(function (code) {
-          code = code.replace(/<pre>/, '').replace(/<\/pre>/, '');
-
-          setTimeout(function() {
-            jsconsole.run({
-              echo: echo,
-              cmd: code
-            });
-          }, 0);
-        });
-      }, function (error) {
-        console.warn('Failed to render JavaScript');
-        console.warn(error);
-      });
-
-      // Tell the iframe to reload
-      renderer.postMessage('render', {
-        source: '<html>'
-      });
-    } else {
-      renderLivePreview(withAlerts || false);
-    }
-  };
-  console.settings.show = function () {
-    jsconsole.clear();
-    // renderLivePreview(true);
-    // setTimeout because the renderLivePreview creates the iframe after a timeout
-    setTimeout(function () {
-      if (editors.console.ready && !jsbin.embed) jsconsole.focus();
-    }, 0);
-  };
-  console.settings.hide = function () {
-    // Removal code is commented out so that the
-    // output iframe is never removed
-    if (!editors.live.visible) {
-      // $live.find('iframe').remove();
-    }
-  };
-
-  $document.one('jsbinReady', function () {
-    var hidebutton = function () {
-      $('#runconsole')[this.visible ? 'hide' : 'show']();
-    };
-
-    jsbin.panels.panels.live.on('show', hidebutton).on('hide', hidebutton);
-
-    if (jsbin.panels.panels.live.visible) {
-      $('#runconsole').hide();
-    }
-
-  });
-}

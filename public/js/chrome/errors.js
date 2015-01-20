@@ -1,4 +1,7 @@
-/*globals $:true, JSHINT:true, editors:true, $document:true, escapeHTML:true, jsbin:true, throttle:true */
+/*global $, jsbin, JSHINT */
+
+var helper = require('../helper/global_helper');
+var editors = require('../editors/editors');
 
 var Errors = (function(){
   'use strict';
@@ -33,7 +36,7 @@ var Errors = (function(){
       }
       // trigger a resize after the click has completed and the details is close
       setTimeout(function () {
-        $document.trigger('sizeeditors');
+        helper.$document.trigger('sizeeditors');
       }, 10);
     });
 
@@ -80,14 +83,14 @@ var Errors = (function(){
     });
 
     if (jsbin.settings.jshint === true || jsbin.settings.jshint === undefined) {
-      $(document).bind('codeChange', throttle(checkForErrors, 1000));
+      $(document).bind('codeChange', helper.throttle(checkForErrors, 1000));
       $(document).bind('jsbinReady', checkForErrors);
     }
   };
   
   var checkForErrors = function () {
     // exit if the javascript panel isn't visible or jshint is disabled (for example by the user or when using a js preprocessor)
-    if (!editors.javascript.visible || !jshintEnabled) return;
+    if (!editors.javascript.visible || !jshintEnabled) { return; }
 
     var hint = jshint(),
         jshintErrors = JSHINT.data(true),
@@ -96,15 +99,15 @@ var Errors = (function(){
 
     if (hint === true && visible) {
       $error.hide();
-      $document.trigger('sizeeditors');
+      helper.$document.trigger('sizeeditors');
     } else if (jshintErrors.errors.length) {
       var html = ['<ol>'];
       errors = jshintErrors.errors;
       for (var i = 0; i < errors.length; i++) {
         if (typeof errors[i] === 'string') {
-          html.push(escapeHTML(errors[i]));
+          html.push(helper.escapeHTML(errors[i]));
         } else {
-          html.push('Line ' + errors[i].line + ': ' + escapeHTML(errors[i].evidence) + ' --- ' + escapeHTML(errors[i].reason));
+          html.push('Line ' + errors[i].line + ': ' + helper.escapeHTML(errors[i].evidence) + ' --- ' + helper.escapeHTML(errors[i].reason));
         }
       }
 
@@ -113,10 +116,10 @@ var Errors = (function(){
       $error.find('.summary').text(jshintErrors.errors.length === 1 ? '1 warning' : jshintErrors.errors.length + ' warnings');
       $error.find('ol').remove();
 
-      if (!detailsSupport && $error[0].open === false) html = $(html).hide();
+      if (!detailsSupport && $error[0].open === false) { html = $(html).hide(); }
 
       $error.append(html).show();
-      $document.trigger('sizeeditors');
+      helper.$document.trigger('sizeeditors');
     }
   };
 
@@ -129,46 +132,3 @@ var Errors = (function(){
 var jshint = Errors.jshint;
 
 Errors.setup();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
