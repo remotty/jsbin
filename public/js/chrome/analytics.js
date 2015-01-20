@@ -1,9 +1,9 @@
-/*global jsbin, _gaq */
+/*global jsbin, _gaq, module */
 
-module.exports = (function(window){
+(function(window){
   'use strict';
   
-  return {
+  module.exports = {
     track: function (category, action, label, value) {
       var data = ['_trackEvent', category, action];
       if (label) {

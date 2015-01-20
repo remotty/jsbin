@@ -1,18 +1,14 @@
 /*global $, CodeMirror, jsbin, jshintEnabled, RSVP, module,
  * setTimeout, template */
 
-// var Panels = require('../editors/panels');
 var store = require('../chrome/storage');
 var helper = require('../helper/global_helper');
 var saveChecksum = require('../helper/global_helper').saveChecksum;
 var analytics = require('../chrome/analytics');
 var processors = require('../processors/processor');
-// var keycontrol = require('../editors/keycontrol');
-// var localStorage = require('../chrome/storage').localStorage;
-
 
 // Panel Class
-module.exports = (function(){
+(function(){
   'use strict';  
 
   var Panel = (function () {
@@ -731,5 +727,5 @@ module.exports = (function(){
     };
   })();
 
-  return Panel;
+  module.exports = Panel;
 })();

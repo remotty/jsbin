@@ -1,20 +1,20 @@
-/*global jsbin, $*/
+/*global jsbin, $, module */
 
-var localStorage = require('../chrome/storage').localStorage;
+var store = require('../chrome/storage');
 
-module.exports = (function() {
+(function() {
   'use strict';
   
-  return {
+  module.exports = {
     save: function () {
-      localStorage.setItem('settings', JSON.stringify(jsbin.settings));
+      store.localStorage.setItem('settings', JSON.stringify(jsbin.settings));
 
       $.ajax({
         url: '/account/editor',
         type: 'POST',
         dataType: 'json',
         data: {
-          settings: localStorage.settings,
+          settings: store.localStorage.settings,
           _csrf: jsbin.state.token
         },
         success: function() {

@@ -59,9 +59,9 @@ var Panel = require('../editors/panel');
 
     var createLive = function () {
       function show() {
-        // if (Panels.ready) {
-        renderLivePreview();
-        //}
+        if (Panels.ready) {
+          renderLivePreview();
+        }
       }
 
       function hide() {
@@ -79,9 +79,9 @@ var Panel = require('../editors/panel');
     
     var createLivetest = function () {
       function show() {
-        //if (Panels.ready) {
-        renderLivePreview();
-        //}
+        if (Panels.ready) {
+          renderLivePreview();
+        }
       }
 
       function hide() {
@@ -726,7 +726,7 @@ var Panel = require('../editors/panel');
       
       // jsconsole.init(); // sets up render functions etc.
       Panels.panels.livetest.settings.render = function (showAlerts) {
-        if (ready) {
+        if (Panels.ready) {
           renderLivePreview(showAlerts);
         }
       };
@@ -753,7 +753,7 @@ var Panel = require('../editors/panel');
           }
         }
 
-        ready = ready;
+        Panels.ready = ready;
 
         if (ready) {
           allEditors(function (panel) {
