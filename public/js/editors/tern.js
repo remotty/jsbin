@@ -1,4 +1,4 @@
-  /*globals $, jsbin, CodeMirror, Definitions, Defs */
+/*global $, jsbin, CodeMirror */
 
 (function () {
   'use strict';
@@ -70,14 +70,12 @@
   };
 
   var loadTern = function(editor) {
-    initTern(editor, Defs.ternBasicDefs);
+    initTern(editor, ternBasicDefs);
     ternLoaded.ecma5 = true;
     ternLoaded.browser = true;
   };
 
   var searchTernDefinition = function(htmlCode) {
-    var ternDefinitions = Definitions.ternDefinitions;
-    
     for (var i = 0; i < ternDefinitions.length-1; i++) {
       if (ternDefinitions[i].match.test(htmlCode)) {
         if (ternDefinitions[i].type === 'def') {
@@ -114,7 +112,9 @@
     }
   };
 
+  
   CodeMirror.startTern = function() {
+    console.log('startTern');
     loadTern(jsbin.panels.panels.javascript.editor);
     loadTern(jsbin.panels.panels.jasmine.editor);
     searchTernDefinition(jsbin.panels.panels.html.getCode());
