@@ -1,8 +1,5 @@
 /*global $, jsbin, RSVP, CodeMirror, module, hintingDone */
 
-// var editors = require('../editors/editors');
-// var Panels = require('../editors/panels');
-
 module.exports = function () {
   'use strict';
 
@@ -63,7 +60,5 @@ module.exports = function () {
     css: render('css')
   };
 
-  console.log(promises.html);
-  
   return RSVP.hash(promises);
 };
