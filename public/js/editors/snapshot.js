@@ -2,7 +2,6 @@
 
 var helper = require('../helper/global_helper');
 var saveChecksum = require('../helper/global_helper').saveChecksum;
-var title = require('../render/title');
 var localStorage = require('../chrome/storage').localStorage;
 
 (function(){
@@ -26,7 +25,7 @@ var localStorage = require('../chrome/storage').localStorage;
           jsbin.state.latest = false;
           saveChecksum = false; // jshint ignore:line
           jsbin.state.checksum = false;
-          title.updateTitle();
+          helper.updateTitle();
           window.history.replaceState(null, null, jsbin.getURL() + '/edit');
         }
       }
