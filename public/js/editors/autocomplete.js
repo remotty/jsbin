@@ -1,6 +1,4 @@
 var AutoComplete = (function(){
-  'use strict';
-  
   // Minimal event-handling wrapper.
   function stopEvent() {
     if (this.preventDefault) {
