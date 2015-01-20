@@ -1,10 +1,8 @@
-/*global $, jsbin, CodeMirror, require */
-
-var helper = require('../helper/global_helper');
+/*global $, jsbin, CodeMirror, setTimeout */
 
 (function () {
   'use strict';
-
+ 
   // ignore addons for embedded views
   if (jsbin.embed) {
     return;
@@ -126,7 +124,7 @@ var helper = require('../helper/global_helper');
                CodeMirror.optionHandlers.gutters;
       },
       done: function (cm) {
-        helper.$body.addClass('code-fold');
+        $('body').addClass('code-fold');
         cm.addKeyMap({'Ctrl-Q': function (cm) {
           cm.foldCode(cm.getCursor());
         }});
@@ -165,7 +163,12 @@ var helper = require('../helper/global_helper');
         '/vendor/js/libraries/codemirror4/addon/hint/show-hint.css',
         '/vendor/js/libraries/codemirror4/addon/tern/tern.css',
         '/vendor/js/libraries/codemirror4/addon/hint/show-hint.js',
-        //'/js/prod/addon-tern-' + jsbin.version + '.min.js'
+        // '/js/prod/addon-tern-' + jsbin.version + '.min.js'
+        // 'js/prod/addon-tern-3.25.3.min.js',
+        // '/js/prod/tern.bundle.js',
+        '/js/editors/defs.js',
+        '/js/editors/definitions.js',
+        '/js/editors/tern.js',
         '/vendor/js/libraries/cm_addons/tern.js',
         '/vendor/js/libraries/acorn/acorn.js',
         '/vendor/js/libraries/acorn/acorn_loose.js',
@@ -177,7 +180,7 @@ var helper = require('../helper/global_helper');
         '/vendor/js/libraries/tern/lib/infer.js',
         '/vendor/js/libraries/tern/plugin/doc_comment.js',
         //'/js/prod/tern.bundle.js'
-        'js/prod/addon-tern-3.25.3.min.js'
+        // 
       ],
       test: function () {
         return (typeof ternBasicDefs !== 'undefined') &&
@@ -304,7 +307,7 @@ var helper = require('../helper/global_helper');
     } else if (url.slice(-4) === '.css') {
       var d = $.Deferred();
       setTimeout(function () {
-        helper.$body.append('<link rel="stylesheet" href="' + url + '?' + jsbin.version + '">');
+        $('body').append('<link rel="stylesheet" href="' + url + '?' + jsbin.version + '">');
         d.resolve();
       }, 0);
       return d;
@@ -377,14 +380,14 @@ var helper = require('../helper/global_helper');
       });
     }
     if (opt.console) {
-      helper.$document.trigger('sizeeditors');
+      $(document).trigger('sizeeditors');
       $(cm.consolelint.head).on('click', function() {
         if (!detailsSupport) {
           $(this).nextAll().toggle();
         }
         // trigger a resize after the click has completed and the details is close
         setTimeout(function () {
-          helper.$document.trigger('sizeeditors');
+          $(document).trigger('sizeeditors');
         }, 10);
       });
     }
