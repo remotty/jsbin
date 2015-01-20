@@ -8,6 +8,7 @@ var Archive = require('../chrome/archive');
 var renderLiveTestPreview = require('../render/render_live_preview').renderLiveTestPreview;
 var renderLivePreview = require('../render/render_live_preview').renderLivePreview;
 var jsconsole = require('../render/console');
+var Autocomplete = require('../editors/autocomplete');
 
 module.exports = (function(){
   'use strict';
