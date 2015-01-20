@@ -1,7 +1,7 @@
 /*global $, jsbin, JSHINT */
 
 var helper = require('../helper/global_helper');
-var editors = require('../editors/editors');
+var editors = require('../editors/panels').panels;
 
 var Errors = (function(){
   'use strict';

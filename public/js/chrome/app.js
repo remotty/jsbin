@@ -2,7 +2,7 @@
 
 var helper = require('../helper/global_helper');
 var analytics = require('../chrome/analytics');
-var editors = require('../editors/editors');
+var editors = require('../editors/panels').panels;
 var Gist = require('../chrome/gist')
 
 (function(jsbin){

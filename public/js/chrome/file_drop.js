@@ -1,6 +1,6 @@
 /*global $, jsbin, RSVP */
 
-var editors = require('../editors/editors');
+var editors = require('../editors/panels').panels;
 
 module.exports = (function(){
   'use strict';
