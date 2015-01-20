@@ -2,24 +2,25 @@ module.exports = {
   entry: {
     'app': [
       './public/js/chrome/hashbang-jump.js',             // Instant*
+      
       './public/js/editors/snippets.cm.js',              // CM Extention*
-      './public/js/chrome/storage.js',                   // Library*
+      './public/js/chrome/storage.js',                   // Library**
       './public/js/initialize/init.js',                  // Instant*
-      './public/js/helper/global_helper.js',             // Library*
+      './public/js/helper/global_helper.js',             // Library**
       './public/js/initialize/jsbin_initializer.js',     // Instant*
       './public/js/editors/mobile_code_mirror.js',       // Instant*
       './public/js/chrome/splitter.js',                  // $ Extention*
-      './public/js/chrome/analytics.js',                 // Library*
-      './public/js/chrome/settings.js',                  // Library*
+      './public/js/chrome/analytics.js',                 // Library**
+      './public/js/chrome/settings.js',                  // Library**
       './public/js/chrome/font.js',                      // Instant*
-      './public/js/render/title.js',                     // Library*
+      // './public/js/render/title.js',                     // Library*
 
-      './public/js/editors/panels.js',                   // Library*
-      './public/js/editors/panel.js',                    // Class*
-      './public/js/editors/panel_factory.js',            // Library*
-      './public/js/editors/editors.js',                  // Library*
+      './public/js/editors/panels.js',                   // Library**
+      './public/js/editors/panel.js',                    // Class**
+      // './public/js/editors/panel_factory.js',            // Library*
+      // './public/js/editors/editors.js',                  // Library*
       
-      './public/js/render/get_rendered_code.js',         // Library*
+      './public/js/render/get_rendered_code.js',         // function**
       './public/js/render/get_prepared_code_creator.js', // Library*
       './public/js/render/renderer.js',                  // Library*
       './public/js/render/render_live_preview.js',       // Library*

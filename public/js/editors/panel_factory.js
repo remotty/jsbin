@@ -4,4 +4,4 @@
 // var Panel = require('../editors/panel');
 // var renderLivePreview = require('../render/render_live_preview').renderLivePreview;
 
-module.exports = {};
+// module.exports = {};
