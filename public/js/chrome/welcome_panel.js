@@ -91,48 +91,48 @@ module.exports = (function(){
     return array;
   }
 
-  $.ajax({
-    // tries to cache once a day
-    url: '/blog/all.json?' + (new Date()).toString().split(' ').slice(0, 4).join('-'),
-    dataType: 'json',
-    cache: true,
-    success: function (data) {
-      var blogpost = data.blog[0];
-      // this is daft, but it means that the landing page is the same
-      // for all, and ensures that blog comments end up on a single place
-      var root = jsbin.root.replace(/^https/, 'http');
-      $('.toppanel-blog ul').html('<li><a href="' + root + '/' + blogpost.slug + '" target="_blank" class="toppanel-link">' + blogpost.title.replace(/TWDTW.*:\s/, '') + '</a></li>');
+  // $.ajax({
+  //   // tries to cache once a day
+  //   url: '/blog/all.json?' + (new Date()).toString().split(' ').slice(0, 4).join('-'),
+  //   dataType: 'json',
+  //   cache: true,
+  //   success: function (data) {
+  //     var blogpost = data.blog[0];
+  //     // this is daft, but it means that the landing page is the same
+  //     // for all, and ensures that blog comments end up on a single place
+  //     var root = jsbin.root.replace(/^https/, 'http');
+  //     $('.toppanel-blog ul').html('<li><a href="' + root + '/' + blogpost.slug + '" target="_blank" class="toppanel-link">' + blogpost.title.replace(/TWDTW.*:\s/, '') + '</a></li>');
 
-      var last = null;
-      var count = 1;
-      try {
-        last = localStorage.getItem('lastpost') || null;
-      } catch (e) {}
+  //     var last = null;
+  //     var count = 1;
+  //     try {
+  //       last = localStorage.getItem('lastpost') || null;
+  //     } catch (e) {}
 
-      if (last !== null) {
-        last *= 1;
-        if (last < blogpost.timestamp) {
-          count = data.blog.reduce(function (prev, current) {
-            if (last < current.timestamp) {
-              return prev + 1;
-            }
-            return prev;
-          }, 0);
-        } else {
-          count = 0;
-        }
-      }
+  //     if (last !== null) {
+  //       last *= 1;
+  //       if (last < blogpost.timestamp) {
+  //         count = data.blog.reduce(function (prev, current) {
+  //           if (last < current.timestamp) {
+  //             return prev + 1;
+  //           }
+  //           return prev;
+  //         }, 0);
+  //       } else {
+  //         count = 0;
+  //       }
+  //     }
 
-      if (count) {
-        $('.blog a').attr('href', root + '/' + data.blog[count-1].slug).attr('data-count', count);
-      }
+  //     if (count) {
+  //       $('.blog a').attr('href', root + '/' + data.blog[count-1].slug).attr('data-count', count);
+  //     }
 
-      var help = shuffle(data.help);
+  //     var help = shuffle(data.help);
 
-      $('.toppanel-help ul').html('<li><a href="' + root + '/' + help[0].slug + '" target="_blank" class="toppanel-link">' + help[0].title + '</a></li><li><a href="' + root + '/' + help[1].slug + '" target="_blank" class="toppanel-link">' + help[1].title + '</a></li>');
+  //     $('.toppanel-help ul').html('<li><a href="' + root + '/' + help[0].slug + '" target="_blank" class="toppanel-link">' + help[0].title + '</a></li><li><a href="' + root + '/' + help[1].slug + '" target="_blank" class="toppanel-link">' + help[1].title + '</a></li>');
 
-    }
-  });
+  //   }
+  // });
 
   // analytics for links
   $('#toppanel').find('.toppanel-link').mousedown(function() {
