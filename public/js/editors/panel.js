@@ -1,5 +1,5 @@
 /*global $, CodeMirror, jsbin, jshintEnabled, RSVP, module,
- * setTimeout, template */
+ * setTimeout, template, Inlet */
 
 var store = require('../chrome/storage');
 var helper = require('../helper/global_helper');
@@ -163,6 +163,7 @@ var processors = require('../processors/processor');
         }
 
         panel.editor = CodeMirror.fromTextArea(panel.el, cmSettings);
+        Inlet(panel.editor);
 
         panel.editor.on('highlightLines', function () {
           window.location.hash = Panel.getHighlightLines();
