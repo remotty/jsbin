@@ -205,10 +205,8 @@ module.exports = (function(){
           // // renderTest
           // if( editors.livetest.visible ){
           
-          console.log('cmd+enter');
-          console.log(renderLiveTestPreview);
           renderLiveTestPreview();
-          renderLivePreview();
+          // renderLivePreview();
           // }
           
           // if (editors.console.visible && !editors.live.visible) {
