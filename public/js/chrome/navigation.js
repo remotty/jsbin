@@ -179,8 +179,8 @@ module.exports = (function(){
         setTimeout(function () {
           input.select();
         }, 0);
-        dropdownOpen = el;
       }
+      dropdownOpen = el;
     }
   }
 
