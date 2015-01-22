@@ -6,7 +6,6 @@ var helper = require('../helper/global_helper');
 var Navigation = require('../chrome/navigation');
 var Archive = require('../chrome/archive');
 var renderLiveTestPreview = require('../render/render_live_preview').renderLiveTestPreview;
-var renderLivePreview = require('../render/render_live_preview').renderLivePreview;
 var jsconsole = require('../render/console');
 var Autocomplete = require('../editors/autocomplete');
 
@@ -86,20 +85,20 @@ module.exports = (function(){
     var zoom_out = function () {
       var current_panel = Panels.focused;
       
-      $.each($.cookie('zoom-panels').split(","), function(i, data){
+      $.each($.cookie('zoom-panels').split(','), function(i, data){
         Panels.panels[data].show();
-        current_panel.hide();
+        // current_panel.hide();
       });
     };
 
     var zoom_in = function () {
       var panels = Panels.visible_panels_name();
       var current_panel = Panels.focused;
-      
+
       $.cookie('zoom-panels', panels.join(','));
 
       var target_panels = _.reject(panels, function(panel){
-        return panel === "live";
+        return panel === 'live';
       });
 
       $.each(target_panels, function(i, data){
@@ -107,9 +106,9 @@ module.exports = (function(){
       });
 
       Panels.panels.live.show();
-      current_panel.hide();
+      current_panel.show();
     };
-    
+
     var includeAltKey = customKeys.useAlt ? event.altKey : !event.altKey;
     var closekey = customKeys.closePanel ? customKeys.closePanel : KEYCODE['9'];
     var zoomkey = customKeys.zoomPanel ? customKeys.zoomPanel : KEYCODE['0'];
@@ -159,12 +158,13 @@ module.exports = (function(){
                includeAltKey &&
                Panels.focused) {
 
-      if(panels.length === 2){
+      if(Panels.visible_panels().length === 2){
         zoom_out();
       }else{
         zoom_in();
       }
 
+      var current_panel = Panels.focused;
       current_panel.show();
       event.preventDefault();
       
@@ -233,8 +233,7 @@ module.exports = (function(){
       }
 
       // shortcut for showing a panel
-      if (panelShortcuts[event.which] !== undefined && event.metaKey){
-          //&& includeAltKey) {
+      if (panelShortcuts[event.which] !== undefined && event.metaKey && includeAltKey) {
         if (Panels.focused.id === panelShortcuts[event.which]) {
           // this has been disabled in favour of:
           // if the panel is visible, and the user tries cmd+n - then the browser
@@ -318,6 +317,7 @@ module.exports = (function(){
     if (!jsbin.settings.keys) {
       jsbin.settings.keys = {};
     }
+
     jsbin.settings.keys.useAlt = this.checked;
   }
 
