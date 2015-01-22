@@ -43,9 +43,6 @@ var getPreparedCodeCreator = function (is_test) { // jshint ignore:line
     re.scriptopen.lastIndex = 0;
 
     return getRenderedCode().then(function (code) {
-      console.log('code');
-      console.log(code);
-      
       var parts = [],
           html = code.html,
           js = !nojs ? code.javascript : '',

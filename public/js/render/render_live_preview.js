@@ -91,9 +91,6 @@ var renderLivePreviewCreator = function (target, renderer, is_test,
     if (requested) { helper.sendReload(); }
 
     htmlGenerator().then(function (source) {
-      console.log('source');
-      console.log(source);
-      
       var includeJsInRealtime = jsbin.settings.includejs;
 
       // Tell the iframe to reload
