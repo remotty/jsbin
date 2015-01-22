@@ -13,16 +13,12 @@
     './test/client/**/*_spec.js'
   ];
 
-  gulp.task('test', function() {
+  gulp.task('test:client', function() {
     return gulp.src(testFiles)
-      .pipe(karma({
-        configFile: 'karma.conf.js',
-        action: 'run'
-      }))
-      .on('error', function(err) {
-        // Make sure failed tests cause gulp to exit non-zero
-        throw err;
-      });
+      .pipe(karma({configFile: 'karma.conf.js', action: 'run'}))
+      .on('error', function(err) { throw err; });
+  });
+
   gulp.task('test:server', function() {
     return gulp.src('./test/server/**/*.js', {read: false})
       .pipe(gulpMocha({reporter: 'nyan'}));
@@ -30,10 +26,7 @@
 
   gulp.task('karma', function() {
     gulp.src(testFiles)
-      .pipe(karma({
-        configFile: 'karma.conf.js',
-        action: 'watch'
-      }));
+      .pipe(karma({configFile: 'karma.conf.js', action: 'watch'}));
   });
   
   gulp.task('build', function(){
@@ -58,5 +51,11 @@
   gulp.task('watch', function() {
     gulp.watch(['./public/js/**/*.js', '!./public/js/prod/*.js'], ['build']);
     gulp.watch(['./lib/**/*.js', './test/server/**/*.js'], ['test:server']);
+    gulp.src(testFiles)
+      .pipe(karma({configFile: 'karma.conf.js', action: 'watch'}));
+    gulp.watch(['./public/js/**/*.js', '!./public/js/prod/*.js'], ['reload']);
   });
+
+  gulp.task('default', ['serve', 'watch']);
 })();
+
