@@ -2,7 +2,6 @@ module.exports = {
   entry: {
     'app': [
       './public/js/chrome/hashbang-jump.js',             // Instant*
-      
       './public/js/editors/snippets.cm.js',              // CM Extention*
       './public/js/chrome/storage.js',                   // Library**
       './public/js/initialize/init.js',                  // Instant*
@@ -14,12 +13,10 @@ module.exports = {
       './public/js/chrome/settings.js',                  // Library**
       './public/js/chrome/font.js',                      // Instant*
       // './public/js/render/title.js',                     // Library*
-
       './public/js/editors/panels.js',                   // Library**
       './public/js/editors/panel.js',                    // Class**
       // './public/js/editors/panel_factory.js',            // Library*
       // './public/js/editors/editors.js',                  // Library*
-      
       './public/js/render/get_rendered_code.js',         // function**
       './public/js/render/get_prepared_code_creator.js', // Library*
       './public/js/render/renderer.js',                  // Library*
@@ -29,7 +26,6 @@ module.exports = {
       './public/js/render/console.js',                   // Library*
       './public/js/processors/processor.js',             // Library*
       './public/js/editors/setup_code_mirror.js',        // Instant *
-      
       './public/js/editors/libraries.js',                // Library*
       './public/js/editors/library.js',                  // Library*
       './public/js/editors/addons.js',                   // Instant
