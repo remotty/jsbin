@@ -233,8 +233,9 @@ module.exports = (function(){
       }
 
       // shortcut for showing a panel
-      if (panelShortcuts[event.which] !== undefined && event.metaKey && includeAltKey) {
-        if (Panels.panels.focused.id === panelShortcuts[event.which]) {
+      if (panelShortcuts[event.which] !== undefined && event.metaKey){
+          //&& includeAltKey) {
+        if (Panels.focused.id === panelShortcuts[event.which]) {
           // this has been disabled in favour of:
           // if the panel is visible, and the user tries cmd+n - then the browser
           // gets the key command.
