@@ -77,24 +77,24 @@ module.exports = (function(){
         $('a.homebtn').trigger('click', 'keyboard');
       }else{
         $.each($.cookie('list-panels').split(","), function(i, data){
-          Panels.panels.panels[data].toggle();
+          Panels.panels[data].toggle();
         });
       }
       event.preventDefault();
     };
     
     var zoom_out = function () {
-      var current_panel = Panels.panels.focused;
+      var current_panel = Panels.focused;
       
       $.each($.cookie('zoom-panels').split(","), function(i, data){
-        Panels.panels.panels[data].show();
+        Panels.panels[data].show();
         current_panel.hide();
       });
     };
 
     var zoom_in = function () {
       var panels = Panels.visible_panels_name();
-      var current_panel = Panels.panels.focused;
+      var current_panel = Panels.focused;
       
       $.cookie('zoom-panels', panels.join(','));
 
@@ -103,10 +103,10 @@ module.exports = (function(){
       });
 
       $.each(target_panels, function(i, data){
-        Panels.panels.panels[data].hide();
+        Panels.panels[data].hide();
       });
 
-      Panels.panels.panels.live.show();
+      Panels.panels.live.show();
       current_panel.hide();
     };
     
@@ -148,16 +148,16 @@ module.exports = (function(){
     } else if (event.which === closekey &&
                event.metaKey &&
                includeAltKey &&
-               Panels.panels.focused) {
+               Panels.focused) {
 
       // Close key (^9)
-      Panels.panels.hide(Panels.panels.focused.id);
+      Panels.hide(Panels.focused.id);
       event.preventDefault();
       
     } else if (event.which === zoomkey &&
                event.metaKey &&
                includeAltKey &&
-               Panels.panels.focused) {
+               Panels.focused) {
 
       if(panels.length === 2){
         zoom_out();
@@ -171,7 +171,7 @@ module.exports = (function(){
     } else if (event.which === 220 && (event.metaKey || event.ctrlKey)) {
       jsbin.settings.hideheader = !jsbin.settings.hideheader;
       helper.$body[jsbin.settings.hideheader ? 'addClass' : 'removeClass']('hideheader');
-    } else if (event.which === 76 && event.ctrlKey && Panels.panels.panels.console.visible) {
+    } else if (event.which === 76 && event.ctrlKey && Panels.panels.console.visible) {
       if (event.shiftKey) {
         // reset
         jsconsole.reset();
@@ -240,11 +240,11 @@ module.exports = (function(){
           // this has been disabled in favour of:
           // if the panel is visible, and the user tries cmd+n - then the browser
           // gets the key command.
-          Panels.panels.hide(panelShortcuts[event.which]);
+          Panels.hide(panelShortcuts[event.which]);
           event.stop();
         } else {
           // show
-          Panels.panels.show(panelShortcuts[event.which]);
+          Panels.show(panelShortcuts[event.which]);
           event.stop();
 
           if (!customKeys.useAlt && (!jsbin.settings.keys || !jsbin.settings.keys.seenWarning)) {
@@ -273,7 +273,7 @@ module.exports = (function(){
         helper.$body.removeClass('keyboardHelp');
         keyboardHelpVisible = false;
         event.stop();
-      } else if (event.which === KEYCODE.ESC && Panels.panels.focused && codePanel) {
+      } else if (event.which === KEYCODE.ESC && Panels.focused && codePanel) {
         // event.stop();
         // return CodeMirror.commands.autocomplete(Panels.panels.focused.editor);
       } else if (event.which === KEYCODE['.'] && includeAltKey && event.metaKey && panel.id === 'html') {

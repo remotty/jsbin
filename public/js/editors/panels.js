@@ -181,7 +181,7 @@ var Panel = require('../editors/panel');
       console.settings.hide = function () {
         // Removal code is commented out so that the
         // output iframe is never removed
-        if (!panels.live.visible) {
+        if (!Panels.panels.live.visible) {
           // $live.find('iframe').remove();
         }
       };
@@ -495,7 +495,6 @@ var Panel = require('../editors/panel');
 
     var focus = function (panel) {
       Panels.focused = panel;
-      console.log(Panels.focused);
 
       if (panel) {
         $('.panel').removeClass('focus').filter('.' + panel.id).addClass('focus');
