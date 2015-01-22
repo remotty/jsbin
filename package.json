@@ -77,6 +77,8 @@
     "gulp-karma": "0.0.4",
     "gulp-watch": "^3.0.0",
     "gulp-webpack": "^1.1.2",
+    "gulp-mocha": "*",
+    "gulp-connect": "*",
     "hbs-utils": "0.0.3",
     "karma": "^0.12.31",
     "karma-chai": "^0.1.0",
