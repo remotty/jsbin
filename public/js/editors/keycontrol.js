@@ -2,14 +2,13 @@
 
 var Panels = require('../editors/panels');
 var helper = require('../helper/global_helper');
-// var editors = require('../editors/editors');
 var Navigation = require('../chrome/navigation');
 var Archive = require('../chrome/archive');
 var renderLiveTestPreview = require('../render/render_live_preview').renderLiveTestPreview;
 var jsconsole = require('../render/console');
 var Autocomplete = require('../editors/autocomplete');
 
-module.exports = (function(){
+(function(){
   'use strict';
   
   var KEYCODE = {
@@ -357,8 +356,4 @@ module.exports = (function(){
 
     return myEvent;
   }
-
-  return {
-    panelShortcuts: panelShortcuts
-  };
 })();
