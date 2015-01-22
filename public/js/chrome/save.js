@@ -175,7 +175,9 @@ module.exports = (function(){
     var savingLabels = {
       html: $('.panel.html .name span'),
       javascript: $('.panel.javascript .name span'),
-      css: $('.panel.css .name span')
+      css: $('.panel.css .name span'),
+      jasmine: $('.panel.jasmine .name span'),
+      dataframe: $('.panel.dataframe .name span'),
     };
     
     helper.$document.bind('jsbinReady', function () {
@@ -197,6 +199,7 @@ module.exports = (function(){
 
       helper.$document.bind('saveComplete', helper.throttle(function (event, data) {
         // show saved, then revert out animation
+
         savingLabels[data.panelId]
           .text('Saved')
           .stop(true, true)
