@@ -9,6 +9,17 @@
     "runner": false
   },
   "max-request-size": "1MB",
+  "storeTest": {
+    "adapter": "mysql",
+    "mysql": {
+      "host": "192.168.59.103",
+      "user": "root",
+      "password": "textcube",
+      "database": "jsbin_test",
+      "charset": "utf8mb4",
+      "collate": "utf8mb4_unicode_ci"
+    }
+  },
   "store": {
     "adapter": "sqlite",
     "sqlite": {
