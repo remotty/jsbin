@@ -1,6 +1,0 @@
-//= require "../../vendor/js/libraries/codemirror2/codemirror"
-//= require "../../vendor/js/libraries/codemirror2/xml"
-//= require "../../vendor/js/libraries/codemirror2/css"
-//= require "../../vendor/js/libraries/codemirror2/javascript"
-//= require "../../vendor/js/libraries/codemirror2/htmlmixed"
-//= require "../../vendor/js/libraries/codemirror2/searchcursor"

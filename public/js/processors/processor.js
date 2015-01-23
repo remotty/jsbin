@@ -169,7 +169,7 @@ module.exports = jsbin.processors = (function () {
       extensions: ['coffee'],
       url: jsbin.static + '/vendor/js/libraries/coffee-script.js',
       init: function coffeescript(ready) {
-        getScript(jsbin.static + '/vendor/js/libraries/codemirror4/mode/coffeescript/coffeescript.js', ready);
+        getScript(jsbin.static + '/vendor/js/components/codemirror/mode/coffeescript/coffeescript.js', ready);
       },
       handler: function (source, resolve, reject) {
         var renderedCode = '';
@@ -221,7 +221,7 @@ module.exports = jsbin.processors = (function () {
       extensions: ['ls'],
       url: jsbin.static + '/vendor/js/libraries/livescript.js',
       init: function livescript(ready) {
-        getScript(jsbin.static + '/vendor/js/libraries/codemirror4/mode/livescript/livescript.js', ready);
+        getScript(jsbin.static + '/vendor/js/components/codemirror/mode/livescript/livescript.js', ready);
       },
       handler: function (source, resolve, reject) {
         var renderedCode = '';
@@ -308,7 +308,7 @@ module.exports = jsbin.processors = (function () {
       extensions: ['md', 'markdown', 'mdown'],
       url: jsbin.static + '/vendor/js/libraries/marked.min.js',
       init: function markdown(ready) {
-        getScript(jsbin.static + '/vendor/js/libraries/codemirror4/mode/markdown/markdown.js', ready);
+        getScript(jsbin.static + '/vendor/js/components/codemirror/mode/markdown/markdown.js', ready);
       },
       handler: function (source, resolve, reject) {
         try {
@@ -326,7 +326,7 @@ module.exports = jsbin.processors = (function () {
       url: jsbin.static + '/vendor/js/libraries/processing.min.js',
       init: function (ready) {
         $('#library').val( $('#library').find(':contains("Processing")').val() ).trigger('change');
-        getScript(jsbin.static + '/vendor/js/libraries/codemirror4/mode/clike/clike.js', ready);
+        getScript(jsbin.static + '/vendor/js/components/codemirror/mode/clike/clike.js', ready);
       },
       handler: function processing(source, resolve, reject) {
         try {
@@ -356,7 +356,7 @@ module.exports = jsbin.processors = (function () {
       extensions: ['jade'],
       url: jsbin.static + '/vendor/js/libraries/jade.js?1.4.2',
       init: function jade(ready) {
-        getScript(jsbin.static + '/vendor/js/libraries/codemirror4/mode/jade/jade.js', ready);
+        getScript(jsbin.static + '/vendor/js/components/codemirror/mode/jade/jade.js', ready);
       },
       handler: function jade(source, resolve, reject) {
         try {
@@ -465,7 +465,7 @@ module.exports = jsbin.processors = (function () {
       target: 'sass',
       extensions: ['sass'],
       init: function (ready) {
-        getScript(jsbin.static + '/vendor/js/libraries/codemirror4/mode/sass/sass.js', ready);
+        getScript(jsbin.static + '/vendor/js/components/codemirror/mode/sass/sass.js', ready);
       },
       handler: helper.throttle(helper.debounceAsync(function (source, resolve, reject, done) {
         $.ajax({
