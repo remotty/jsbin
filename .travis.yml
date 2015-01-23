@@ -1,6 +1,13 @@
 language: node_js
 node_js:
   - "0.10"
-before_script:
+env:
+  - secure: "U3yK9SYQJwEuxsyLvabrv87dzI60ZlwTHrftANH63qi+wIeam2WF/vJrjeXOJ7hVyKGoclAnz7ULMps9atTwmmzQvNdnbrJmfg5doTiilIU7+fLip17lMw3AQ/Agcv4uHUw5LxuTkKMY0enupkn232hn2AwIKuk3A7WWNmOaN1o="
+before_install:
+  - sudo apt-get install -y libzmq3-dev
+script:
   - npm install
+  - npm install -g bower
+  - bower install
+  - gulp coveralls
 
