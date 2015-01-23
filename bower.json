@@ -8,7 +8,7 @@
     "list.js": "*"
   },
   "devDependencies": {
-    "d3": "*",
+    "d3": "3.5.3",
     "lodash": "*",
     "lazy.js": "*",
     "bacon": "*",
@@ -27,6 +27,8 @@
     "polymaps": "*",
     "p5js": "*",
     "inlet": "enjalot/Inlet"
+  },
+  "resolutions": {
+    "d3": "3.5.3"
   }
 }
-

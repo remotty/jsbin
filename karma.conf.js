@@ -9,13 +9,21 @@ module.exports = function(config) {
       {pattern: './test/client/**/*_spec.js', watched: true, included: true, served: true},
     ],
     exclude: [],
-    preprocessors: {},
-    reporters: ['progress'],
+    preprocessors: {
+      './test/client/**/*.js': 'coverage'
+    },
+    reporters: ['progress', 'coverage'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
     browsers: ['PhantomJS'],
-    singleRun: false
+    singleRun: false,
+    coverageReporter: {
+      type : 'lcovonly',
+      subdir: '.',
+      dir : './coverage/',
+      file : 'lcov-client.info'
+    }
   });
 };

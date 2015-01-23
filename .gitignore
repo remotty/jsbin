@@ -12,6 +12,7 @@ statsd.js
 jsbin.sqlite
 node_modules
 tmp/*
+coverage/*
 
 .tern-port
 \#*
@@ -23,3 +24,4 @@ build/config.gypi
 .idea
 
 npm-debug.log
+test.sqlite3

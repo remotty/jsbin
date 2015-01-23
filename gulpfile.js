@@ -7,6 +7,9 @@
   var karma = require('gulp-karma');
   var webpackConfig = require('./webpack-config');
   var gulpMocha = require('gulp-mocha');
+  var gulpMerger = require ('lcov-result-merger');
+  var gulpIstanbul = require('gulp-istanbul');
+  var gulpCoveralls = require('gulp-coveralls');
 
   var testFiles = [
     './test/client/hello.js',
@@ -21,9 +24,20 @@
 
   gulp.task('test:server', function() {
     return gulp.src('./test/server/**/*.js', {read: false})
-      .pipe(gulpMocha({reporter: 'nyan'}));
+      .pipe(gulpMocha({reporter: 'spec'}));
   });
 
+  gulp.task('test:server:coverage', function(){
+    gulp.src(['lib/**/*.js'])
+      .pipe(gulpIstanbul())
+      .pipe(gulpIstanbul.hookRequire())
+      .on('finish', function(){
+        gulp.src(['test/server/**/*.js'])
+          .pipe(gulpMocha({reporter: 'spec'}))
+          .pipe(gulpIstanbul.writeReports('coverage'));
+      });
+  });
+  
   gulp.task('karma', function() {
     gulp.src(testFiles)
       .pipe(karma({configFile: 'karma.conf.js', action: 'watch'}));
@@ -43,7 +57,18 @@
     });
   });
 
-  gulp.task("reload", function() {
+  gulp.task('cover', ['test:server:coverage', 'test:client'], function() {
+    return gulp.src('./coverage/lcov*.info')
+      .pipe(gulpMerger())
+      .pipe(gulp.dest('./coverage'));
+  });
+
+  gulp.task('coveralls', ['cover'], function(){
+    return gulp.src('coverage/lcov.info')
+      .pipe(gulpCoveralls());
+  });
+  
+  gulp.task('reload', function() {
     gulp.src(['./public/js/**/*.js', '!./public/js/prod/*.js'])
       .pipe(gulpConnect.reload());
   });

@@ -18,6 +18,17 @@ describe('Bin Model', function(){
       done();
     });
   });
+
+  after(function(done) {
+    test_helper.store.disconnect(function(err){
+      if(err){
+        console.log(err);
+      }
+
+      console.log('disconnectd');
+      done();
+    });
+  });
   
   afterEach(function(done){
     bin.store.removeAllBins({}, function(err){
@@ -87,4 +98,6 @@ describe('Bin Model', function(){
       assert.equal(-1, [1,2,3].indexOf(0));
     });
   });
+
 });
+

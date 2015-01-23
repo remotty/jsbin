@@ -3,10 +3,13 @@ var assert = require("assert"),
 
 // Database Settings
 options.store.adapter = 'mysql';
-options.store.mysql.host = '192.168.59.103';
+options.store.mysql.host = 'localhost';
 options.store.mysql.user = 'root';
-options.store.mysql.password = 'textcube';
-options.store.mysql.database = 'jsbin_test';
+options.store.mysql.database = 'jsbin';
+
+// options.store.mysql.password = 'textcube';
+// options.store.adapter = 'sqlite';
+// options.store.sqlite.location = './test/server/test.sqlite3';
 
 var store = require('../../lib/store.js')(options.store);
 
