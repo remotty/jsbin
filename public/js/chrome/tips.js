@@ -1,3 +1,7 @@
+/*global $, setTimeout, clearTimeout */
+
+var helper = require('../helper/global_helper');
+
 (function () {
   'use strict';
   
@@ -10,7 +14,7 @@
     $html.removeClass('showtip');
     $tip.removeClass();
     $tipContent.html('');
-    $(window).resize();
+    helper.$window.resize();
     if (cb) { setTimeout(cb, 0); }
   };
 
@@ -24,7 +28,7 @@
       data.callback();
     }
         
-    if (!data.autohide) return;
+    if (!data.autohide) { return; }
     tipTimeout = setTimeout(function () {
       removeTip();
     }, parseInt(data.autohide, 10) || 5 * 1000);
@@ -41,7 +45,7 @@
    *      autohide: 8000
    *    });
    */
-  $document.on('tip', function (event, data, fn) {
+  helper.$document.on('tip', function (event, data, fn) {
     var tipData = data;
     if (typeof data === 'string') {
       tipData = {};
@@ -68,7 +72,7 @@
   });
 
   // Escape
-  $document.keydown(function (event) {
+  helper.$document.keydown(function (event) {
     if (event.which == 27) {
       removeTip();
     }

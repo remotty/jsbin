@@ -1,4 +1,4 @@
-var githubIssue = (function () {
+(function () {
 /*global $:true, jsbin:true */
   'use strict';
 

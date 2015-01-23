@@ -1,6 +1,6 @@
-  /*globals $:true, jsbin:true, CodeMirror:true, Definitions:true, Defs:true */
+/*global $, jsbin, CodeMirror */
 
-(function ($, jsbin, CodeMirror, Defs, Definitions) {
+(function () {
   'use strict';
 
   if (jsbin.embed) {
@@ -70,14 +70,12 @@
   };
 
   var loadTern = function(editor) {
-    initTern(editor, Defs.ternBasicDefs);
+    initTern(editor, ternBasicDefs);
     ternLoaded.ecma5 = true;
     ternLoaded.browser = true;
   };
 
   var searchTernDefinition = function(htmlCode) {
-    var ternDefinitions = Definitions.ternDefinitions;
-    
     for (var i = 0; i < ternDefinitions.length-1; i++) {
       if (ternDefinitions[i].match.test(htmlCode)) {
         if (ternDefinitions[i].type === 'def') {
@@ -114,6 +112,7 @@
     }
   };
 
+  
   CodeMirror.startTern = function() {
     loadTern(jsbin.panels.panels.javascript.editor);
     loadTern(jsbin.panels.panels.jasmine.editor);
@@ -123,4 +122,4 @@
       searchTernDefinition(jsbin.panels.panels.html.getCode());
     });
   };
-})($, jsbin, CodeMirror, Defs, Definitions);
+})();

@@ -1,7 +1,13 @@
+/*global $, jsbin, CodeMirror */
+
 /** ============================================================================
  * JS Bin Renderer
  * Messages to and from the runner.
  * ========================================================================== */
+
+var helper = require('../helper/global_helper');
+var store = require('../chrome/storage');
+// var Navigation = require('../chrome/navigation');
 
 var rendererCreator = function (target, is_test) {
   'use strict';
@@ -37,7 +43,7 @@ var rendererCreator = function (target, is_test) {
    * Handle all incoming postMessages to the renderer
    */
   renderer.handleMessage = function (event) {
-    if (!event.origin) return;
+    if (!event.origin) { return; }
     var data = event.data;
 
     // specific change to handle reveal embedding
@@ -101,7 +107,7 @@ var rendererCreator = function (target, is_test) {
   renderer.loopProtectHit = function (line) {
     var cm = jsbin.panels.panels.javascript.editor;
     // grr - more setTimeouts to the rescue. We need this to go in *after*
-    // jshint does it's magic, but jshint set on a setTimeout, so we have to
+    // 'jshint does it's magic, but jshint set on a setTimeout, so we have to
     // schedule after.
     setTimeout(function () {
       var annotations = cm.state.lint.annotations || [];
@@ -129,7 +135,7 @@ var rendererCreator = function (target, is_test) {
   renderer.resize = (function () {
     var size = target.find('.size');
 
-    var hide = throttle(function () {
+    var hide = helper.throttle(function () {
       size.fadeOut(200);
     }, 2000);
 
@@ -144,7 +150,7 @@ var rendererCreator = function (target, is_test) {
       if (jsbin.embed && self !== top && embedResizeDone === false) {
         embedResizeDone = true;
         // Inform the outer page of a size change
-        var height = ($body.outerHeight(true) - $(renderer.runner.iframe).height()) + data.offsetHeight;
+        var height = (helper.$body.outerHeight(true) - $(renderer.runner.iframe).height()) + data.offsetHeight;
        window.parent.postMessage({ height: height }, '*');
       }
     };
@@ -156,7 +162,7 @@ var rendererCreator = function (target, is_test) {
   renderer.focus = function () {
     jsbin.panels.focus(jsbin.panels.panels.live);
     // also close any open dropdowns
-    closedropdown();
+    // Navigation.closedropdown();
   };
 
   /**
@@ -179,11 +185,11 @@ var rendererCreator = function (target, is_test) {
    * Load scripts into rendered iframe
    */
   renderer['console:load:script:success'] = function (url) {
-    $document.trigger('console:load:script:success', url);
+    helper.$document.trigger('console:load:script:success', url);
   };
 
   renderer['console:load:script:error'] = function (err) {
-    $document.trigger('console:load:script:error', err);
+    helper.$document.trigger('console:load:script:error', err);
   };
 
   /**
@@ -191,16 +197,18 @@ var rendererCreator = function (target, is_test) {
    * TODO abstract these so that they are automatically triggered
    */
   renderer['console:load:dom:success'] = function (url) {
-    $document.trigger('console:load:dom:success', url);
+    helper.$document.trigger('console:load:dom:success', url);
   };
 
   renderer['console:load:dom:error'] = function (err) {
-    $document.trigger('console:load:dom:error', err);
+    helper.$document.trigger('console:load:dom:error', err);
   };
 
   return renderer;
 
 };
 
-var renderer = rendererCreator($('#live'), false);
-var rendererTest = rendererCreator($('#livetest'), true);
+module.exports = {
+  renderer: rendererCreator($('#live'), false),
+  rendererTest: rendererCreator($('#livetest'), true)
+};

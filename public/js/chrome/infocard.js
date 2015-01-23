@@ -1,4 +1,8 @@
-    /*global spinner, $, jsbin, prettyDate, EventSource, throttle, $document, analytics, throttle*/
+/*global $, jsbin */
+
+var helper = require('../helper/global_helper');
+var analytics = require('../chrome/analytics');
+var spinner = require('../chrome/spinner');
 
 (function (global) {
   'use strict';
@@ -61,7 +65,7 @@
       if (window.EventSource && owner) {
         // TODO use pagevisibility api to close connection
         es = new EventSource(jsbin.getURL() + '/stats?checksum=' + jsbin.state.checksum);
-        es.addEventListener('stats', throttle(updateStats, 1000));
+        es.addEventListener('stats', helper.throttle(updateStats, 1000));
       }
     }
 
@@ -214,7 +218,7 @@
           listenStats(owner);
           handleVisibility(owner);
           var url = jsbin.getURL();
-          $document.on('saved', function () {
+          helper.$document.on('saved', function () {
             var newurl = window.location.toString();
             if (url !== newurl) {
               es.close();
@@ -223,7 +227,7 @@
           });
         } else if (jsbin.saveDisabled === true && window.location.pathname.slice(-5) === '/edit') {
           $.getScript(jsbin.static + '/js/chrome/spike.js?' + jsbin.version);
-          $document.on('stats', throttle(updateStats, 1000));
+          helper.$document.on('stats', helper.throttle(updateStats, 1000));
         }
       }
     }
@@ -306,6 +310,6 @@
 
     initHandlers();
     updateInfoCard();
-    $document.bind('saved', updateInfoCard);
+    helper.$document.bind('saved', updateInfoCard);
   }
 }(this));

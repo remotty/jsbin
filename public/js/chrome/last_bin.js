@@ -1,4 +1,8 @@
-(function ($document, jsbin) {
+/*global jsbin, $ */
+
+var helper = require('../helper/global_helper');
+
+(function () {
   'use strict';
 
   function getExpires() {
@@ -46,9 +50,9 @@
 
   // save the bin url when the bin is saved, changed and when we load first time
   if (jsbin && jsbin.getURL) {
-    $document.on('saved', save);
+    helper.$document.on('saved', save);
     save();
   } else {
     updateBackButton();
   }
-})($document, jsbin);
+})();

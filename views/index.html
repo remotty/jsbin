@@ -71,10 +71,47 @@
 <script src="{{static}}/vendor/js/libraries/jquery-1.11.0.min.js"></script>
 {{!-- we use the passed in version of isProduction here, not the the app global as we need to be able to switch it - even when in production --}}
 {{#if isProduction}}
-<script src="{{static}}/js/prod/jsbin-{{version}}.min.js"></script>
 <script>
-  start({{{json_template}}}, {{{jsbin}}}, this, document);
+  // start({{{json_template}}}, {{{jsbin}}}, this, document);
+  window.template = {{{json_template}}};
+  window.jsbin = {{{jsbin}}};
 </script>
+<!-- <script src="{{static}}/js/prod/jsbin-{{version}}.min.js"></script> -->
+<script src="{{static}}/vendor/js/libraries/rsvp.js"></script>
+<script src="{{static}}/vendor/js/libraries/jquery-migrate.js"></script>
+<script src="{{static}}/vendor/js/components/jquery-cookie/jquery.cookie.js"></script>
+<script src="{{static}}/vendor/js/components/jquery.tablesorter/js/jquery.tablesorter.min.js"></script>
+<script src="{{static}}/vendor/js/components/jquery.tablesorter/js/jquery.tablesorter.widgets.min.js"></script>
+<script src="{{static}}/vendor/js/components/list.js/dist/list.min.js"></script>
+<script src="{{static}}/vendor/js/components/vex/js/vex.combined.min.js"></script>
+<script src="{{static}}/vendor/js/libraries/pretty-date.js"></script>
+<script src="{{static}}/vendor/js/libraries/polyfills.js"></script>
+<script src="{{static}}/vendor/js/libraries/codemirror4/lib/codemirror.js"></script>
+<script src="{{static}}/vendor/js/libraries/codemirror4/mode/xml/xml.js"></script>
+<script src="{{static}}/vendor/js/libraries/codemirror4/mode/css/css.js"></script>
+<script src="{{static}}/vendor/js/libraries/codemirror4/mode/javascript/javascript.js"></script>
+<script src="{{static}}/vendor/js/libraries/codemirror4/mode/htmlmixed/htmlmixed.js"></script>
+<script src="{{static}}/vendor/js/libraries/cm_addons/emmet.js"></script>
+<script src="{{static}}/vendor/js/libraries/codemirror4/addon/dialog/dialog.js"></script>
+<script src="{{static}}/vendor/js/libraries/codemirror4/addon/search/searchcursor.js"></script>
+<script src="{{static}}/vendor/js/libraries/codemirror4/addon/search/search.js"></script>
+<script src="{{static}}/vendor/js/libraries/cm_addons/simple-hint.js"></script>
+<script src="{{static}}/vendor/js/libraries/codemirror4/addon/hint/anyword-hint.js"></script>
+<script src="{{static}}/vendor/js/libraries/cm_addons/javascript-hint.js"></script>
+<script src="{{static}}/vendor/js/libraries/codemirror4/addon/edit/matchbrackets.js"></script>
+<script src="{{static}}/vendor/js/libraries/codemirror4/addon/comment/comment.js"></script>
+<script src="{{static}}/vendor/js/libraries/cm_addons/lint/javascript-lint.js"></script>
+<script src="{{static}}/vendor/js/libraries/cm_addons/lint/lint.js"></script>
+<script src="{{static}}/vendor/js/libraries/lz-string-1.3.3.js"></script>
+<script src="{{static}}/vendor/js/libraries/cm_addons/cm-highlight-line.js"></script>
+<script src="{{static}}/vendor/js/components/typehead.js/dist/typeahead.bundle.min.js"></script>
+<script src="{{static}}/vendor/js/libraries/json2.js"></script>
+<script src="{{static}}/vendor/js/libraries/bin-to-file.min.js"></script>
+<script src="{{static}}/vendor/js/libraries/prettyprint.js"></script>
+<script src="{{static}}/vendor/js/libraries/loop-protect.min.js"></script>
+<script src="{{static}}/vendor/js/libraries/s3upload.js"></script>
+<script src="{{static}}/js/prod/app.bundle.js"></script>
+
 {{else}}
 <script>
 window.template = {{{json_template}}};

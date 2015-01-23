@@ -1,4 +1,10 @@
+/*global jsbin, $, module, require */
+
+var localStorage = require('../chrome/storage').localStorage;
+
 var Libraries = (function(){
+  'use strict';
+  
   var libraries = [
     {
       'url': '//code.jquery.com/jquery-git.js',
@@ -598,7 +604,7 @@ var Libraries = (function(){
 
   window.libraries = libraries; // expose a command line API
 
-  var userSpecified = JSON.parse(store.localStorage.getItem('libraries') || '[]');
+  var userSpecified = JSON.parse(localStorage.getItem('libraries') || '[]');
 
   for (var i = 0; i < userSpecified.length; i++) {
     libraries.push(userSpecified[i]);
@@ -620,14 +626,14 @@ var Libraries = (function(){
       libraries.push(lib);
     }
     try {
-      store.localStorage.setItem('libraries', JSON.stringify(userSpecified));
+      localStorage.setItem('libraries', JSON.stringify(userSpecified));
     } catch (e) {} // just in case of DOM_22 error, makes me so sad to use this :(
     $('#library').trigger('init');
   };
 
   var clear = function () {
     userSpecified = [];
-    store.localStorage.removeItem('libraries');
+    localStorage.removeItem('libraries');
     var length = libraries.length;
     for (var i = 0; i < length; i++) {
       if (libraries[i].group === 'Custom') {
@@ -649,3 +655,6 @@ var Libraries = (function(){
 var libraries = Libraries.libraries;
 libraries.add = Libraries.add;
 libraries.clear = Libraries.clear;
+
+module.exports = libraries;
+

@@ -1,6 +1,9 @@
+/*global jsbin, $ */
+
+var helper = require('../helper/global_helper');
+
 (function () {
   'use strict';
-  /*globals $, jsbin, objectValue */
 
   var settings = jsbin.settings || {};
   var customKeys = settings.keys || {};
@@ -65,7 +68,7 @@
 
   var ctrlKey = $.browser.platform === 'mac' ? 'metaKey' : 'ctrlKey';
 
-  $(document).on('keydown', function beautifyKeyBinding(e) {
+  helper.$document.on('keydown', function beautifyKeyBinding(e) {
     if (e[ctrlKey] && e.shiftKey && e.which == 76) {
       // ctrl/command + shift + L
       beautify();

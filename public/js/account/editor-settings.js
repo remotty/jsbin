@@ -1,7 +1,25 @@
+/*global $, CodeMirror, jsbin, reloadAddons, setTimeout, clearTimeout */
+
 (function(){
   'use strict';
 
-  /*globals $, CodeMirror, jsbin, reloadAddons */
+    var sessionStorage;
+    var localStorage;
+
+    function hasStore(type) {
+      try {
+        return type in window && window[type] !== null;
+      } catch(e) {
+        return false;
+      }
+    }
+  
+  if (!hasStore('localStorage')) {
+    // dirty, but will do for our purposes
+    localStorage = $.extend({}, sessionStorage);
+  } else if (hasStore('localStorage')) {
+    localStorage = window.localStorage;
+  }
 
   // create fake jsbin object
   $.extend(jsbin, {
@@ -90,11 +108,6 @@
   var $saveStatus = $('span.status');
   var saveTimer = null;
 
-
-  // setup variables;
-  var $saveStatus = $('span.status');
-  var saveTimer = null;
-
   var $textarea = $('textarea');
   var currentSettings = getCurrentSettings();
   if (currentSettings.editor === undefined) {
@@ -109,6 +122,7 @@
   var editor = window.editor = CodeMirror.fromTextArea($textarea[0], $.extend({
     mode: 'text/html'
   }, currentSettings.editor));
+  
   jsbin.panels.panels.javascript.editor = editor;
   jsbin.panels.panels.html.editor = editor;
   window.template.html = editor.getValue();

@@ -67,16 +67,27 @@
     "validator": "^3.16.1"
   },
   "devDependencies": {
+    "chai": "^1.10.0",
     "grunt": "~0.4.1",
+    "grunt-cli": "~0.1.11",
     "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-jshint": "~0.1.1",
     "grunt-contrib-uglify": "~0.2.2",
+    "gulp": "^3.8.10",
+    "gulp-karma": "0.0.4",
+    "gulp-watch": "^3.0.0",
+    "gulp-webpack": "^1.1.2",
+    "hbs-utils": "0.0.3",
+    "karma": "^0.12.31",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^0.1.7",
+    "karma-mocha": "^0.1.10",
+    "mocha": "~1.21.4",
+    "mocha-casperjs": "~0.5.0",
     "should": "~1.2.2",
     "sinon": "~1.7.3",
-    "grunt-cli": "~0.1.11",
-    "mocha-casperjs": "~0.5.0",
-    "hbs-utils": "0.0.3",
-    "mocha": "~1.21.4"
+    "webpack": "^1.4.15",
+    "webpack-dev-server": "^1.7.0"
   },
   "optionalDependencies": {
     "zmq": "~2.6.0"

@@ -1,4 +1,22 @@
-var Navigation = (function($, jsbin, $document){
+/*global $, jsbin, vex, setTimeout */
+
+var analytics = require('../chrome/analytics');
+// var Panels.panels = require('../Panels.panels/Panels.panels');
+var Panels = require('../editors/panels');
+var helper = require('../helper/global_helper');
+var saveChecksum = require('../helper/global_helper').saveChecksum;
+var store = require('../chrome/storage');
+var ESC = require('../chrome/esc');
+var Archive = require('../chrome/archive');
+var renderLivePreview = require('../render/render_live_preview').renderLivePreview;
+var libraries = require('../editors/libraries');
+var Library = require('../editors/library');
+var jsconsole = require('../render/console');
+var updateSavedState = require('../chrome/save').updateSavedState;
+var split = require('../chrome/save').split;
+var localStorage = require('../chrome/storage').localStorage;
+
+module.exports = (function(){
   'use strict';
   
   var $enableUniversalEditor = $('#enableUniversalEditor');
@@ -15,12 +33,12 @@ var Navigation = (function($, jsbin, $document){
 
   var setup_startingpoint_event = function(){
     $startingpoint.click(function (event) {
-      $event.preventDefault();
+      event.preventDefault();
       if (localStorage) {
         analytics.saveTemplate();
-        localStorage.setItem('saved-javascript', editors.javascript.getCode());
-        localStorage.setItem('saved-html', editors.html.getCode());
-        localStorage.setItem('saved-css', editors.css.getCode());
+        localStorage.setItem('saved-javascript', Panels.panels.javascript.getCode());
+        localStorage.setItem('saved-html', Panels.panels.html.getCode());
+        localStorage.setItem('saved-css', Panels.panels.css.getCode());
 
         localStorage.setItem('saved-processors', JSON.stringify({
           javascript: jsbin.panels.panels.javascript.processor.id,
@@ -28,13 +46,13 @@ var Navigation = (function($, jsbin, $document){
           css: jsbin.panels.panels.css.processor.id,
         }));
 
-        $document.trigger('tip', {
+        helper.$document.trigger('tip', {
           type: 'notification',
           content: 'Starting template updated and saved',
           autohide: 3000
         });
       } else {
-        $document.trigger('tip', {
+        helper.$document.trigger('tip', {
           type: 'error',
           content: 'Saving templates isn\'t supported in this browser I\'m afraid. Sorry'
         });
@@ -102,14 +120,14 @@ var Navigation = (function($, jsbin, $document){
     $lockrevision.on('click', function (event) {
       event.preventDefault();
       saveChecksum = false;
-      $document.trigger('locked');
+      helper.$document.trigger('locked');
     }).on('mouseup', function () {
       return false;
     });
   };
 
   var setup_document_event = function(){
-    $document.on('locked', function () {
+    helper.$document.on('locked', function () {
       if (!$lockrevision.data('locked')) {
         analytics.lock();
         $lockrevision.removeClass('icon-unlocked').addClass('icon-lock');
@@ -121,7 +139,7 @@ var Navigation = (function($, jsbin, $document){
     // var $lockrevision = $('.lockrevision').on('click', function (event) {
     // });
 
-    $document.on('saved', function () {
+    helper.$document.on('saved', function () {
       $lockrevision.removeClass('icon-lock').addClass('icon-unlocked').data('locked', false);
       $lockrevision.html('<span>Click to lock and prevent further changes</span>');
     });
@@ -157,10 +175,12 @@ var Navigation = (function($, jsbin, $document){
       // $body.addClass('menuinfo');
       analytics.openMenu(el.hash.substring(1));
       var input = menu.find(':text:visible:first').focus()[0];
-      if (input) setTimeout(function () {
-        input.select();
-      }, 0);
-      dropdownOpen = el;
+      if (input) {
+        setTimeout(function () {
+          input.select();
+        }, 0);
+        dropdownOpen = el;
+      }
     }
   }
 
@@ -194,7 +214,7 @@ var Navigation = (function($, jsbin, $document){
       e.preventDefault();
       return false;
     }).mouseup(function () {
-      if (menuDown) return false;
+      if (menuDown) { return false; }
     }).click(function () {
       if (!menuDown) {
         analytics.closeMenu(this.hash.substring(1));
@@ -213,7 +233,7 @@ var Navigation = (function($, jsbin, $document){
 
   var setup_body_event = function(){
     var ignoreUp = false;
-    $body.bind('mousedown', function (event) {
+    helper.$body.bind('mousedown', function (event) {
       if (dropdownOpen) {
         if ($(event.target).closest('.menu').length) {
           ignoreUp = true;
@@ -275,8 +295,8 @@ var Navigation = (function($, jsbin, $document){
   var setup_runwithalerts_event = function(){
     $('#runwithalerts').click(function (event, data) {
       analytics.run(data);
-      if (editors.console.visible) {
-        editors.console.render(true);
+      if (Panels.panels.console.visible) {
+        Panels.panels.console.render(true);
       } else {
         renderLivePreview(true);
       }
@@ -287,7 +307,7 @@ var Navigation = (function($, jsbin, $document){
   var setup_runconsole_event = function(){
     $('#runconsole').click(function () {
       analytics.runconsole();
-      editors.console.render(true);
+      Panels.panels.console.render(true);
       return false;
     });
   };
@@ -301,9 +321,9 @@ var Navigation = (function($, jsbin, $document){
 
   var setup_showhelp_event = function(){
     $('#showhelp').click(function () {
-      $body.toggleClass('keyboardHelp');
-      keyboardHelpVisible = $body.is('.keyboardHelp');
-      if (keyboardHelpVisible) {
+      helper.$body.toggleClass('keyboardHelp');
+      ESC.keyboardHelpVisible = helper.$body.is('.keyboardHelp');
+      if (ESC.keyboardHelpVisible) {
         // analytics.help('keyboard');
       }
       return false;
@@ -312,9 +332,9 @@ var Navigation = (function($, jsbin, $document){
 
   var setup_showurls_event = function(){
     $('#showurls').click(function () {
-      $body.toggleClass('urlHelp');
-      urlHelpVisible = $body.is('.urlHelp');
-      if (urlHelpVisible) {
+      helper.$body.toggleClass('urlHelp');
+      ESC.urlHelpVisible = helper.$body.is('.urlHelp');
+      if (ESC.urlHelpVisible) {
         // analytics.urls();
       }
       return false;
@@ -440,7 +460,7 @@ var Navigation = (function($, jsbin, $document){
     
     // ignore for embed as there might be a lot of embeds on the page
     if (!jsbin.embed && store.sessionStorage.getItem('runnerPending')) {
-      $document.trigger('tip', {
+      helper.$document.trigger('tip', {
         content: 'It looks like your last session may have crashed, so I\'ve disabled "Auto-run JS" for you',
         type: 'error'
       });
@@ -454,13 +474,13 @@ var Navigation = (function($, jsbin, $document){
     $('#enablejs').change(function () {
       jsbin.settings.includejs = this.checked;
       analytics.enableLiveJS(jsbin.settings.includejs);
-      editors.live.render();
+      Panels.panels.live.render();
     }).attr('checked', jsbin.settings.includejs);
   };
 
   var hideheader = function(){
     if (!jsbin.embed && jsbin.settings.hideheader) {
-      $body.addClass('hideheader');
+      helper.$body.addClass('hideheader');
     }
   };
   
@@ -692,12 +712,12 @@ var Navigation = (function($, jsbin, $document){
   var setup_archive_bin_event = function(){
     $('a.archivebin').on('click', function (e) {
       e.preventDefault();
-      archive();
+      Archive.archive();
     });
 
     $('a.unarchivebin').on('click', function (e) {
       e.preventDefault();
-      archive(false);
+      Archive.archive(false);
     });
   };
 
@@ -868,10 +888,11 @@ var Navigation = (function($, jsbin, $document){
     setup_download_event();
   };
 
+  setup();
+  
   return {
-    setup: setup,
-    add_description: add_description
+    add_description: add_description,
+    opendropdown: opendropdown,
+    closedropdown: closedropdown
   };
-})($, jsbin, $document);
-
-Navigation.setup();
+})();

@@ -1,4 +1,4 @@
-/* globals throttle:true, window:true */
+/*global */
 /**
  * Utilities & polyfills
  */

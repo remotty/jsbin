@@ -1,6 +1,5 @@
 {
   "app": [
-    "/js/chrome/hashbang-jump.js",
     "/vendor/js/libraries/rsvp.js",
     "/vendor/js/libraries/jquery-migrate.js",
     "/vendor/js/components/jquery-cookie/jquery.cookie.js",
@@ -29,12 +28,13 @@
     "/vendor/js/libraries/lz-string-1.3.3.js",
     "/vendor/js/libraries/cm_addons/cm-highlight-line.js",
     "/vendor/js/components/typehead.js/dist/typeahead.bundle.min.js",
-    "/js/editors/snippets.cm.js",
     "/vendor/js/libraries/json2.js",
     "/vendor/js/libraries/bin-to-file.min.js",
     "/vendor/js/libraries/prettyprint.js",
     "/vendor/js/libraries/loop-protect.min.js",
     "/vendor/js/libraries/s3upload.js",
+    "/js/chrome/hashbang-jump.js",
+    "/js/editors/snippets.cm.js",
     "/js/chrome/storage.js",
     "/js/initialize/init.js",
     "/js/helper/global_helper.js",
@@ -85,8 +85,8 @@
   "runner": [
     "/vendor/js/libraries/polyfills.js",
     "/vendor/js/libraries/stringify.js",
-    "/js/iframe_runner/utils.js",
     "/vendor/js/libraries/loop-protect.min.js",
+    "/js/iframe_runner/utils.js",
     "/js/iframe_runner/proxy_console.js",
     "/js/iframe_runner/processor.js",
     "/js/iframe_runner/sandbox.js",
