@@ -10,10 +10,12 @@ before_script:
   - mysql -uroot -e "show databases"
   - sh -c "mysql -uroot jsbin < build/full-db-v3.mysql.sql"
   - mysql -uroot -e "show tables" jsbin
-
 script:
   - npm install
   - npm install -g bower
-  - bower install
+  - bower install -F --no-interactive
+  - gulp test:client
+  - gulp test:server
+  - ls coverage
+  - gulp cover
   - gulp coveralls
-
