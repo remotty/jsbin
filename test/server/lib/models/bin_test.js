@@ -88,3 +88,7 @@ describe('Bin Model', function(){
     });
   });
 });
+
+after(function() {
+  test_helper.store.disconnect();
+});
