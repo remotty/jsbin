@@ -24,3 +24,4 @@ build/config.gypi
 .idea
 
 npm-debug.log
+test.sqlite3
