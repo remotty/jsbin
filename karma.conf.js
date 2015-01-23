@@ -5,19 +5,17 @@ module.exports = function(config) {
     basePath: '',
     frameworks: ['mocha', 'chai'],
     files: [
-      './test/client/hello.js',
-      './test/client/**/*_spec.js'
+      {pattern: './public/js/**/*.js', watched: true, included: true, served: true},
+      {pattern: './test/client/**/*_spec.js', watched: true, included: true, served: true},
     ],
-    exclude: [
-    ],
-    preprocessors: {
-    },
+    exclude: [],
+    preprocessors: {},
     reporters: ['progress'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome'],
+    browsers: ['PhantomJS'],
     singleRun: false
   });
 };

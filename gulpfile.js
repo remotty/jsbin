@@ -2,39 +2,31 @@
   'use strict';
 
   var gulp = require('gulp');
-  var gutil = require('gulp-util');
-  var webpack = require('webpack');
-  var gulpWebpack = require('gulp-webpack');  
-  var WebpackDevServer = require('webpack-dev-server');
+  var gulpWebpack = require('gulp-webpack');
+  var gulpConnect = require('gulp-connect');  
   var karma = require('gulp-karma');
   var webpackConfig = require('./webpack-config');
-  var watch = require('gulp-watch');
-  
-  var webpackDevServerPort = 6000;
+  var gulpMocha = require('gulp-mocha');
 
   var testFiles = [
     './test/client/hello.js',
     './test/client/**/*_spec.js'
   ];
 
-  gulp.task('test', function() {
+  gulp.task('test:client', function() {
     return gulp.src(testFiles)
-      .pipe(karma({
-        configFile: 'karma.conf.js',
-        action: 'run'
-      }))
-      .on('error', function(err) {
-        // Make sure failed tests cause gulp to exit non-zero
-        throw err;
-      });
+      .pipe(karma({configFile: 'karma.conf.js', action: 'run'}))
+      .on('error', function(err) { throw err; });
+  });
+
+  gulp.task('test:server', function() {
+    return gulp.src('./test/server/**/*.js', {read: false})
+      .pipe(gulpMocha({reporter: 'nyan'}));
   });
 
   gulp.task('karma', function() {
     gulp.src(testFiles)
-      .pipe(karma({
-        configFile: 'karma.conf.js',
-        action: 'watch'
-      }));
+      .pipe(karma({configFile: 'karma.conf.js', action: 'watch'}));
   });
   
   gulp.task('build', function(){
@@ -43,7 +35,27 @@
       .pipe(gulp.dest('./public/js/prod'));
   });
 
-  gulp.task('watch', function() {
-    gulp.watch(['./public/js/**/*.js', "!./public/js/prod/*.js"], ['build']);
+  gulp.task('serve', function(){
+    gulpConnect.server({
+      root: './public',
+      port: 8000,
+      livereload: true
+    });
   });
+
+  gulp.task("reload", function() {
+    gulp.src(['./public/js/**/*.js', '!./public/js/prod/*.js'])
+      .pipe(gulpConnect.reload());
+  });
+  
+  gulp.task('watch', function() {
+    gulp.watch(['./public/js/**/*.js', '!./public/js/prod/*.js'], ['build']);
+    gulp.watch(['./lib/**/*.js', './test/server/**/*.js'], ['test:server']);
+    gulp.src(testFiles)
+      .pipe(karma({configFile: 'karma.conf.js', action: 'watch'}));
+    gulp.watch(['./public/js/**/*.js', '!./public/js/prod/*.js'], ['reload']);
+  });
+
+  gulp.task('default', ['serve', 'watch']);
 })();
+
