@@ -1,37 +1,40 @@
 /*global $, module, require */
 
 var helper = require('../helper/global_helper');
-var analytics = require('./analytics');
+var analytics = require('../chrome/analytics');
+// var navigation = require('../chrome/navigation');
 
-module.exports = (function(){
+(function(){
   'use strict';
 
-  var loginVisible = false;
-  var dropdownOpen = false;
-  var keyboardHelpVisible = false;
-  var urlHelpVisible = false;
+  var ESC = (function(){
+    var ESC = function(){};
 
-  var hideOpen = function() {
-    if (urlHelpVisible) {
-      helper.$body.removeClass('urlHelp');
-      urlHelpVisible = false;
-      analytics.closeMenu('help');
-    } else if (keyboardHelpVisible) {
-      helper.$body.removeClass('keyboardHelp');
-      keyboardHelpVisible = false;
-      analytics.closeMenu('keyboardHelp');
-    } else if (dropdownOpen) {
-      closedropdown();
-    } else if (loginVisible) {
-      $('#login').hide();
-      analytics.closeMenu('login');
-      loginVisible = false;
-    }
-  };
+    ESC.loginVisible = false;
+    ESC.dropdownOpen = false;
+    ESC.keyboardHelpVisible = false;
+    ESC.urlHelpVisible = false;
 
-  var setup = function(){
+    var hideOpen = function() {
+      if (ESC.urlHelpVisible) {
+        helper.$body.removeClass('urlHelp');
+        ESC.urlHelpVisible = false;
+        analytics.closeMenu('help');
+      } else if (ESC.keyboardHelpVisible) {
+        helper.$body.removeClass('keyboardHelp');
+        ESC.keyboardHelpVisible = false;
+        analytics.closeMenu('keyboardHelp');
+      } else if (ESC.dropdownOpen) {
+        // navigation.closedropdown(); 
+      } else if (ESC.loginVisible) {
+        $('#login').hide();
+        analytics.closeMenu('login');
+        ESC.loginVisible = false;
+      }
+    };
+
     helper.$document.keydown(function (event) {
-      if (event.which == 27) {//} || (keyboardHelpVisible && event.which == 191 && event.shiftKey && event.metaKey)) {
+      if (event.which == 27) {
         hideOpen();
       }
     });
@@ -41,16 +44,10 @@ module.exports = (function(){
         hideOpen();
       }
     });
-  };
 
-  setup();
-  
-  return {
-    loginVisible: loginVisible,
-    dropdownOpen: dropdownOpen,
-    keyboardHelpVisible: keyboardHelpVisible,
-    urlHelpVisible: urlHelpVisible,
-    setup: setup
-  };
+    return ESC;
+  })();
+
+  module.exports = ESC;
 })();
 

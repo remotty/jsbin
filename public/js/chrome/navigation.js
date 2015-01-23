@@ -1,7 +1,6 @@
 /*global $, jsbin, vex, setTimeout */
 
 var analytics = require('../chrome/analytics');
-// var Panels.panels = require('../Panels.panels/Panels.panels');
 var Panels = require('../editors/panels');
 var helper = require('../helper/global_helper');
 var saveChecksum = require('../helper/global_helper').saveChecksum;
@@ -14,7 +13,7 @@ var Library = require('../editors/library');
 var jsconsole = require('../render/console');
 var updateSavedState = require('../chrome/save').updateSavedState;
 var split = require('../chrome/save').split;
-var localStorage = require('../chrome/storage').localStorage;
+var store = require('../chrome/storage');
 
 module.exports = (function(){
   'use strict';
@@ -34,13 +33,12 @@ module.exports = (function(){
   var setup_startingpoint_event = function(){
     $startingpoint.click(function (event) {
       event.preventDefault();
-      if (localStorage) {
+      if (store.localStorage) {
         analytics.saveTemplate();
-        localStorage.setItem('saved-javascript', Panels.panels.javascript.getCode());
-        localStorage.setItem('saved-html', Panels.panels.html.getCode());
-        localStorage.setItem('saved-css', Panels.panels.css.getCode());
-
-        localStorage.setItem('saved-processors', JSON.stringify({
+        store.localStorage.setItem('saved-javascript', Panels.panels.javascript.getCode());
+        store.localStorage.setItem('saved-html', Panels.panels.html.getCode());
+        store.localStorage.setItem('saved-css', Panels.panels.css.getCode());
+        store.localStorage.setItem('saved-processors', JSON.stringify({
           javascript: jsbin.panels.panels.javascript.processor.id,
           html: jsbin.panels.panels.html.processor.id,
           css: jsbin.panels.panels.css.processor.id,
@@ -162,9 +160,7 @@ module.exports = (function(){
         jsbin.panels.getVisible().forEach(function (panel) {
           $panelCheckboxes.filter('[data-panel="' + panel.id + '"]').attr('checked', true).change();
         });
-
       });
-
     }
   };
 
@@ -179,8 +175,8 @@ module.exports = (function(){
         setTimeout(function () {
           input.select();
         }, 0);
-        dropdownOpen = el;
       }
+      dropdownOpen = el;
     }
   }
 
@@ -800,7 +796,7 @@ module.exports = (function(){
 
     cdnjs_bloodhound.initialize();
 
-    $('#cdnjs').val("").typeahead({
+    $('#cdnjs').val('').typeahead({
       hint: false,
       highlight: true,
       minLength: 1
@@ -809,7 +805,7 @@ module.exports = (function(){
       displayKey: 'value',
       source: cdnjs_bloodhound.ttAdapter()
     }).on('typeahead:selected', function (obj, library) {
-      $(obj.target).val("");
+      $(obj.target).val('');
       Library.insertResources(library.url);
       closedropdown();
     }); 
