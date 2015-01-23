@@ -14,8 +14,4 @@ script:
   - npm install
   - npm install -g bower
   - bower install -F --no-interactive
-  - gulp test:client
-  - gulp test:server
-  - ls coverage
-  - gulp cover
   - gulp coveralls

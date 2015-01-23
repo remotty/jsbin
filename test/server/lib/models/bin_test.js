@@ -20,13 +20,11 @@ describe('Bin Model', function(){
   });
 
   after(function(done) {
-    console.log(test_helper.store);
     test_helper.store.disconnect(function(err){
       if(err){
         console.log(err);
       }
 
-      console.log(test_helper.store);
       console.log('disconnectd');
       done();
     });
