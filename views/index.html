@@ -8,10 +8,11 @@
   <link rel="stylesheet" href="{{static}}/css/style.css{{cacheBust}}">
   <link rel="stylesheet" href="{{static}}/css/remotty.css{{cacheBust}}">
   <link rel="stylesheet" href="{{static}}/css/flat-ui.css{{cacheBust}}">
-  <link rel="stylesheet" href="{{static}}/js/components/vex/css/vex.css{{cacheBust}}">
-  <link rel="stylesheet" href="{{static}}/js/components/vex/css/vex-theme-os.css{{cacheBust}}">
-  <link rel="stylesheet" href="{{static}}/js/components/jquery.tablesorter/css/theme.blue.css{{cacheBust}}">
-  <link rel="stylesheet" href="{{static}}/js/components/jquery.tablesorter/css/theme.blue.css{{cacheBust}}">
+  <link rel="stylesheet" href="{{static}}/vendor/js/components/vex/css/vex.css{{cacheBust}}">
+  <link rel="stylesheet" href="{{static}}/vendor/js/components/vex/css/vex-theme-os.css{{cacheBust}}">
+  <link rel="stylesheet" href="{{static}}/vendor/js/components/jquery.tablesorter/css/theme.blue.css{{cacheBust}}">
+  <link rel="stylesheet" href="{{static}}/vendor/js/components/jquery.tablesorter/css/theme.blue.css{{cacheBust}}">
+  <link rel="stylesheet" href="{{static}}/vendor/js/components/inlet/inlet.css{{cacheBust}}">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   {{#if custom_css}}<link rel="stylesheet" href="{{static}}/{{custom_css}}{{cacheBust}}">{{/if}}
   {{#equal editorLayout "0"}}{{else}}<link rel="stylesheet" href="{{static}}/css/editor-layout.css{{cacheBust}}">{{/equal}}
@@ -110,6 +111,7 @@
 <script src="{{static}}/vendor/js/libraries/prettyprint.js"></script>
 <script src="{{static}}/vendor/js/libraries/loop-protect.min.js"></script>
 <script src="{{static}}/vendor/js/libraries/s3upload.js"></script>
+<script src="{{static}}/vendor/js/components/inlet/inlet.min.js"></script>
 <script src="{{static}}/js/prod/app.bundle.js"></script>
 
 {{else}}

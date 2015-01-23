@@ -25,7 +25,8 @@
     "raphael": "*",
     "nvd3": "*",
     "polymaps": "*",
-    "p5js": "*"
+    "p5js": "*",
+    "inlet": "enjalot/Inlet"
   }
 }
 
