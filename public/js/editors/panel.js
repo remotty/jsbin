@@ -239,7 +239,7 @@ var processors = require('../processors/processor');
       }
 
       if (showPanelButton) {
-        this.controlButton = $('<a role="button" class="button group" href="?' + name + '">' + panel.label + '</a>');
+        this.controlButton = $('<a role="button" class="button group" href="?' + name + '">' + panel.label + '-' + panel.order + '</a>');
         this.updateAriaState();
 
         this.controlButton.click(function () {
@@ -703,7 +703,7 @@ var processors = require('../processors/processor');
     //   Panels.distribute();
     // };
     
-    return{
+    return {
       initialize: initialize,
       virgin: virgin,
       visible: visible,
