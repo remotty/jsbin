@@ -1,15 +1,20 @@
-var assert = require("assert"),
-    options = require("../../lib/config.js");
+var assert = require('assert');
+var options = require('../../lib/config.js');
 
-// Database Settings
-options.store.adapter = 'mysql';
-options.store.mysql.host = 'localhost';
-options.store.mysql.user = 'root';
-options.store.mysql.database = 'jsbin';
+var config = require('../../config/config.default.json');
 
-// options.store.mysql.password = 'textcube';
-// options.store.adapter = 'sqlite';
-// options.store.sqlite.location = './test/server/test.sqlite3';
+if(process.env.SERVER_ENV === 'CI'){
+  options.store.adapter = 'mysql';
+  options.store.mysql.host = 'localhost';
+  options.store.mysql.user = 'root';
+  options.store.mysql.database = 'jsbin';
+} else {
+  options.store.adapter = config.storeTest.adapter;
+  options.store.mysql.host = config.storeTest.mysql.host;
+  options.store.mysql.user = config.storeTest.mysql.user;
+  options.store.mysql.password = config.storeTest.mysql.password;
+  options.store.mysql.database = config.storeTest.mysql.database;
+}
 
 var store = require('../../lib/store.js')(options.store);
 
