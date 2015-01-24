@@ -26,7 +26,8 @@
     "nvd3": "*",
     "polymaps": "*",
     "p5js": "*",
-    "inlet": "enjalot/Inlet"
+    "inlet": "enjalot/Inlet",
+    "codemirror": "~4.12.0"
   },
   "resolutions": {
     "d3": "3.5.3"

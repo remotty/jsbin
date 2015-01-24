@@ -54,14 +54,14 @@
 
   var addons = {
     closebrackets: {
-      url: '/vendor/js/libraries/codemirror4/addon/edit/closebrackets.js',
+      url: '/vendor/js/components/codemirror/addon/edit/closebrackets.js',
       test: defaultTest('autoCloseBrackets'),
       done: function (cm) {
         setOption(cm, 'autoCloseBrackets', true);
       }
     },
     highlight: {
-      url: '/vendor/js/libraries/codemirror4/addon/search/match-highlighter.js',
+      url: '/vendor/js/components/codemirror/addon/search/match-highlighter.js',
       test: defaultTest('highlightSelectionMatches'),
       done: function (cm) {
         setOption(cm, 'highlightSelectionMatches', true);
@@ -69,7 +69,7 @@
     },
     vim: {
       url: [
-        '/vendor/js/libraries/codemirror4/keymap/vim.js'
+        '/vendor/js/components/codemirror/keymap/vim.js'
       ],
       test: defaultTest('vimMode'),
       done: function (cm) {
@@ -79,7 +79,7 @@
     },
     emacs: {
       url: [
-        '/vendor/js/libraries/codemirror4/keymap/emacs.js'
+        '/vendor/js/components/codemirror/keymap/emacs.js'
       ],
       test: function () {
         return CodeMirror.keyMap.emacs;
@@ -90,8 +90,8 @@
     },
     matchtags: {
       url: [
-        '/vendor/js/libraries/codemirror4/addon/fold/xml-fold.js',
-        '/vendor/js/libraries/codemirror4/addon/edit/matchtags.js'
+        '/vendor/js/components/codemirror/addon/fold/xml-fold.js',
+        '/vendor/js/components/codemirror/addon/edit/matchtags.js'
       ],
       test: function () {
         return CodeMirror.scanForClosingTag &&
@@ -103,7 +103,7 @@
       }
     },
     trailingspace: {
-      url: '/vendor/js/libraries/codemirror4/addon/edit/trailingspace.js',
+      url: '/vendor/js/components/codemirror/addon/edit/trailingspace.js',
       test: defaultTest('showTrailingSpace'),
       done: function (cm) {
         setOption(cm, 'showTrailingSpace', true);
@@ -111,12 +111,12 @@
     },
     fold: {
       url: [
-        '/vendor/js/libraries/codemirror4/addon/fold/foldgutter.css',
-        '/vendor/js/libraries/codemirror4/addon/fold/foldcode.js',
-        '/vendor/js/libraries/codemirror4/addon/fold/foldgutter.js',
-        '/vendor/js/libraries/codemirror4/addon/fold/brace-fold.js',
-        '/vendor/js/libraries/codemirror4/addon/fold/xml-fold.js',
-        '/vendor/js/libraries/codemirror4/addon/fold/comment-fold.js'
+        '/vendor/js/components/codemirror/addon/fold/foldgutter.css',
+        '/vendor/js/components/codemirror/addon/fold/foldcode.js',
+        '/vendor/js/components/codemirror/addon/fold/foldgutter.js',
+        '/vendor/js/components/codemirror/addon/fold/brace-fold.js',
+        '/vendor/js/components/codemirror/addon/fold/xml-fold.js',
+        '/vendor/js/components/codemirror/addon/fold/comment-fold.js'
       ],
       test: function () {
         return CodeMirror.helpers.fold &&
@@ -137,7 +137,7 @@
     },
     sublime: {
       url: [
-        '/vendor/js/libraries/codemirror4/keymap/sublime.js'
+        '/vendor/js/components/codemirror/keymap/sublime.js'
       ],
       test: function () {
         return CodeMirror.keyMap.sublime;
@@ -160,9 +160,9 @@
     },
     tern: {
       url: [
-        '/vendor/js/libraries/codemirror4/addon/hint/show-hint.css',
-        '/vendor/js/libraries/codemirror4/addon/tern/tern.css',
-        '/vendor/js/libraries/codemirror4/addon/hint/show-hint.js',
+        '/vendor/js/components/codemirror/addon/hint/show-hint.css',
+        '/vendor/js/components/codemirror/addon/tern/tern.css',
+        '/vendor/js/components/codemirror/addon/hint/show-hint.js',
         // '/js/prod/addon-tern-' + jsbin.version + '.min.js'
         // 'js/prod/addon-tern-3.25.3.min.js',
         // '/js/prod/tern.bundle.js',
@@ -194,7 +194,7 @@
     },
     activeline: {
       url: [
-        '/vendor/js/libraries/codemirror4/addon/selection/active-line.js'
+        '/vendor/js/components/codemirror/addon/selection/active-line.js'
       ],
       test: function() {
         return (typeof CodeMirror.defaults.styleActiveLine !== 'undefined');
