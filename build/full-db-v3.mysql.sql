@@ -86,6 +86,7 @@ CREATE TABLE `owners` (
   `summary` varchar(255) NOT NULL DEFAULT '',
   `html` tinyint(1) NOT NULL DEFAULT '0',
   `css` tinyint(1) NOT NULL DEFAULT '0',
+  `javascript` tinyint(1) NOT NULL DEFAULT '0', 
   `spec` tinyint(1) NOT NULL DEFAULT '0',
   `dataset` tinyint(1) NOT NULL DEFAULT '0',
   `archive` tinyint(1) NOT NULL DEFAULT '0',
