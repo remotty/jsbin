@@ -12,7 +12,7 @@ var Panel = require('../editors/panel');
   'use strict';
   
   var PanelFactory = (function(){
-    var createDataframe = function () {
+    var createDataset = function () {
       return new Panel('dataframe', 'javascript', { editor: true, label: 'Data' });
     };
 
@@ -48,8 +48,8 @@ var Panel = require('../editors/panel');
       return new Panel('javascript', 'javascript', { editor: true, label: 'JavaScript' });
     };
 
-    var createJasmine = function () {
-      return new Panel('jasmine', 'javascript', { editor: true, label: 'Jasmine' });
+    var createSpec = function () {
+      return new Panel('jasmine', 'javascript', { editor: true, label: 'Spec' });
     };
 
     var createConsole = function () {
@@ -97,11 +97,11 @@ var Panel = require('../editors/panel');
     };
 
     return {
-      createDataframe: createDataframe,
+      createDataset: createDataset,
       createHtml: createHtml,
       createCss: createCss,
       createJavascript: createJavascript,
-      createJasmine: createJasmine,
+      createSpec: createSpec,
       createConsole: createConsole,
       createLive: createLive,
       createLivetest: createLivetest
@@ -122,8 +122,8 @@ var Panel = require('../editors/panel');
       Panels.panels.html = PanelFactory.createHtml();
       Panels.panels.css = PanelFactory.createCss();
       Panels.panels.javascript = PanelFactory.createJavascript();
-      Panels.panels.jasmine = PanelFactory.createJasmine();
-      Panels.panels.dataframe = PanelFactory.createDataframe();
+      Panels.panels.jasmine = PanelFactory.createSpec();
+      Panels.panels.dataframe = PanelFactory.createDataset();
 
       Panels.panels.console = PanelFactory.createConsole();
       upgradeConsolePanel(Panels.panels.console);
