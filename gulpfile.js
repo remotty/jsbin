@@ -74,7 +74,7 @@
   });
   
   gulp.task('watch', function() {
-    gulp.watch(['./public/js/**/*.js', '!./public/js/prod/*.js'], ['build']);
+    gulp.watch(['./public/**/*.js', '!./public/js/prod/*.js'], ['build']);
     gulp.watch(['./lib/**/*.js', './test/server/**/*.js'], ['test:server']);
     gulp.src(testFiles)
       .pipe(karma({configFile: 'karma.conf.js', action: 'watch'}));

@@ -27,7 +27,8 @@
     "polymaps": "*",
     "p5js": "*",
     "inlet": "enjalot/Inlet",
-    "codemirror": "~4.12.0"
+    "codemirror": "~4.12.0",
+    "underscore": "*"
   },
   "resolutions": {
     "d3": "3.5.3"

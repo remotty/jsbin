@@ -12,11 +12,8 @@ module.exports = {
       './public/js/chrome/analytics.js',                 // Library**
       './public/js/chrome/settings.js',                  // Library**
       './public/js/chrome/font.js',                      // Instant*
-      // './public/js/render/title.js',                     // Library*
       './public/js/editors/panels.js',                   // Library**
       './public/js/editors/panel.js',                    // Class**
-      // './public/js/editors/panel_factory.js',            // Library*
-      // './public/js/editors/editors.js',                  // Library*
       './public/js/render/get_rendered_code.js',         // function**
       './public/js/render/get_prepared_code_creator.js', // Library*
       './public/js/render/renderer.js',                  // Library*
@@ -30,7 +27,10 @@ module.exports = {
       './public/js/editors/library.js',                  // Library*
       './public/js/editors/addons.js',                   // Instant
       './public/js/editors/snapshot.js',                 // Instant
-      './public/js/editors/beautify.js',                 // Instant
+      './public/js/editors/beautify.js',                 // InstantBB
+
+      './public/app/views/body.js',
+      
       './public/js/render/saved_history_preview.js',     // Library
       './public/js/chrome/share.js',                     // Instant
       './public/js/chrome/esc.js',                       // Library
@@ -40,6 +40,10 @@ module.exports = {
       './public/js/chrome/keys.js',                      // Instant
       './public/js/chrome/save.js',                      // Library
       './public/js/chrome/navigation.js',                // Library
+
+      './public/app/views/infocard.js',
+      './public/app/views/topmenu.js',
+      
       './public/js/chrome/file_drop.js',                 // Instante
       './public/js/chrome/gist.js',                      // Library
       './public/js/chrome/spinner.js',                   // Library

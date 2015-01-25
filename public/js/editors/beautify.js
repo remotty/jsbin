@@ -1,6 +1,4 @@
-/*global jsbin, $ */
-
-var helper = require('../helper/global_helper');
+/*global jsbin, $, helper */
 
 (function () {
   'use strict';
@@ -66,13 +64,5 @@ var helper = require('../helper/global_helper');
     }));
   }
 
-  var ctrlKey = $.browser.platform === 'mac' ? 'metaKey' : 'ctrlKey';
-
-  helper.$document.on('keydown', function beautifyKeyBinding(e) {
-    if (e[ctrlKey] && e.shiftKey && e.which == 76) {
-      // ctrl/command + shift + L
-      beautify();
-    }
-  });
-
+  module.exports = beautify;
 })();

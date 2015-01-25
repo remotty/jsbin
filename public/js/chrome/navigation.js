@@ -637,71 +637,53 @@ module.exports = (function(){
       }
     });
   };
-
-  var setup_delete_bin_event = function(){
-    $('a.deletebin').on('click', function (e) {
-      e.preventDefault();
-      if (confirm('Delete this bin?')) {
-        $.ajax({
-          type: 'post',
-          url: jsbin.getURL({ withRevision: true }) + '/delete',
-          data: { checksum: jsbin.state.checksum },
-          success: function () {
-            jsbin.state.deleted = true;
-            $document.trigger('tip', {
-              type: 'error',
-              content: 'This bin is now deleted. You can continue to edit, but once you leave the bin can\'t be retrieved'
-            });
-          },
-          error: function (xhr) {
-            if (xhr.status === 403) {
-              $document.trigger('tip', {
-                content: 'You don\'t own this bin, so you can\'t delete it.',
-                autohide: 5000
-              });
-            }
-          }
+  
+  var deleteBin = function(){
+    $.ajax({
+      type: 'post',
+      url: jsbin.getURL({ withRevision: true }) + '/delete',
+      data: { checksum: jsbin.state.checksum },
+      success: function () {
+        jsbin.state.deleted = true;
+        $document.trigger('tip', {
+          type: 'error',
+          content: 'This bin is now deleted. You can continue to edit, but once you leave the bin can\'t be retrieved'
         });
+      },
+      error: function (xhr) {
+        if (xhr.status === 403) {
+          $document.trigger('tip', {
+            content: 'You don\'t own this bin, so you can\'t delete it.',
+            autohide: 5000
+          });
+        }
       }
     });
   };
 
-  var setup_rename_bin_event = function(){
-    $('a.renamebin').on('click', function (e) {
-      e.preventDefault();
-
-      vex.dialog.prompt({
-        message: 'What is new name of this bin?',
-        placeholder: 'Name of bin',
-        className: 'vex-theme-os',
-        callback: function(value) {
-
-          $.ajax({
-            type: 'post',
-            url: jsbin.getURL({ withRevision: true }) + '/rename',
-            data: {
-              checksum: jsbin.state.checksum,
-              new_name: value
-            },
-            success: function () {
-              setTimeout(function () {
-                var url = (jsbin.getURL({ withRevision: true }) + "/edit").replace(jsbin.state.code, value);
-                
-                window.location = url;
-              }, 1000);          
-            },
-            error: function (xhr) {
-              if (xhr.status === 403) {
-                $document.trigger('tip', {
-                  content: 'Rename is failed',
-                  autohide: 5000
-                });
-              }
-            }
-          });
+  var renameBin = function(value){
+    $.ajax({
+      type: 'post',
+      url: jsbin.getURL({ withRevision: true }) + '/rename',
+      data: {
+        checksum: jsbin.state.checksum,
+        new_name: value
+      },
+      success: function () {
+        setTimeout(function () {
+          var url = (jsbin.getURL({ withRevision: true }) + "/edit").replace(jsbin.state.code, value);
           
+          window.location = url;
+        }, 1000);          
+      },
+      error: function (xhr) {
+        if (xhr.status === 403) {
+          $document.trigger('tip', {
+            content: 'Rename is failed',
+            autohide: 5000
+          });
         }
-      });  
+      }
     });
   };
 
@@ -874,8 +856,6 @@ module.exports = (function(){
     setup_add_meta_event();
     setup_publish_to_vanity_event();
     setup_delete_all_bin_event();
-    setup_delete_bin_event();
-    setup_rename_bin_event();
     setup_archive_bin_event();
     setup_universal_editor_event ();
     setup_skipToEditor_event();
@@ -887,6 +867,8 @@ module.exports = (function(){
   setup();
   
   return {
+    renameBin: renameBin,
+    deleteBin: deleteBin,
     add_description: add_description,
     opendropdown: opendropdown,
     closedropdown: closedropdown
