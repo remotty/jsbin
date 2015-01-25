@@ -13,7 +13,9 @@ module.exports = (function(){
     todo: {
       html: false,
       css: false,
-      javascript: false
+      javascript: false,
+      spec: false,
+      dataset: false
     },
     _inprogress: false,
     inprogress: function (inprogress) {
@@ -23,7 +25,7 @@ module.exports = (function(){
 
       saving._inprogress = inprogress;
       if (inprogress === false) {
-        var panels = ['html','css','javascript', 'jasmine'];
+        var panels = ['html','css','javascript', 'spec', 'dataset'];
 
         var save = function () {
           var todo = panels.pop();
@@ -176,8 +178,8 @@ module.exports = (function(){
       html: $('.panel.html .name span'),
       javascript: $('.panel.javascript .name span'),
       css: $('.panel.css .name span'),
-      jasmine: $('.panel.jasmine .name span'),
-      dataframe: $('.panel.dataframe .name span'),
+      spec: $('.panel.jasmine .name span'),
+      dataset: $('.panel.dataframe .name span'),
     };
     
     helper.$document.bind('jsbinReady', function () {
@@ -218,7 +220,6 @@ module.exports = (function(){
         }
 
         var panelId = data.panelId;
-
         jsbin.panels.savecontent();
 
         if (saving.inprogress()) {
@@ -269,7 +270,16 @@ module.exports = (function(){
 
   function updateCode(panelId, callback) {
     var panelSettings = {};
+    var panelName;
 
+    if (panelId === 'jasmine'){
+      panelName = 'spec';
+    }else if (panelId === 'dataframe'){
+      panelName = 'dataset';
+    }else{
+      panelName = panelId;
+    }
+    
     if (jsbin.state.processors) {
       panelSettings.processors = jsbin.state.processors;
     }
@@ -278,7 +288,7 @@ module.exports = (function(){
       code: jsbin.state.code,
       revision: jsbin.state.revision,
       method: 'update',
-      panel: panelId,
+      panel: panelName,
       content: Panels.panels[panelId].getCode(),
       checksum: saveChecksum,
       settings: JSON.stringify(panelSettings),
@@ -339,6 +349,8 @@ module.exports = (function(){
           .append('<input type="hidden" name="javascript" />')
           .append('<input type="hidden" name="html" />')
           .append('<input type="hidden" name="css" />')
+          .append('<input type="hidden" name="spec" />')
+          .append('<input type="hidden" name="dataset" />')
           .append('<input type="hidden" name="method" />')
           .append('<input type="hidden" name="_csrf" value="' + jsbin.state.token + '" />')
           .append('<input type="hidden" name="settings" />')
@@ -360,6 +372,8 @@ module.exports = (function(){
     $form.find('input[name=javascript]').val(Panels.panels.javascript.getCode());
     $form.find('input[name=css]').val(Panels.panels.css.getCode());
     $form.find('input[name=html]').val(Panels.panels.html.getCode());
+    $form.find('input[name=spec]').val(Panels.panels.jasmine.getCode());
+    $form.find('input[name=dataset]').val(Panels.panels.dataframe.getCode());
     $form.find('input[name=method]').val(method);
     $form.find('input[name=checksum]').val(jsbin.state.checksum);
 
