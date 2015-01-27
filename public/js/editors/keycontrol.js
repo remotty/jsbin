@@ -86,8 +86,9 @@ var Autocomplete = require('../editors/autocomplete');
       
       $.each($.cookie('zoom-panels').split(','), function(i, data){
         Panels.panels[data].show();
-        // current_panel.hide();
       });
+
+      current_panel.focus();
     };
 
     var zoom_in = function () {
